@@ -15,7 +15,10 @@ var _ taskv1connect.TaskServiceHandler = (*TaskService)(nil)
 
 type Task = v1.Task
 
-var taskStore = []*Task{}
+var taskStore = []*Task{
+	{Id: 1, Name: "task1", Status: v1.Status_STATUS_DONE},
+	{Id: 2, Name: "task2", Status: v1.Status_STATUS_TODO},
+}
 
 func (s *TaskService) List(context.Context, *connect.Request[v1.TaskListRequest]) (*connect.Response[v1.TaskListResponse], error) {
 	resp := &connect.Response[v1.TaskListResponse]{
