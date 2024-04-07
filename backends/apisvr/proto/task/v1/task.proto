@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package task.v1;
+
+option go_package = "apisvr/gen/task/v1;taskv1";
+
+enum Status {
+  STATUS_UNKNOWN_UNSPECIFIED = 0;
+  STATUS_TODO = 1;
+  STATUS_DONE = 2;
+}
+
+message Task {
+  uint64 id = 1;
+  string name = 2;
+  Status status = 3;
+}
+
+message TaskId {
+  uint64 id = 1;
+}
+
+message TaskListRequest {
+  uint64 offset = 1;
+  uint64 limit = 2;
+}
+
+message TaskListResponse {
+  uint64 total = 1;
+  repeated Task items = 2;
+}
+
+message TaskCreateRequest {
+  string name = 1;
+  Status status = 2;
+}
+
+service TaskService {
+  rpc List(TaskListRequest) returns (TaskListResponse) {}
+  rpc Show(TaskId) returns (Task) {}
+  rpc Create(TaskCreateRequest) returns (Task) {}
+  rpc Update(Task) returns (Task) {}
+  rpc Delete(TaskId) returns (TaskId) {}
+}
