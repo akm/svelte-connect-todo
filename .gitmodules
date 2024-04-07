@@ -1,0 +1,4 @@
+[submodule "vendor/goveltemk"]
+	path = vendor/goveltemk
+	url = git@github.com:akm/govelte.mk.git
+	branch = features/first_implementation
