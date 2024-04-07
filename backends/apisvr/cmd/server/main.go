@@ -5,22 +5,18 @@ import (
 
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
-)
 
-// import (
-// 	"apisvr/gen/task/v1/taskv1connect"
-// 	taskservices "apisvr/services/task_services"
-// )
+	"apisvr/gen/task/v1/taskv1connect"
+	taskservices "apisvr/services/task_services"
+)
 
 func main() {
 	mux := http.NewServeMux()
 
 	// Instantiate the YOUR services and Mount them here.
-
-	// EXAMPLE:
-	// taskService := &taskservices.TaskService{}
-	// path, handler := taskv1connect.NewTaskServiceHandler(taskService)
-	// mux.Handle(path, handler)
+	taskService := &taskservices.TaskService{}
+	path, handler := taskv1connect.NewTaskServiceHandler(taskService)
+	mux.Handle(path, handler)
 
 	http.ListenAndServe(
 		"localhost:8080",
