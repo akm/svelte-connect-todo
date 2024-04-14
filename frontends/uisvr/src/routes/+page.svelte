@@ -44,7 +44,7 @@
 						checked={task.done}
 						on:change={async (e) => {
 							const done = e.currentTarget.checked;
-							await client.update({ id: task.id, status: done ? Status.DONE : Status.TODO });
+							await client.update({ id: task.id, name: task.name, status: done ? Status.DONE : Status.TODO });
 						}}
 					/>
 					<span>{task.name}</span>
