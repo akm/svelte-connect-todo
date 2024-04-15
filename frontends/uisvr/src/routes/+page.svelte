@@ -12,8 +12,8 @@
 	const client = createPromiseClient(TaskService, transport);
 </script>
 
-<div class="centered">
-	<h1>todos</h1>
+<div class="prose m-8 lg:prose-lg">
+	<h1 class="prose">todos</h1>
 
 	<label>
 		add a todo:
