@@ -60,39 +60,3 @@
 		{/each}
 	</ul>
 </div>
-
-<style>
-	.centered {
-		max-width: 20em;
-		margin: 0 auto;
-	}
-
-	label {
-		display: flex;
-		width: 100%;
-	}
-
-	input[type='text'] {
-		flex: 1;
-		color: black;
-	}
-
-	span {
-		flex: 1;
-	}
-
-	button {
-		border: none;
-		background: url(./remove.svg) no-repeat 50% 50%;
-		background-size: 1rem 1rem;
-		cursor: pointer;
-		height: 100%;
-		aspect-ratio: 1;
-		opacity: 0.5;
-		transition: opacity 0.2s;
-	}
-
-	button:hover {
-		opacity: 1;
-	}
-</style>
