@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Task } from '$lib/models/task';
-	import type { ServerLoadEvent } from '@sveltejs/kit';
 	import { TaskService } from '../gen/task/v1/task_connect';
 	import { createPromiseClient } from '@connectrpc/connect';
 	import { createConnectTransport } from '@connectrpc/connect-web';
