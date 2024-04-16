@@ -14,7 +14,7 @@
 </script>
 
 <div class="prose m-8 lg:prose-lg">
-	<h1 class="prose">todos</h1>
+	<h1>todos</h1>
 
 	<label>
 		add a todo:
