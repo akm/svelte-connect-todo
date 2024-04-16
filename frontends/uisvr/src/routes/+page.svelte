@@ -5,6 +5,7 @@
 	import { createPromiseClient } from '@connectrpc/connect';
 	import { createConnectTransport } from '@connectrpc/connect-web';
 	import { Status } from '../gen/task/v1/task_pb';
+	import Icon from '@iconify/svelte';
 
 	export let data: { tasks: Task[] };
 
@@ -54,7 +55,7 @@
 							await client.delete({ id: task.id });
 							data.tasks = data.tasks.filter((t) => t !== task);
 						}}
-					/>
+					><Icon icon="ph:trash-light" /></button>
 				</label>
 			</li>
 		{/each}
