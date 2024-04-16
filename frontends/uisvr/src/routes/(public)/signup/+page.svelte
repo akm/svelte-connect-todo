@@ -31,8 +31,8 @@
 		</div>
 	{/if}
 
-	<label class="block">
-		<span class="text-gray-700">Email</span>
+	<label>
+		<span>Email</span>
 		<input
 			class="mt-1 block w-full"
 			bind:value={email}
@@ -43,7 +43,7 @@
 	</label>
 
 	<label class="block">
-		<span class="text-gray-700">Passeord</span>
+		<span>Passeord</span>
 		<input
 			class="mt-1 block w-full"
 			type="password"
@@ -55,7 +55,7 @@
 	</label>
 
 	<label class="block">
-		<span class="text-gray-700">Account name</span>
+		<span>Account name</span>
 		<input
 			class="mt-1 block w-full"
 			bind:value={accountName}
@@ -69,7 +69,7 @@
 	<div class="flex">
 		<button class="btn btn-primary flex-none mt-4 h-12" on:click={signup}>Sign up</button>
 		<div>
-			<a class="btn mt-4 ml-8 h-12" color="alternative" href="/signin">Sign in</a>
+			<a class="btn btn-neutral mt-4 ml-8 h-12" color="alternative" href="/signin">Sign in</a>
 			<div class="ml-8">Sign in if you already have your account.</div>
 		</div>
 	</div>
