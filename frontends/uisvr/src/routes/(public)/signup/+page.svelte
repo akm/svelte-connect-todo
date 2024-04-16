@@ -67,9 +67,9 @@
 	</label>
 
 	<div class="flex">
-		<button class=" flex-none mt-4 h-12" on:click={signup}>Sign up</button>
+		<button class="btn btn-primary flex-none mt-4 h-12" on:click={signup}>Sign up</button>
 		<div>
-			<a class="mt-4 ml-8 h-12" color="alternative" href="/signin">Sign in</a>
+			<a class="btn mt-4 ml-8 h-12" color="alternative" href="/signin">Sign in</a>
 			<div class="ml-8">Sign in if you already have your account.</div>
 		</div>
 	</div>

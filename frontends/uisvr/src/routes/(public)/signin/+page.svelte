@@ -50,9 +50,9 @@
 		/>
 	</label>
 	<div class="flex">
-		<button class="flex-none mt-4 h-12" on:click={signin}>Sign in</button>
+		<button class="btn btn-primary flex-none mt-4 h-12" on:click={signin}>Sign in</button>
 		<div>
-			<a class="mt-4 ml-8 h-12" color="alternative" href="/signup">Sign up</a>
+			<a class="btn mt-4 ml-8 h-12" color="alternative" href="/signup">Sign up</a>
 			<div class="ml-8">Sign up if you don't have an account.</div>
 		</div>
 	</div>
