@@ -1,0 +1,19 @@
+# Variable substitution
+# https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution
+# 環境変数は local/Makefile で設定されています。
+version: "3.7"
+name: "govelte-todo_mw_localdev"
+services:
+  firebase-emulators:
+    build:
+      context: ../firebase-emulators
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_FIREBASE_AUTH_PORT}:9099"
+      - "${APP_FIREBASE_EMULATOR_SUITE_PORT}:4000"
+    volumes:
+      - ./data/firebase-emulators:/srv/firebase-emulators/data
+    command: firebase emulators:start --import /srv/firebase-emulators/data/firebase --export-on-exit /srv/firebase-emulators/data/firebase
+
+networks:
+  network1:
