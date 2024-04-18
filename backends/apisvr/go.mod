@@ -3,6 +3,7 @@ module apisvr
 go 1.20
 
 require (
+	connectrpc.com/authn v0.1.0 // indirect
 	connectrpc.com/connect v1.16.0 // indirect
 	connectrpc.com/cors v0.1.0 // indirect
 	github.com/rs/cors v1.10.1 // indirect
