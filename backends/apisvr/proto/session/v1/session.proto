@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package session.v1;
+
+option go_package = "apisvr/gen/session/v1;sessionv1";
+
+message SessionCreateRequest {
+  string idToken = 1;
+}
+
+message Void {
+}
+  
+service SessionService {
+  rpc Create(SessionCreateRequest) returns (Void) {}
+  rpc Delete(Void) returns (Void) {}
+}
