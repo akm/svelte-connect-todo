@@ -2,10 +2,12 @@ package taskservices
 
 import (
 	"context"
+	"fmt"
 
 	v1 "apisvr/gen/task/v1"
 	"apisvr/gen/task/v1/taskv1connect"
 
+	"connectrpc.com/authn"
 	"connectrpc.com/connect"
 )
 
@@ -20,7 +22,10 @@ var taskStore = []*Task{
 	{Id: 2, Name: "task2", Status: v1.Status_STATUS_TODO},
 }
 
-func (s *TaskService) List(context.Context, *connect.Request[v1.TaskListRequest]) (*connect.Response[v1.TaskListResponse], error) {
+func (s *TaskService) List(ctx context.Context, req *connect.Request[v1.TaskListRequest]) (*connect.Response[v1.TaskListResponse], error) {
+	user := authn.GetInfo(ctx)
+	fmt.Printf("user: %v\n", user)
+
 	resp := &connect.Response[v1.TaskListResponse]{
 		Msg: &v1.TaskListResponse{
 			Items: taskStore,
