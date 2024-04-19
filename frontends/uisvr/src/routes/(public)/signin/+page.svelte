@@ -1,14 +1,24 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 
+	import { SessionService } from '../../../gen/session/v1/session_connect';
+	import { createPromiseClient } from '@connectrpc/connect';
+	import { createConnectTransport } from '@connectrpc/connect-web';
+
 	let email = '';
 	let password = '';
 	let errorMessage = '';
 
 	const signin = async () => {
+		const transport = createConnectTransport({ baseUrl: 'http://localhost:8080' });
+		const client = createPromiseClient(SessionService, transport);
+		await client.create({ idToken: email });
 	};
 
 	const signinOnEnter = (e: KeyboardEvent) => {
+		if (e.key === 'Enter') {
+			signin();
+		}
 	};
 	const clearErrorMessage = () => {
 		errorMessage = '';
