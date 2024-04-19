@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"strings"
 
+	"connectrpc.com/connect"
+
 	v1 "apisvr/gen/session/v1"
 	"apisvr/gen/session/v1/sessionv1connect"
 
-	"connectrpc.com/connect"
+	"apisvr/services/auth"
 )
 
 type SessionService struct{}
@@ -23,17 +25,12 @@ func (s *SessionService) Create(ctx context.Context, req *connect.Request[v1.Ses
 		return nil, fmt.Errorf("Invalid id token")
 	}
 	res := new(connect.Response[v1.Void])
-	res.Header().Add("Set-Cookie", sessionCookieValue(idToken))
+	res.Header().Add("Set-Cookie", auth.SessionCookieValue(idToken))
 	return res, nil
 }
 
 func (s *SessionService) Delete(ctx context.Context, req *connect.Request[v1.Void]) (*connect.Response[v1.Void], error) {
 	res := new(connect.Response[v1.Void])
-	res.Header().Add("Set-Cookie", sessionCookieValue(""))
+	res.Header().Add("Set-Cookie", auth.SessionCookieValue(""))
 	return res, nil
-}
-
-func sessionCookieValue(idToken string) string {
-	// See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
-	return fmt.Sprintf("session=%s; Secure; HttpOnly", idToken)
 }
