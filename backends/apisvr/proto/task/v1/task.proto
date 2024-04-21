@@ -10,10 +10,16 @@ enum Status {
   STATUS_DONE = 2;
 }
 
+message User {
+  uint64 id = 1;
+  string name = 2;
+}
+
 message Task {
   uint64 id = 1;
   string name = 2;
   Status status = 3;
+  User creator = 4;
 }
 
 message TaskId {
