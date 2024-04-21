@@ -8,7 +8,15 @@ import { Status } from '../gen/task/v1/task_pb';
 export async function load(event: ServerLoadEvent): Promise<{ tasks: Task[] }> {
 	console.log('load: event.constructor', event.constructor);
 
-	const transport = createConnectTransport({ baseUrl: 'http://localhost:8080' });
+	const transport = createConnectTransport({
+		baseUrl: 'http://localhost:8080',
+		interceptors: [
+			(next) => async (req) => {
+				req.header.set('cookie', event.request.headers.get('cookie') || '');
+				return await next(req);
+			}
+		]
+	});
 
 	// Here we make the client itself, combining the service
 	// definition with the transport.

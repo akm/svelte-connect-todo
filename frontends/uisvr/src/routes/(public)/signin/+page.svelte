@@ -1,14 +1,24 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { page } from '$app/stores';
 
 	let email = '';
 	let password = '';
 	let errorMessage = '';
 
 	const signin = async () => {
+		await fetch('/session', {
+			method: 'POST',
+			body: JSON.stringify({"id_token": email}),
+			headers: {'Content-Type': 'application/json'}
+		});
+		window.location.href = $page.url.origin + '/';
 	};
 
 	const signinOnEnter = (e: KeyboardEvent) => {
+		if (e.key === 'Enter') {
+            signin();
+        }
 	};
 	const clearErrorMessage = () => {
 		errorMessage = '';

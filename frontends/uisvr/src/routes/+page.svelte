@@ -8,7 +8,10 @@
 
 	export let data: { tasks: Task[] };
 
-	const transport = createConnectTransport({ baseUrl: 'http://localhost:8080' });
+	const transport = createConnectTransport({ 
+		baseUrl: 'http://localhost:8080',
+		credentials: 'include'
+	 });
 	const client = createPromiseClient(TaskService, transport);
 </script>
 
