@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { Task } from '$lib/models/task';
-	import type { ServerLoadEvent } from '@sveltejs/kit';
 	import { TaskService } from '../gen/task/v1/task_connect';
 	import { createPromiseClient } from '@connectrpc/connect';
 	import { createConnectTransport } from '@connectrpc/connect-web';
 	import { Status } from '../gen/task/v1/task_pb';
+	import Icon from '@iconify/svelte';
 
 	export let data: { tasks: Task[] };
 
@@ -12,7 +12,7 @@
 	const client = createPromiseClient(TaskService, transport);
 </script>
 
-<div class="centered">
+<div class="prose m-8 lg:prose-lg">
 	<h1>todos</h1>
 
 	<label>
@@ -44,7 +44,7 @@
 						checked={task.done}
 						on:change={async (e) => {
 							const done = e.currentTarget.checked;
-							await client.update({ id: task.id, status: done ? Status.DONE : Status.TODO });
+							await client.update({ id: task.id, name: task.name, status: done ? Status.DONE : Status.TODO });
 						}}
 					/>
 					<span>{task.name}</span>
@@ -54,45 +54,9 @@
 							await client.delete({ id: task.id });
 							data.tasks = data.tasks.filter((t) => t !== task);
 						}}
-					/>
+					><Icon icon="ph:trash-light" /></button>
 				</label>
 			</li>
 		{/each}
 	</ul>
 </div>
-
-<style>
-	.centered {
-		max-width: 20em;
-		margin: 0 auto;
-	}
-
-	label {
-		display: flex;
-		width: 100%;
-	}
-
-	input[type='text'] {
-		flex: 1;
-		color: black;
-	}
-
-	span {
-		flex: 1;
-	}
-
-	button {
-		border: none;
-		background: url(./remove.svg) no-repeat 50% 50%;
-		background-size: 1rem 1rem;
-		cursor: pointer;
-		height: 100%;
-		aspect-ratio: 1;
-		opacity: 0.5;
-		transition: opacity 0.2s;
-	}
-
-	button:hover {
-		opacity: 1;
-	}
-</style>
