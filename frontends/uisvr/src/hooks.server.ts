@@ -18,7 +18,19 @@ export const handle: Handle = async ({ event, resolve }) => {
 	try {
 		decoded = await auth.verifySessionCookie(sessionValue, true);
 		// Contents of decoded
-		console.log('decoded', decoded);
+		// {
+		// 	email: 'foo2@example.com',
+		// 	email_verified: false,
+		// 	auth_time: 1713688711,
+		// 	user_id: 'z627DaZCAl6ESgxlf76JXFYTraN5',
+		// 	firebase: { identities: { email: [Array] }, sign_in_provider: 'password' },
+		// 	iat: 1713688711,
+		// 	exp: 1714120711,
+		// 	aud: 'govelte-app1-gcp-project1',
+		// 	iss: 'https://session.firebase.google.com/govelte-app1-gcp-project1',
+		// 	sub: 'z627DaZCAl6ESgxlf76JXFYTraN5',
+		// 	uid: 'z627DaZCAl6ESgxlf76JXFYTraN5'
+		// }
 		// firebase.identities.email は [ 'foo1@example.com' ]
 	} catch (err) {
 		if (isFirebaseError(err)) {
