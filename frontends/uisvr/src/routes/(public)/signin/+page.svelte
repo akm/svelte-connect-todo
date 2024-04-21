@@ -6,9 +6,17 @@
 	let errorMessage = '';
 
 	const signin = async () => {
+		await fetch('/session', {
+			method: 'POST',
+			body: JSON.stringify({"id_token": email}),
+			headers: {'Content-Type': 'application/json'}
+		});
 	};
 
 	const signinOnEnter = (e: KeyboardEvent) => {
+		if (e.key === 'Enter') {
+            signin();
+        }
 	};
 	const clearErrorMessage = () => {
 		errorMessage = '';
