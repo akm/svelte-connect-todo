@@ -3,7 +3,9 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "run-p dev:backends dev:run",
+		"dev:backends": "make backends_dev",
+		"dev:run": "make dev_run",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
@@ -32,6 +34,7 @@
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.35.1",
+		"npm-run-all": "^4.1.5",
 		"postcss": "^8.4.38",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
@@ -47,6 +50,8 @@
 	"dependencies": {
 		"@bufbuild/protobuf": "^1.8.0",
 		"@connectrpc/connect": "^1.4.0",
-		"@connectrpc/connect-web": "^1.4.0"
+		"@connectrpc/connect-web": "^1.4.0",
+		"firebase": "^10.11.0",
+		"firebase-admin": "^12.1.0"
 	}
 }

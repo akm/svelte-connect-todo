@@ -8,7 +8,12 @@ import (
 	"connectrpc.com/authn"
 )
 
-func Authenticate(_ context.Context, req authn.Request) (any, error) {
+func Authenticate(ctx context.Context, req authn.Request) (any, error) {
+	fbClient, err := NewFirebaseClient(ctx)
+	if err != nil {
+		log.Fatalf("error initializing app: %v\n", err)
+	}
+
 	var sessionCookie *http.Cookie
 	for _, cookie := range req.Cookies() {
 		if cookie.Name == cookieKey {
@@ -22,9 +27,14 @@ func Authenticate(_ context.Context, req authn.Request) (any, error) {
 	}
 
 	log.Printf("sessionCookie.Value: %q\n", sessionCookie.Value)
-	if sessionCookie.Value == "revoked" {
-		return nil, authn.Errorf("revoked session")
+
+	token, err := fbClient.VerifySessionCookie(ctx, sessionCookie.Value)
+	if err != nil {
+		log.Printf("error verifying session cookie: %v\n", err)
+		return nil, authn.Errorf("unauthenticated")
 	}
 
-	return sessionCookie.Value, nil
+	log.Printf("token: %+v\n", *token)
+
+	return token, nil
 }
