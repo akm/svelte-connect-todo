@@ -2,6 +2,7 @@ package taskservices
 
 import (
 	"context"
+	"log"
 
 	v1 "apisvr/gen/task/v1"
 	"apisvr/gen/task/v1/taskv1connect"
@@ -21,6 +22,7 @@ var taskStore = []*Task{
 }
 
 func (s *TaskService) List(context.Context, *connect.Request[v1.TaskListRequest]) (*connect.Response[v1.TaskListResponse], error) {
+	log.Printf("TaskService.List")
 	resp := &connect.Response[v1.TaskListResponse]{
 		Msg: &v1.TaskListResponse{
 			Items: taskStore,
@@ -31,6 +33,7 @@ func (s *TaskService) List(context.Context, *connect.Request[v1.TaskListRequest]
 }
 
 func (s *TaskService) Show(ctx context.Context, req *connect.Request[v1.TaskId]) (*connect.Response[v1.Task], error) {
+	log.Printf("TaskService.Show")
 	for _, task := range taskStore {
 		if task.Id == req.Msg.Id {
 			return &connect.Response[v1.Task]{Msg: task}, nil
@@ -40,6 +43,7 @@ func (s *TaskService) Show(ctx context.Context, req *connect.Request[v1.TaskId])
 }
 
 func (s *TaskService) Create(ctx context.Context, req *connect.Request[v1.TaskCreateRequest]) (*connect.Response[v1.Task], error) {
+	log.Printf("TaskService.Create")
 	var id uint64
 	if len(taskStore) == 0 {
 		id = 1
@@ -56,6 +60,7 @@ func (s *TaskService) Create(ctx context.Context, req *connect.Request[v1.TaskCr
 }
 
 func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.Task]) (*connect.Response[v1.Task], error) {
+	log.Printf("TaskService.Update")
 	for i, task := range taskStore {
 		if task.Id == req.Msg.Id {
 			taskStore[i] = req.Msg
@@ -66,6 +71,7 @@ func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.Task])
 }
 
 func (s *TaskService) Delete(ctx context.Context, req *connect.Request[v1.TaskId]) (*connect.Response[v1.TaskId], error) {
+	log.Printf("TaskService.Delete")
 	for i, task := range taskStore {
 		if task.Id == req.Msg.Id {
 			taskStore = append(taskStore[:i], taskStore[i+1:]...)
