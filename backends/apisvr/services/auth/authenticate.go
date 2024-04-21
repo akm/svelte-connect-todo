@@ -10,9 +10,7 @@ import (
 
 func Authenticate(_ context.Context, req authn.Request) (any, error) {
 	var sessionCookie *http.Cookie
-	log.Printf("req.Cookies(): %+v\n", req.Cookies())
 	for _, cookie := range req.Cookies() {
-		log.Printf("cookie: %+v\n", *cookie)
 		if cookie.Name == cookieKey {
 			sessionCookie = cookie
 			break
@@ -23,7 +21,6 @@ func Authenticate(_ context.Context, req authn.Request) (any, error) {
 		return nil, nil
 	}
 
-	log.Printf("sessionCookie: %+v\n", *sessionCookie)
 	log.Printf("sessionCookie.Value: %q\n", sessionCookie.Value)
 	if sessionCookie.Value == "revoked" {
 		return nil, authn.Errorf("revoked session")
