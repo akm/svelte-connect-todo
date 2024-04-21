@@ -28,4 +28,4 @@ test:
 
 .PHONY: dev
 dev:
-	$(MAKE) -C apisvr dev; \
+	$(MAKE) -C apisvr dev
