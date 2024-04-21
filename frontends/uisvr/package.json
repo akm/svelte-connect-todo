@@ -48,6 +48,7 @@
 		"@bufbuild/protobuf": "^1.8.0",
 		"@connectrpc/connect": "^1.4.0",
 		"@connectrpc/connect-web": "^1.4.0",
-		"firebase": "^10.11.0"
+		"firebase": "^10.11.0",
+		"firebase-admin": "^12.1.0"
 	}
 }
