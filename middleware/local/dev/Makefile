@@ -20,3 +20,16 @@ up:
 .PHONY: down
 down:
 	$(ENVS) docker compose down
+
+DOCKER_COMPOSE_NAME=$(shell cat ./docker-compose.yml | yq .name)
+DOCKER_COMPOSE_SERVICES=$(shell cat docker-compose.yml | yq '.services | select(.build.context != "") | keys | join(" ")')
+
+.PHONY: rmi
+rmi: down
+	for service in $(DOCKER_COMPOSE_SERVICES); do \
+		docker rmi $(DOCKER_COMPOSE_NAME)-$$service:latest; \
+	done
+
+.PHONY: rebuild
+rebuild: rmi
+	docker compose build
