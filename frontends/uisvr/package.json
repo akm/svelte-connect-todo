@@ -3,7 +3,9 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "run-p dev:backends dev:run",
+		"dev:backends": "make backends_dev",
+		"dev:run": "make dev_run",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
