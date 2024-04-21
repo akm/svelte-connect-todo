@@ -1,5 +1,5 @@
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
-import { app } from '..';
+import { app } from '../app';
 
 export const auth = getAuth(app);
 
