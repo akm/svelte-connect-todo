@@ -39,6 +39,10 @@ service TaskService {
   rpc List(TaskListRequest) returns (TaskListResponse) {}
   rpc Show(TaskId) returns (Task) {}
   rpc Create(TaskCreateRequest) returns (Task) {}
-  rpc Update(Task) returns (Task) {}
+  rpc Update(Task) returns (Task) {
+    option deprecated = true;
+  } 
+  rpc Complete(TaskId) returns (Task) {}
+  rpc Reopen(TaskId) returns (Task) {}
   rpc Delete(TaskId) returns (TaskId) {}
 }
