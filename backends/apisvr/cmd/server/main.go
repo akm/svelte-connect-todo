@@ -53,6 +53,8 @@ func main() {
 		MaxHeaderBytes:    8 * 1024, // 8KiB
 	}
 
+	log.Printf("Starting server on %s", serverHostAndPort)
+
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt, syscall.SIGTERM)
 	go func() {
