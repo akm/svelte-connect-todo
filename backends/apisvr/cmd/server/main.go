@@ -23,9 +23,15 @@ func main() {
 	path, handler := taskv1connect.NewTaskServiceHandler(taskService)
 	mux.Handle(path, authmw.Wrap(handler))
 
+	// https://cloud.google.com/run/docs/triggering/grpc?hl=ja
 	serverHostAndPort := os.Getenv("APP_SERVER_HOST_AND_PORT")
 	if serverHostAndPort == "" {
-		serverHostAndPort = "0.0.0.0:8080"
+		port := os.Getenv("PORT")
+		if port == "" {
+			serverHostAndPort = "0.0.0.0:8080"
+		} else {
+			serverHostAndPort = "0.0.0.0:" + port
+		}
 	}
 
 	http.ListenAndServe(
