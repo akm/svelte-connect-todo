@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"connectrpc.com/authn"
 	"golang.org/x/net/http2"
@@ -22,8 +23,13 @@ func main() {
 	path, handler := taskv1connect.NewTaskServiceHandler(taskService)
 	mux.Handle(path, authmw.Wrap(handler))
 
+	serverHostAndPort := os.Getenv("APP_SERVER_HOST_AND_PORT")
+	if serverHostAndPort == "" {
+		serverHostAndPort = "0.0.0.0:8080"
+	}
+
 	http.ListenAndServe(
-		"localhost:8080",
+		serverHostAndPort,
 		// Use h2c so we can serve HTTP/2 without TLS.
 		withCORS(h2c.NewHandler(mux, &http2.Server{})),
 	)

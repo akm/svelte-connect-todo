@@ -2,6 +2,8 @@ package main
 
 import (
 	"net/http"
+	"os"
+	"strings"
 
 	connectcors "connectrpc.com/cors"
 	"github.com/rs/cors"
@@ -19,8 +21,9 @@ var (
 )
 
 func withCORS(connectHandler http.Handler) http.Handler {
+	allowedOrigins := strings.Split(os.Getenv("APP_CORS_ALLOW_ORIGINS"), ",")
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173", "http://localhost:4173"}, // replace with your domain
+		AllowedOrigins:   allowedOrigins,
 		AllowedMethods:   allowedMethods,
 		AllowedHeaders:   allowedHeaders,
 		ExposedHeaders:   exposedHeaders,
