@@ -4,6 +4,13 @@
 version: "3.7"
 name: "govelte-todo_mw_localdev"
 services:
+  apisvr:
+    build:
+      context: ../../backends/apisvr
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_PORT_APISVR_GRPC}:${APP_PORT_APISVR_GRPC}"
+
   firebase-emulators:
     build:
       context: ../../middlewares/local/firebase-emulators
