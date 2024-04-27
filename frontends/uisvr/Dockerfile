@@ -20,4 +20,5 @@ ENV VITE_FIREBASE_AUTH_EMULATOR_HOST=${VITE_FIREBASE_AUTH_EMULATOR_HOST}
 
 RUN npm ci --omit dev
 
-CMD ["node", "build"]
+# https://kit.svelte.dev/docs/adapter-node
+CMD ["node", "-r", "dotenv/config", "build"]
