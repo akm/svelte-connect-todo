@@ -6,16 +6,6 @@
 	import type { UserCredential } from '$lib/firebase/auth';
 	import { auth, createUserWithEmailAndPassword, updateProfile } from '$lib/firebase/auth';
 
-	console.log(
-		'src/routes/(public)/signup/+page.svelte import.meta.env.VITE_FIREBASE_AUTH_EMULATOR_HOST',
-		import.meta.env.VITE_FIREBASE_AUTH_EMULATOR_HOST
-	);
-
-	console.log(
-		'src/routes/(public)/signup/+page.svelte process.env.VITE_FIREBASE_AUTH_EMULATOR_HOST',
-		process.env.VITE_FIREBASE_AUTH_EMULATOR_HOST
-	);
-
 	let email = '';
 	let password = '';
 	let accountName = '';
