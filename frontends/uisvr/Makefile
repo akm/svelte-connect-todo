@@ -21,3 +21,9 @@ include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/base.mk
 include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/dev.mk
 include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/connect-web.mk
 include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/test_integration.mk
+
+build:
+	npm run build
+
+node_run: build
+	PORT=4173 node -r dotenv/config build
