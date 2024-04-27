@@ -1,6 +1,8 @@
 import { initializeApp, getApp, getApps } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 
+import { firebaseConfig } from '$lib/firebase/firebaseconfig';
+
 if (!process.env.GOOGLE_CLOUD_PROJECT && import.meta.env.VITE_GOOGLE_CLOUD_PROJECT) {
 	process.env.GOOGLE_CLOUD_PROJECT = import.meta.env.VITE_GOOGLE_CLOUD_PROJECT;
 }
@@ -17,10 +19,11 @@ if (!process.env.FIREBASE_AUTH_EMULATOR_HOST && import.meta.env.VITE_FIREBASE_AU
 // 存在していた場合には app() を呼ぶように修正
 // See https://vitejs.dev/guide/env-and-mode
 const adminApp = (() => {
+	const config = { projectId: firebaseConfig.projectId };
 	if (import.meta.env.DEV) {
-		return getApps().length === 0 ? initializeApp() : getApp();
+		return getApps().length === 0 ? initializeApp(config) : getApp();
 	} else {
-		return initializeApp();
+		return initializeApp(config);
 	}
 })();
 
