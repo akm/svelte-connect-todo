@@ -1,9 +1,11 @@
-import type { Task } from '$lib/models/task';
-import type { ServerLoadEvent } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
-import { TaskService } from '../gen/task/v1/task_connect';
+import type { ServerLoadEvent } from '@sveltejs/kit';
 import { createPromiseClient } from '@connectrpc/connect';
 import { createConnectTransport } from '@connectrpc/connect-web';
+
+import type { Task } from '$lib/models/task';
+import { apisvrOrigin } from '$lib/apisvr';
+import { TaskService } from '../gen/task/v1/task_connect';
 import { Status } from '../gen/task/v1/task_pb';
 
 export async function load(event: ServerLoadEvent): Promise<{ tasks: Task[] }> {
@@ -14,7 +16,7 @@ export async function load(event: ServerLoadEvent): Promise<{ tasks: Task[] }> {
 	console.log('load: event.constructor', event.constructor);
 
 	const transport = createConnectTransport({
-		baseUrl: 'http://localhost:8080',
+		baseUrl: apisvrOrigin,
 		interceptors: [
 			(next) => async (req) => {
 				req.header.set('cookie', event.request.headers.get('cookie') || '');

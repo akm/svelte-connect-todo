@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Task } from '$lib/models/task';
+	import { apisvrOrigin } from '$lib/apisvr';
 	import { TaskService } from '../gen/task/v1/task_connect';
 	import { createPromiseClient } from '@connectrpc/connect';
 	import { createConnectTransport } from '@connectrpc/connect-web';
@@ -8,10 +9,7 @@
 
 	export let data: { tasks: Task[] };
 
-	const transport = createConnectTransport({ 
-		baseUrl: 'http://localhost:8080',
-		credentials: 'include'
-	 });
+	const transport = createConnectTransport({baseUrl: apisvrOrigin, credentials: 'include'});
 	const client = createPromiseClient(TaskService, transport);
 </script>
 
