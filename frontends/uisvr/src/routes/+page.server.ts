@@ -5,6 +5,7 @@ import { TaskService } from '../gen/task/v1/task_connect';
 import { createPromiseClient } from '@connectrpc/connect';
 import { createConnectTransport } from '@connectrpc/connect-web';
 import { Status } from '../gen/task/v1/task_pb';
+import { apisvrOrigin } from '$lib/server/apisvr';
 
 export async function load(event: ServerLoadEvent): Promise<{ tasks: Task[] }> {
 	if (!event.locals.user) {
@@ -14,7 +15,7 @@ export async function load(event: ServerLoadEvent): Promise<{ tasks: Task[] }> {
 	console.log('load: event.constructor', event.constructor);
 
 	const transport = createConnectTransport({
-		baseUrl: 'http://localhost:8080',
+		baseUrl: apisvrOrigin,
 		interceptors: [
 			(next) => async (req) => {
 				req.header.set('cookie', event.request.headers.get('cookie') || '');
