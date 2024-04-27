@@ -4,12 +4,13 @@
 	import { createPromiseClient } from '@connectrpc/connect';
 	import { createConnectTransport } from '@connectrpc/connect-web';
 	import { Status } from '../gen/task/v1/task_pb';
+	import { apisvrOrigin } from '$lib/apisvr';
 	import Icon from '@iconify/svelte';
 
 	export let data: { tasks: Task[] };
 
 	const transport = createConnectTransport({ 
-		baseUrl: 'http://localhost:8080',
+		baseUrl: apisvrOrigin,
 		credentials: 'include'
 	 });
 	const client = createPromiseClient(TaskService, transport);
