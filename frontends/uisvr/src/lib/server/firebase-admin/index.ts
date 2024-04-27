@@ -1,12 +1,13 @@
+import { env } from '$env/dynamic/private';
 import { initializeApp, getApp, getApps } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 
-if (!process.env.GOOGLE_CLOUD_PROJECT && import.meta.env.VITE_GOOGLE_CLOUD_PROJECT) {
-	process.env.GOOGLE_CLOUD_PROJECT = import.meta.env.VITE_GOOGLE_CLOUD_PROJECT;
+if (!process.env.GOOGLE_CLOUD_PROJECT && env.SK_PRIVATE_GOOGLE_CLOUD_PROJECT !== '') {
+	process.env.GOOGLE_CLOUD_PROJECT = env.SK_PRIVATE_GOOGLE_CLOUD_PROJECT;
 }
 // https://firebase.google.com/docs/emulator-suite/connect_auth?hl=ja#admin_sdks
-if (!process.env.FIREBASE_AUTH_EMULATOR_HOST && import.meta.env.VITE_FIREBASE_AUTH_EMULATOR_HOST) {
-	process.env.FIREBASE_AUTH_EMULATOR_HOST = import.meta.env.VITE_FIREBASE_AUTH_EMULATOR_HOST;
+if (!process.env.FIREBASE_AUTH_EMULATOR_HOST && env.SK_PRIVATE_FIREBASE_AUTH_EMULATOR_HOST !== '') {
+	process.env.FIREBASE_AUTH_EMULATOR_HOST = env.SK_PRIVATE_FIREBASE_AUTH_EMULATOR_HOST;
 }
 
 // FirebaseAppError: The default Firebase app already exists.
