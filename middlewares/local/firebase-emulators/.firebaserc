@@ -1,5 +1,5 @@
 {
   "projects": {
-    "default": "govelte-app1-gcp-project1"
+    "default": "govelte-todo-gcp-project1"
   }
 }
