@@ -18,6 +18,7 @@ COPY . ./
 ENV VITE_GOOGLE_CLOUD_PROJECT=${VITE_GOOGLE_CLOUD_PROJECT}
 ENV VITE_FIREBASE_AUTH_EMULATOR_HOST=${VITE_FIREBASE_AUTH_EMULATOR_HOST}
 
+RUN npm run build
 RUN npm ci --omit dev
 
 # https://kit.svelte.dev/docs/adapter-node
