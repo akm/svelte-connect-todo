@@ -7,9 +7,20 @@ if (!process.env.GOOGLE_CLOUD_PROJECT && import.meta.env.VITE_GOOGLE_CLOUD_PROJE
 	process.env.GOOGLE_CLOUD_PROJECT = import.meta.env.VITE_GOOGLE_CLOUD_PROJECT;
 }
 // https://firebase.google.com/docs/emulator-suite/connect_auth?hl=ja#admin_sdks
-if (!process.env.FIREBASE_AUTH_EMULATOR_HOST && import.meta.env.VITE_FIREBASE_AUTH_EMULATOR_HOST) {
-	process.env.FIREBASE_AUTH_EMULATOR_HOST = import.meta.env.VITE_FIREBASE_AUTH_EMULATOR_HOST;
+const firebaseAuthEmulatorHost =
+	import.meta.env.VITE_FIREBASE_AUTH_EMULATOR_HOST_FROM_SERVER ||
+	import.meta.env.VITE_FIREBASE_AUTH_EMULATOR_HOST;
+console.log(
+	'src/lib/server/firebase-admin/index.ts firebaseAuthEmulatorHost',
+	firebaseAuthEmulatorHost
+);
+if (!process.env.FIREBASE_AUTH_EMULATOR_HOST && firebaseAuthEmulatorHost) {
+	process.env.FIREBASE_AUTH_EMULATOR_HOST = firebaseAuthEmulatorHost;
 }
+console.log(
+	'src/lib/server/firebase-admin/index.ts process.env.FIREBASE_AUTH_EMULATOR_HOST',
+	process.env.FIREBASE_AUTH_EMULATOR_HOST
+);
 
 // FirebaseAppError: The default Firebase app already exists.
 // This means you called initializeApp() more than once without
