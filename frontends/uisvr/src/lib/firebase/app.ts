@@ -5,4 +5,6 @@ import { initializeApp } from 'firebase/app';
 // 表示されるコードをコピーして作成してください。
 import { firebaseConfig } from './firebaseconfig';
 
+console.log('src/lib/firebase/app.ts firebaseConfig', firebaseConfig);
+
 export const app = initializeApp(firebaseConfig);
