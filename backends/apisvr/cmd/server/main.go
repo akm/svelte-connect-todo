@@ -19,6 +19,8 @@ import (
 	taskservices "apisvr/services/task_services"
 )
 
+const pathPrefix = "/api"
+
 func main() {
 	mux := http.NewServeMux()
 
@@ -27,7 +29,7 @@ func main() {
 
 	taskService := &taskservices.TaskService{}
 	path, handler := taskv1connect.NewTaskServiceHandler(taskService)
-	mux.Handle(path, authmw.Wrap(handler))
+	mux.Handle(pathPrefix+path, authmw.Wrap(http.StripPrefix(pathPrefix, handler)))
 
 	// https://cloud.google.com/run/docs/triggering/grpc?hl=ja
 	serverHostAndPort := os.Getenv("APP_SERVER_HOST_AND_PORT")
