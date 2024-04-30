@@ -17,13 +17,12 @@ DEV_ENVS=\
 	VITE_FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)" \
 	VITE_UISVR_ORIGIN=http://localhost:$(APP_PORT_UISVR_HTTP_dev)
 
+BUILD_DEPS=setup
+
 include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/base.mk
 include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/dev.mk
 include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/connect-web.mk
 include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/test_integration.mk
-
-build: setup
-	npm run build
 
 node_run: build
 	PORT=4173 node -r dotenv/config build
