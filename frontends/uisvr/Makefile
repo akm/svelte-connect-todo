@@ -22,7 +22,7 @@ include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/dev.mk
 include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/connect-web.mk
 include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/test_integration.mk
 
-build:
+build: setup
 	npm run build
 
 node_run: build
