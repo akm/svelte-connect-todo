@@ -13,12 +13,16 @@ ENVS=\
 envs:
 	@echo $(ENVS)
 
+.PHONY: setup
+setup:
+	$(MAKE) -C $(PATH_TO_UISVR) setup
+
 .PHONY: run
-run:
+run: setup
 	$(ENVS) docker compose up
 
 .PHONY: up
-up:
+up: setup
 	$(ENVS) docker compose up -d
 
 .PHONY: down

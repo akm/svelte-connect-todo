@@ -18,6 +18,21 @@ services:
     networks:
       - network1
 
+  uisvr:
+    build:
+      context: ../../frontends/uisvr
+      dockerfile: Dockerfile
+    environment:
+      - PORT=${APP_PORT_UISVR_HTTP}
+      - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
+      - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
+    volumes:
+      - ./mounts/frontends/uisvr/.env:/srv/uisvr/.env
+    ports:
+      - "${APP_PORT_UISVR_HTTP}:${APP_PORT_UISVR_HTTP}"
+    networks:
+      - network1
+
   firebase-emulators:
     build:
       context: ../../middlewares/local/firebase-emulators
