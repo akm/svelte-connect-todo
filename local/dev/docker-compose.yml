@@ -4,6 +4,8 @@
 version: "3.7"
 name: "govelte-todo_mw_localdev"
 services:
+  rproxy:
+
   apisvr:
     build:
       context: ../../backends/apisvr
@@ -35,7 +37,7 @@ services:
 
   firebase-emulators:
     build:
-      context: ../../middlewares/local/firebase-emulators
+      context: ../../middlewares/firebase-emulators/local
       dockerfile: Dockerfile
     ports:
       - "${APP_FIREBASE_AUTH_PORT}:9099"
