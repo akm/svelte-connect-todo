@@ -19,6 +19,8 @@ import (
 	taskservices "apisvr/services/task_services"
 )
 
+const pathPrefix = "/api"
+
 func main() {
 	mux := http.NewServeMux()
 
@@ -27,7 +29,7 @@ func main() {
 
 	taskService := &taskservices.TaskService{}
 	path, handler := taskv1connect.NewTaskServiceHandler(taskService)
-	mux.Handle(path, authmw.Wrap(handler))
+	mux.Handle(pathPrefix+path, authmw.Wrap(http.StripPrefix(pathPrefix, handler)))
 
 	// https://cloud.google.com/run/docs/triggering/grpc?hl=ja
 	serverHostAndPort := os.Getenv("APP_SERVER_HOST_AND_PORT")
@@ -41,12 +43,12 @@ func main() {
 
 	// https://connectrpc.com/docs/go/deployment/
 	// https://github.com/connectrpc/examples-go/blob/main/cmd/demoserver/main.go
+	muxHandler := withCORS(h2c.NewHandler(mux, &http2.Server{}))
+	muxHandler = withRequestDumping(muxHandler)
+
 	srv := &http.Server{
-		Addr: serverHostAndPort,
-		Handler: h2c.NewHandler(
-			withCORS(h2c.NewHandler(mux, &http2.Server{})),
-			&http2.Server{},
-		),
+		Addr:              serverHostAndPort,
+		Handler:           h2c.NewHandler(muxHandler, &http2.Server{}),
 		ReadHeaderTimeout: time.Second,
 		ReadTimeout:       5 * time.Minute,
 		WriteTimeout:      5 * time.Minute,
