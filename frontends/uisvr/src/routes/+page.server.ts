@@ -15,7 +15,7 @@ export async function load(event: ServerLoadEvent): Promise<{ tasks: Task[] }> {
 	console.log('load: event.constructor', event.constructor);
 
 	const transport = createConnectTransport({
-		baseUrl: apisvrOrigin,
+		baseUrl: apisvrOrigin + '/api',
 		interceptors: [
 			(next) => async (req) => {
 				req.header.set('cookie', event.request.headers.get('cookie') || '');

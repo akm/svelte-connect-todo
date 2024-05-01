@@ -9,10 +9,10 @@
 
 	export let data: { tasks: Task[] };
 
-	const transport = createConnectTransport({ 
-		baseUrl: apisvrOrigin,
+	const transport = createConnectTransport({
+		baseUrl: apisvrOrigin + '/api',
 		credentials: 'include'
-	 });
+	});
 	const client = createPromiseClient(TaskService, transport);
 </script>
 
@@ -46,7 +46,11 @@
 						checked={task.done}
 						on:change={async (e) => {
 							const done = e.currentTarget.checked;
-							await client.update({ id: task.id, name: task.name, status: done ? Status.DONE : Status.TODO });
+							await client.update({
+								id: task.id,
+								name: task.name,
+								status: done ? Status.DONE : Status.TODO
+							});
 						}}
 					/>
 					<span>{task.name}</span>
@@ -55,8 +59,8 @@
 						on:click={async (e) => {
 							await client.delete({ id: task.id });
 							data.tasks = data.tasks.filter((t) => t !== task);
-						}}
-					><Icon icon="ph:trash-light" /></button>
+						}}><Icon icon="ph:trash-light" /></button
+					>
 				</label>
 			</li>
 		{/each}
