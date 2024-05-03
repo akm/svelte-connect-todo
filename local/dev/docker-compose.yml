@@ -23,7 +23,7 @@ services:
     ports:
       - "${APP_PORT_APISVR_GRPC}:${APP_PORT_APISVR_GRPC}"
     environment:
-      - APP_CORS_ALLOW_ORIGINS=http://localhost:${APP_PORT_UISVR_HTTP}
+      - APP_CORS_ALLOW_ORIGINS=http://localhost:${APP_PORT_UISVR_HTTP},http://localhost:${APP_PORT_RPROXY_HTTP}
       - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
       - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
       - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulators:${APP_FIREBASE_AUTH_PORT}
