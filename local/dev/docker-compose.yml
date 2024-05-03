@@ -4,9 +4,19 @@
 version: "3.7"
 name: "govelte-todo_mw_localdev"
 services:
+  # https://www.envoyproxy.io/docs/envoy/latest/start/docker
   rproxy:
+    image: envoyproxy/envoy:v1.30.1
+    volumes:
+      - ./envoy.yaml:/envoy.yaml
+    ports:
+      - 10000:10000
+    command: -c /envoy.yaml
+    networks:
+      - network1
 
   apisvr:
+    hostname: apisvr
     build:
       context: ../../backends/apisvr
       dockerfile: Dockerfile
@@ -21,6 +31,7 @@ services:
       - network1
 
   uisvr:
+    hostname: uisvr
     build:
       context: ../../frontends/uisvr
       dockerfile: Dockerfile
@@ -36,6 +47,7 @@ services:
       - network1
 
   firebase-emulators:
+    hostname: firebase-emulators
     build:
       context: ../../middlewares/firebase-emulators/local
       dockerfile: Dockerfile
