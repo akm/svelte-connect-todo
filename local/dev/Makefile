@@ -42,5 +42,6 @@ rmi: down
 	done
 
 .PHONY: rebuild
-rebuild: rmi
+rebuild:
+	$(ENVS) $(MAKE) rmi ; \
 	$(ENVS) docker compose build
