@@ -11,7 +11,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "${APP_PORT_FIREBASE_AUTH}:9099"
-      - "${APP_FIREBASE_EMULATOR_SUITE_PORT}:4000"
+      - "${APP_PORT_FIREBASE_EMULATOR_SUITE}:4000"
     networks:
       - network1
     volumes:
