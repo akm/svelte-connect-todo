@@ -26,7 +26,7 @@ services:
     ports:
       - "${APP_PORT_APISVR}:${APP_PORT_APISVR}"
     environment:
-      - APP_CORS_ALLOW_ORIGINS=http://localhost:${APP_PORT_UISVR},http://localhost:${APP_PORT_RPROXY_HTTP}
+      - APP_CORS_ALLOW_ORIGINS=http://localhost:${APP_PORT_UISVR},http://localhost:${APP_PORT_RPROXY}
       - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
       - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
       - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulators:${APP_PORT_FIREBASE_AUTH}
@@ -55,7 +55,7 @@ services:
     volumes:
       - ./envoy.yaml:/envoy.yaml
     ports:
-      - 10000:10000
+      - ${APP_PORT_RPROXY}:${APP_PORT_RPROXY}
     command: -c /envoy.yaml
     networks:
       - network1
