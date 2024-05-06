@@ -1,4 +1,4 @@
-PATH_TO_PROJECT=../..
+PATH_TO_PROJECT=../../..
 include $(PATH_TO_PROJECT)/.govelte.config.mk
 
 APP_PORT_RPROXY_HTTP=10000
