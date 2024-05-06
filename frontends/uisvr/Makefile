@@ -5,7 +5,7 @@ PATH_TO_PROJECT:=../..
 include $(PATH_TO_PROJECT)/.govelte.config.mk
 
 .PHONY: setup
-setup: $(NODE_MODULES) 
+setup: install
 	$(MAKE) $(FIREBASE_CONFIG_FILE)
 
 FIREBASE_CONFIG_FILE=src/lib/firebase/firebaseconfig.ts
