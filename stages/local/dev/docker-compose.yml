@@ -21,9 +21,9 @@ services:
       context: ../../../backends/apisvr
       dockerfile: Dockerfile
     ports:
-      - "${APP_PORT_APISVR_GRPC}:${APP_PORT_APISVR_GRPC}"
+      - "${APP_PORT_APISVR}:${APP_PORT_APISVR}"
     environment:
-      - APP_CORS_ALLOW_ORIGINS=http://localhost:${APP_PORT_UISVR_HTTP},http://localhost:${APP_PORT_RPROXY_HTTP}
+      - APP_CORS_ALLOW_ORIGINS=http://localhost:${APP_PORT_UISVR},http://localhost:${APP_PORT_RPROXY_HTTP}
       - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
       - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
       - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulators:${APP_FIREBASE_AUTH_PORT}
@@ -36,13 +36,13 @@ services:
       context: ../../../frontends/uisvr
       dockerfile: Dockerfile
     environment:
-      - PORT=${APP_PORT_UISVR_HTTP}
+      - PORT=${APP_PORT_UISVR}
       - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
       - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
     volumes:
       - ./mounts/frontends/uisvr/.env:/srv/uisvr/.env
     ports:
-      - "${APP_PORT_UISVR_HTTP}:${APP_PORT_UISVR_HTTP}"
+      - "${APP_PORT_UISVR}:${APP_PORT_UISVR}"
     networks:
       - network1
 
