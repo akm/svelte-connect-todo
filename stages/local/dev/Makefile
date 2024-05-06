@@ -16,8 +16,26 @@ ENVS=\
 envs:
 	@echo $(ENVS)
 
+DOCKER_COMPOSE_NAME=$(shell cat ./docker-compose.yml | yq .name)
+DOCKER_COMPOSE_SERVICES=$(shell cat docker-compose.yml | yq '.services | select(.build.context != "") | keys | join(" ")')
+
+DOCKER_COMPOSE_SERVICES_FOR_MIDDLEWARES=firebase-emulators
+DOCKER_COMPOSE_SERVICES_FOR_APISVR=$(DOCKER_COMPOSE_SERVICES_FOR_MIDDLEWARES) apisvr
+DOCKER_COMPOSE_SERVICES_FOR_UISVR=$(DOCKER_COMPOSE_SERVICES_FOR_APISVR) uisvr
+DOCKER_COMPOSE_SERVICES_FOR_RPROXY=$(DOCKER_COMPOSE_SERVICES_FOR_UISVR) rproxy
+
+.PHONY: validate_services
+validate_services:
+	@if [ "$(DOCKER_COMPOSE_SERVICES)" = "$(DOCKER_COMPOSE_SERVICES_FOR_RPROXY)" ] ;\
+	then \
+		echo "services are valid"; \
+	else \
+		echo "services are invalid"; \
+		exit 1; \
+	fi
+
 .PHONY: setup
-setup:
+setup: validate_services
 	$(MAKE) -C $(PATH_TO_UISVR) setup
 
 .PHONY: run
@@ -32,8 +50,6 @@ up: setup
 down:
 	$(ENVS) docker compose down
 
-DOCKER_COMPOSE_NAME=$(shell cat ./docker-compose.yml | yq .name)
-DOCKER_COMPOSE_SERVICES=$(shell cat docker-compose.yml | yq '.services | select(.build.context != "") | keys | join(" ")')
 
 .PHONY: rmi
 rmi: down
