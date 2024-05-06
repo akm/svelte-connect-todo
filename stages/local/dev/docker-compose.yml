@@ -43,7 +43,7 @@ services:
       - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
       - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
     volumes:
-      - ./mounts/frontends/uisvr/.env:/srv/uisvr/.env
+      - ${APP_UISVR_DOT_ENV}:/srv/uisvr/.env
     ports:
       - "${APP_PORT_UISVR}:${APP_PORT_UISVR}"
     networks:
