@@ -11,9 +11,13 @@ WORKDIR /srv/uisvr
 COPY package*.json ./
 RUN npm install
 COPY . ./
-
 RUN npm run build
 RUN npm ci --omit dev
+
+FROM node:20-bookworm-slim
+
+WORKDIR /srv/uisvr
+COPY --from=builder /srv/uisvr /srv/uisvr
 
 # https://kit.svelte.dev/docs/adapter-node
 CMD ["node", "-r", "dotenv/config", "build"]
