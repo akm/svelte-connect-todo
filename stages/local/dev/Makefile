@@ -40,15 +40,15 @@ setup: validate_services
 
 .PHONY: run
 run: setup
-	$(ENVS) docker compose up
+	$(ENVS) docker compose up ${SERVICES}
 
 .PHONY: up
 up: setup
-	$(ENVS) docker compose up -d
+	$(ENVS) docker compose up -d ${SERVICES}
 
 .PHONY: down
 down:
-	$(ENVS) docker compose down
+	$(ENVS) docker compose down ${SERVICES}
 
 
 .PHONY: rmi
