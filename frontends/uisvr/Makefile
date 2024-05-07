@@ -25,4 +25,4 @@ include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/connect-web.mk
 include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/test_integration.mk
 
 node_run: build
-	PORT=4173 node -r dotenv/config build
+	PORT=$(APP_PORT_UISVR_e2e_test) node -r dotenv/config build
