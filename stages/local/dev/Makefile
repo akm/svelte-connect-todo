@@ -70,3 +70,12 @@ rmi: down
 rebuild:
 	$(ENVS) $(MAKE) rmi ; \
 	$(ENVS) docker compose build
+
+TEXT_TEMPLATE_CLI_PATH=$(shell go env GOPATH)/bin/text-template-cli
+$(TEXT_TEMPLATE_CLI_PATH):
+	go install github.com/akm/text-template-cli@latest
+
+envoy.yaml: envoy_yaml_gen
+.PHONY: envoy_yaml_gen
+envoy_yaml_gen: $(TEXT_TEMPLATE_CLI_PATH)
+	$(ENVS) $(TEXT_TEMPLATE_CLI_PATH) envoy.yaml.template > envoy.yaml
