@@ -1,1 +1,1 @@
-# govelte-todo
+# svelte-connect-todo

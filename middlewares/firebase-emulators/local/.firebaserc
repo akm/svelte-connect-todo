@@ -1,5 +1,5 @@
 {
   "projects": {
-    "default": "govelte-todo-gcp-project1"
+    "default": "svelte-connect-todo-gcp-project1"
   }
 }
