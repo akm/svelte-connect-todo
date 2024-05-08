@@ -1,6 +1,12 @@
 PATH_TO_PROJECT=../../..
 include $(PATH_TO_PROJECT)/.govelte.config.mk
 
+APP_RPROXY_ENVOY_YAML=./envoy.yaml
+$(APP_RPROXY_ENVOY_YAML): envoy_yaml_gen
+.PHONY: envoy_yaml_gen
+envoy_yaml_gen: $(TEXT_TEMPLATE_CLI_PATH)
+	$(ENVS) $(TEXT_TEMPLATE_CLI_PATH) envoy.yaml.template > $(APP_RPROXY_ENVOY_YAML)
+
 DEV_TARGET?=all
 
 APP_UISVR_DOT_ENV_PATH_FOR_DEV_apisvr=./dot_env_without_rproxy
@@ -17,7 +23,8 @@ ENVS=\
 	APP_PORT_APISVR=$(APP_PORT_APISVR_dev) \
 	APP_PORT_UISVR=$(APP_PORT_UISVR_e2e_test) \
 	APP_PORT_RPROXY=$(APP_PORT_RPROXY_dev) \
-	APP_UISVR_DOT_ENV=$(DOT_ENV_PATH)
+	APP_UISVR_DOT_ENV=$(APP_UISVR_DOT_ENV_PATH) \
+	APP_RPROXY_ENVOY_YAML=$(APP_RPROXY_ENVOY_YAML)
 
 .PHONY: envs
 envs:
@@ -44,7 +51,7 @@ validate_services:
 	fi
 
 .PHONY: setup
-setup: validate_services
+setup: validate_services $(APP_RPROXY_ENVOY_YAML)
 	$(MAKE) -C $(PATH_TO_UISVR) setup
 
 .PHONY: run
@@ -74,8 +81,3 @@ rebuild:
 TEXT_TEMPLATE_CLI_PATH=$(shell go env GOPATH)/bin/text-template-cli
 $(TEXT_TEMPLATE_CLI_PATH):
 	go install github.com/akm/text-template-cli@latest
-
-envoy.yaml: envoy_yaml_gen
-.PHONY: envoy_yaml_gen
-envoy_yaml_gen: $(TEXT_TEMPLATE_CLI_PATH)
-	$(ENVS) $(TEXT_TEMPLATE_CLI_PATH) envoy.yaml.template > envoy.yaml
