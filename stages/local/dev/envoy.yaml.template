@@ -20,11 +20,12 @@ static_resources:
                     - name: local_service
                       domains: ["*"]
                       routes:
-                        - name: get
-                          match: { prefix: "/api" }
+                        - name: api
+                          match: { prefix: "/api/" }
                           route:
                             cluster: apisvr-cluster
                             timeout: 30s
+                            prefix_rewrite: "/"
                         - name: default
                           match: { prefix: "/" }
                           route:
