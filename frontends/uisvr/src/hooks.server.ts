@@ -26,8 +26,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 		// 	firebase: { identities: { email: [Array] }, sign_in_provider: 'password' },
 		// 	iat: 1713688711,
 		// 	exp: 1714120711,
-		// 	aud: 'govelte-app1-gcp-project1',
-		// 	iss: 'https://session.firebase.google.com/govelte-app1-gcp-project1',
+		// 	aud: 'svelte-connect-todo-gcp-project1',
+		// 	iss: 'https://session.firebase.google.com/svelte-connect-todo-gcp-project1',
 		// 	sub: 'z627DaZCAl6ESgxlf76JXFYTraN5',
 		// 	uid: 'z627DaZCAl6ESgxlf76JXFYTraN5'
 		// }
