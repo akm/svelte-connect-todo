@@ -1,0 +1,64 @@
+# Variable substitution
+# https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution
+# 環境変数は local/Makefile で設定されています。
+version: "3.7"
+name: "govelte-todo_mw_localdev"
+services:
+  firebase-emulators:
+    hostname: firebase-emulators
+    build:
+      context: ../../../middlewares/firebase-emulators/local
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_PORT_FIREBASE_AUTH}:9099"
+      - "${APP_PORT_FIREBASE_EMULATOR_SUITE}:4000"
+    networks:
+      - network1
+    volumes:
+      - ./data/firebase-emulators:/srv/firebase-emulators/data
+    command: firebase emulators:start --import /srv/firebase-emulators/data/firebase --export-on-exit /srv/firebase-emulators/data/firebase
+
+  apisvr:
+    hostname: apisvr
+    build:
+      context: ../../../backends/apisvr
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_PORT_APISVR}:${APP_PORT_APISVR}"
+    environment:
+      - APP_CORS_ALLOW_ORIGINS=http://localhost:${APP_PORT_UISVR},http://localhost:${APP_PORT_RPROXY}
+      - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
+      - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
+      - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulators:${APP_PORT_FIREBASE_AUTH}
+    networks:
+      - network1
+
+  uisvr:
+    hostname: uisvr
+    build:
+      context: ../../../frontends/uisvr
+      dockerfile: Dockerfile
+    environment:
+      - PORT=${APP_PORT_UISVR}
+      - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
+      - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
+    volumes:
+      - ${APP_UISVR_DOT_ENV}:/srv/uisvr/.env
+    ports:
+      - "${APP_PORT_UISVR}:${APP_PORT_UISVR}"
+    networks:
+      - network1
+
+  # https://www.envoyproxy.io/docs/envoy/latest/start/docker
+  rproxy:
+    image: envoyproxy/envoy:v1.30.1
+    volumes:
+      - ${APP_RPROXY_ENVOY_YAML}:/envoy.yaml
+    ports:
+      - ${APP_PORT_RPROXY}:${APP_PORT_RPROXY}
+    command: -c /envoy.yaml
+    networks:
+      - network1
+
+networks:
+  network1:

@@ -10,7 +10,7 @@
 	export let data: { tasks: Task[] };
 
 	const transport = createConnectTransport({
-		baseUrl: apisvrOrigin + '/api',
+		baseUrl: apisvrOrigin,
 		credentials: 'include'
 	});
 	const client = createPromiseClient(TaskService, transport);

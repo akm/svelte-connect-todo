@@ -1,4 +1,5 @@
 version: v1
+name: buf.build/akima/govelte-todo
 breaking:
   use:
     - FILE

@@ -3,9 +3,9 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "run-p dev:backends dev:run",
-		"dev:backends": "make backends_dev",
-		"dev:run": "make dev_run",
+		"dev": "make dev",
+		"dev:local_up": "make local_dev_up",
+		"dev:run": "make run",
 		"build": "vite build",
 		"preview": "vite preview",
 		"node": "make node_run",

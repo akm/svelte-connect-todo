@@ -26,7 +26,7 @@ include $(PATH_TO_GOVELTEMK)/makefiles/apisvr/connect-go.mk
 
 DEV_ENVS=\
 	APP_STAGE=$(APP_STAGE) \
-	APP_CORS_ALLOW_ORIGINS=http://localhost:5173,http://localhost:4173 \
+	APP_CORS_ALLOW_ORIGINS=http://localhost:$(APP_PORT_UISVR_dev),http://localhost:$(APP_PORT_UISVR_e2e_test) \
 	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY) \
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT) \
 	FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)"
