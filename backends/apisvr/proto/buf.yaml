@@ -1,5 +1,5 @@
 version: v1
-name: buf.build/akima/govelte-todo
+name: buf.build/akima/svelte-connect-todo
 breaking:
   use:
     - FILE
