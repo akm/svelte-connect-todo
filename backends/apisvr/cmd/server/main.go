@@ -20,6 +20,8 @@ import (
 )
 
 func main() {
+	log.Printf("Starting api server")
+
 	mux := http.NewServeMux()
 
 	// Instantiate the YOUR services and Mount them here.
@@ -53,7 +55,7 @@ func main() {
 		MaxHeaderBytes:    8 * 1024, // 8KiB
 	}
 
-	log.Printf("Starting server on %s", serverHostAndPort)
+	log.Printf("Starting api server on %s", serverHostAndPort)
 
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt, syscall.SIGTERM)
