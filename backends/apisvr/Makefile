@@ -51,9 +51,31 @@ container_build:
 
 # https://cloud.google.com/run/docs/building/containers
 APP_CONTAINER_REPOSITORY_URL=asia-northeast1-docker.pkg.dev/svelte-connect-todo/apisvr
-APP_CONTAINER_REPOSITORY_IMAGE_URL=$(APP_CONTAINER_REPOSITORY_URL)/$(GO_ROOT_PACKAGE):$(APP_CONTAINER_IMAGE_TAG)
+APP_CONTAINER_REPOSITORY_IMAGE_URL_TO_PUSH=$(APP_CONTAINER_REPOSITORY_URL)/$(GO_ROOT_PACKAGE):$(APP_CONTAINER_IMAGE_TAG)
 
 .PHONY: container_push
 container_push: container_build
-	docker tag $(APP_CONTAINER_IMAGE) $(APP_CONTAINER_REPOSITORY_IMAGE_URL)
+	docker tag $(APP_CONTAINER_IMAGE) $(APP_CONTAINER_REPOSITORY_IMAGE_URL_TO_PUSH)
 	docker push $(APP_CONTAINER_IMAGE)
+
+APP_CONTAINER_REPOSITORY_IMAGE_URL_TO_DEPLOY=$(shell gcloud artifacts docker images list $(APP_CONTAINER_REPOSITORY_URL) --format json 2>/dev/null | jq -r 'sort_by(.createTime) | reverse | first | [.package, .version] | join("@") ')
+
+.PHONY: url_to_deploy
+url_to_deploy:
+	@echo $(APP_CONTAINER_REPOSITORY_IMAGE_URL_TO_DEPLOY)
+#	gcloud artifacts docker images list $(APP_CONTAINER_REPOSITORY_URL) --format json 2>/dev/null | jq -r 'sort_by(.createTime) | reverse | first | .metadata.name'
+
+APP_SERVICE_REGION=asia-northeast1
+
+.PHONY: deploy
+deploy:
+	if [ -z "$(APP_CONTAINER_REPOSITORY_IMAGE_URL_TO_DEPLOY)" ]; then \
+		echo "No image to deploy"; \
+		exit 1; \
+	fi
+	gcloud run deploy $(GO_ROOT_PACKAGE) \
+		--image $(APP_CONTAINER_REPOSITORY_IMAGE_URL_TO_DEPLOY) \
+		--region $(APP_SERVICE_REGION) \
+		--allow-unauthenticated \
+		--memory=128Mi \
+		--use-http2
