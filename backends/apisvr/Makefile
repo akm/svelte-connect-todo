@@ -48,3 +48,12 @@ APP_CONTAINER_IMAGE=$(APP_CONTAINER_IMAGE_NAME):$(APP_CONTAINER_IMAGE_TAG)
 .PHONY: container_build
 container_build:
 	docker build . -t $(APP_CONTAINER_IMAGE)
+
+# https://cloud.google.com/run/docs/building/containers
+APP_CONTAINER_REPOSITORY_URL=asia-northeast1-docker.pkg.dev/svelte-connect-todo/apisvr
+APP_CONTAINER_REPOSITORY_IMAGE_URL=$(APP_CONTAINER_REPOSITORY_URL)/$(GO_ROOT_PACKAGE):$(APP_CONTAINER_IMAGE_TAG)
+
+.PHONY: container_push
+container_push: container_build
+	docker tag $(APP_CONTAINER_IMAGE) $(APP_CONTAINER_REPOSITORY_IMAGE_URL)
+	docker push $(APP_CONTAINER_IMAGE)
