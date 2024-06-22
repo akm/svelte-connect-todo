@@ -2,6 +2,7 @@
 # https://github.com/GoogleCloudPlatform/cloud-run-microservice-template-go/blob/main/Dockerfile
 
 FROM golang:bookworm as builder
+ENV GOOS=linux GOARCH=amd64 CGO_ENABLED=0
 WORKDIR /srv
 COPY go.* ./
 RUN go mod download
