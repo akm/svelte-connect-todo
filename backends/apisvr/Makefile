@@ -96,3 +96,7 @@ deploy: container_push
 	--region=$(GCP_REGION) \
 	--project=$(GCP_PROJECT_ID)
 endif
+
+.PHONY: inspect_service
+inspect_service:
+	gcloud run services describe $(APP_CONTAINER_IMAGE_NAME) --region=$(GCP_REGION) --project=$(GCP_PROJECT_ID)
