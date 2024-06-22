@@ -108,3 +108,17 @@ update-traffic:
 .PHONY: inspect_service
 inspect_service:
 	gcloud run services describe $(APP_CONTAINER_IMAGE_NAME) --region=$(GCP_REGION) --project=$(GCP_PROJECT_ID)
+
+GCP_SERVICE_URL=$(shell gcloud run services describe $(APP_CONTAINER_IMAGE_NAME) --region=$(GCP_REGION) --project=$(GCP_PROJECT_ID) --format=json | jq -r .status.url)
+.PHONY: service_url
+service_url:
+	@echo $(GCP_SERVICE_URL)
+
+GCP_SERVICE_DOMAIN=$(shell echo $(GCP_SERVICE_URL) | sed -e 's/https:\/\///' | sed -e 's/\/.*//')
+.PHONY: service_domain
+service_domain:
+	@echo $(GCP_SERVICE_DOMAIN)
+
+.PHONY: test-connections
+test-connections:
+	GCP_SERVICE_DOMAIN=$(GCP_SERVICE_DOMAIN) ./test-connections.sh
