@@ -43,8 +43,24 @@ include $(PATH_TO_GOVELTEMK)/makefiles/apisvr/test.mk
 
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GO_ROOT_PACKAGE)
 APP_CONTAINER_IMAGE_TAG=$(shell git show --format='%h' --no-patch)
-APP_CONTAINER_IMAGE=$(APP_CONTAINER_IMAGE_NAME):$(APP_CONTAINER_IMAGE_TAG)
+APP_CONTAINER_IMAGE_PROD=$(APP_CONTAINER_IMAGE_NAME):$(APP_CONTAINER_IMAGE_TAG)
+APP_CONTAINER_IMAGE_DEV=$(APP_CONTAINER_IMAGE_NAME):dev
+
+.PHONY: container_image_name
+container_image_name:
+	@echo $(APP_CONTAINER_IMAGE)
 
 .PHONY: container_build
 container_build:
-	docker build . -t $(APP_CONTAINER_IMAGE)
+	docker build \
+		-t $(APP_CONTAINER_IMAGE_DEV) \
+		-f Dockerfile \
+		.
+
+.PHONY: production_container_build
+production_container_build:
+	docker build \
+		--platform linux/amd64 \
+		-t $(APP_CONTAINER_IMAGE_PROD) \
+		-f Dockerfile.production \
+		.
