@@ -97,6 +97,14 @@ deploy: container_push
 	--project=$(GCP_PROJECT_ID)
 endif
 
+.PHONY: update-traffic
+update-traffic:
+	gcloud run services update-traffic $(APP_CONTAINER_IMAGE_NAME) \
+		--to-latest \
+		--platform=managed \
+		--region=$(GCP_REGION) \
+		--project=$(GCP_PROJECT_ID)
+
 .PHONY: inspect_service
 inspect_service:
 	gcloud run services describe $(APP_CONTAINER_IMAGE_NAME) --region=$(GCP_REGION) --project=$(GCP_PROJECT_ID)
