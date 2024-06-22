@@ -76,3 +76,23 @@ container_build_production:
 container_push: container_build_production
 	docker tag $(APP_CONTAINER_IMAGE_PRODUCTION) $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) && \
 	docker push $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION)
+
+GCP_PROJECT_ID?=
+GCP_REGION?=asia-northeast1
+
+ifeq ($(GCP_PROJECT_ID),)
+.PHONY: deploy
+deploy:
+	@echo "GCP_PROJECT_ID is not set. Please set GCP_PROJECT_ID to deploy to GCP."
+else
+.PHONY: deploy
+deploy: container_push
+	gcloud run deploy $(APP_CONTAINER_IMAGE_NAME) \
+	--image=$(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) \
+	--allow-unauthenticated \
+	--port=8080 \
+	--memory=128Mi \
+	--use-http2 \
+	--region=$(GCP_REGION) \
+	--project=$(GCP_PROJECT_ID)
+endif
