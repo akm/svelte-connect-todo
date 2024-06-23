@@ -41,38 +41,16 @@ TEST_ENVS=\
 	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY)
 include $(PATH_TO_GOVELTEMK)/makefiles/apisvr/test.mk
 
-APP_CONTAINER_REPOSITORY?=akima
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GO_ROOT_PACKAGE)
-APP_CONTAINER_IMAGE_TAG=$(shell git show --format='%h' --no-patch)
 APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local
-APP_CONTAINER_IMAGE_PRODUCTION=$(APP_CONTAINER_IMAGE_NAME):$(APP_CONTAINER_IMAGE_TAG)
 
 .PHONY: container_image_name
 container_image_name:
-	@echo $(APP_CONTAINER_IMAGE)
+	@echo $(APP_CONTAINER_IMAGE_NAME)
 
 .PHONY: container_build
-container_build: container_build_local
-
-.PHONY: container_build_local
-container_build_local:
+container_build:
 	docker build \
 		-t $(APP_CONTAINER_IMAGE_LOCAL) \
 		-f Dockerfile \
 		.
-
-.PHONY: container_build_production
-container_build_production:
-	docker build \
-		--platform linux/amd64 \
-		--build-arg GOOS=linux \
-		--build-arg GOARCH=amd64 \
-		--build-arg CGO_ENABLED=0 \
-		-t $(APP_CONTAINER_IMAGE_PRODUCTION) \
-		-f Dockerfile \
-		.
-
-.PHONY: container_push
-container_push: container_build_production
-	docker tag $(APP_CONTAINER_IMAGE_PRODUCTION) $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) && \
-	docker push $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION)
