@@ -54,3 +54,8 @@ container_build_production:
 		-t $(APP_CONTAINER_IMAGE_PRODUCTION) \
 		-f Dockerfile \
 		.
+
+.PHONY: container_push
+container_push: container_build_production
+	docker tag $(APP_CONTAINER_IMAGE_PRODUCTION) $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) && \
+	docker push $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION)
