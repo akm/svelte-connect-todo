@@ -19,6 +19,7 @@ container_image: build
 
 .PHONY: build
 build:
+	cd $(PATH_TO_UISVR) && \
 	docker build \
 		--platform linux/amd64 \
 		--build-arg GOOS=linux \
@@ -33,6 +34,26 @@ push: container_image
 	docker tag $(APP_CONTAINER_IMAGE_PRODUCTION) $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) && \
 	docker push $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION)
 
+TEXT_TEMPLATE_CLI=$(shell go env GOPATH)/bin/text-template-cli
+$(TEXT_TEMPLATE_CLI):
+	$(MAKE) text-template-cli-install
+.PHONY: text-template-cli-install
+text-template-cli-install:
+	go install github.com/akm/text-template-cli@latest
+
+APISVR_ORIGIN=$(shell $(MAKE) -C ../apisvr --no-print-directory service_url)
+.PHONY: apisvr_origin
+apisvr_origin:
+	@echo $(APISVR_ORIGIN)
+
+ENV_VAR_YAML=./env-vars.yaml
+$(ENV_VAR_YAML):
+	$(MAKE) env_vars_yaml_gen
+
+.PHONY: env_vars_yaml_gen
+env_vars_yaml_gen: $(TEXT_TEMPLATE_CLI)
+	APISVR_ORIGIN=$(APISVR_ORIGIN) $(TEXT_TEMPLATE_CLI) $(ENV_VAR_YAML).tmpl ./firebase-config.json > $(ENV_VAR_YAML)
+
 ifeq ($(GOOGLE_CLOUD_PROJECT),)
 .PHONY: deploy
 deploy:
@@ -43,6 +64,7 @@ deploy: container_image_push
 	$(GCLOUD) run deploy $(APP_CONTAINER_IMAGE_NAME) \
 	--image=$(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) \
 	--allow-unauthenticated \
+	--env-vars-file=./env-vars.yaml \
 	--port=$(APP_PORT_UISVR_e2e_test) \
 	--memory=128Mi \
 	--use-http2 \
