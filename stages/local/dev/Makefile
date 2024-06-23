@@ -1,6 +1,10 @@
 PATH_TO_PROJECT=../../..
 include $(PATH_TO_PROJECT)/.govelte.config.mk
 
+TEXT_TEMPLATE_CLI_PATH=$(shell go env GOPATH)/bin/text-template-cli
+$(TEXT_TEMPLATE_CLI_PATH):
+	go install github.com/akm/text-template-cli@latest
+
 APP_RPROXY_ENVOY_YAML=./envoy.yaml
 $(APP_RPROXY_ENVOY_YAML): envoy_yaml_gen
 .PHONY: envoy_yaml_gen
@@ -77,7 +81,3 @@ rmi: down
 rebuild:
 	$(ENVS) $(MAKE) rmi ; \
 	$(ENVS) docker compose build
-
-TEXT_TEMPLATE_CLI_PATH=$(shell go env GOPATH)/bin/text-template-cli
-$(TEXT_TEMPLATE_CLI_PATH):
-	go install github.com/akm/text-template-cli@latest
