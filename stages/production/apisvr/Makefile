@@ -19,6 +19,7 @@ container_image: build
 
 .PHONY: build
 build:
+	cd $(PATH_TO_APISVR) && \
 	docker build \
 		--platform linux/amd64 \
 		--build-arg GOOS=linux \
@@ -59,7 +60,7 @@ deploy:
 	@echo "GOOGLE_CLOUD_PROJECT is not set. Please set GOOGLE_CLOUD_PROJECT to deploy to GCP."
 else
 .PHONY: deploy
-deploy: container_image_push
+deploy: push
 	$(GCLOUD) run deploy $(APP_CONTAINER_IMAGE_NAME) \
 	--image=$(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) \
 	--allow-unauthenticated \
