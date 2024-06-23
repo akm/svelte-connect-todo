@@ -60,11 +60,12 @@ deploy:
 	@echo "GOOGLE_CLOUD_PROJECT is not set. Please set GOOGLE_CLOUD_PROJECT to deploy to GCP."
 else
 .PHONY: deploy
-deploy: push
+deploy: push $(ENV_VAR_YAML)
 	$(GCLOUD) run deploy $(APP_CONTAINER_IMAGE_NAME) \
 	--image=$(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) \
 	--allow-unauthenticated \
-	--port=8080 \
+	--env-vars-file=$(ENV_VAR_YAML) \
+	--port=$(APP_PORT_APISVR_dev) \
 	--memory=128Mi \
 	--use-http2 \
 	--region=$(GCP_REGION)
