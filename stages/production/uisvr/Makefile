@@ -67,7 +67,6 @@ deploy: push
 	--env-vars-file=./env-vars.yaml \
 	--port=$(APP_PORT_UISVR_e2e_test) \
 	--memory=128Mi \
-	--use-http2 \
 	--region=$(GCP_REGION)
 endif
 
