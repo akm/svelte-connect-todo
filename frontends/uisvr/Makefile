@@ -26,3 +26,31 @@ include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/test_integration.mk
 
 node_run: build
 	PORT=$(APP_PORT_UISVR_e2e_test) node -r dotenv/config build
+
+APP_CONTAINER_REPOSITORY?=akima
+APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-uisvr
+APP_CONTAINER_IMAGE_TAG=$(shell git show --format='%h' --no-patch)
+APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local
+APP_CONTAINER_IMAGE_PRODUCTION=$(APP_CONTAINER_IMAGE_NAME):$(APP_CONTAINER_IMAGE_TAG)
+
+.PHONY: container_image_name
+container_image_name:
+	@echo $(APP_CONTAINER_IMAGE)
+
+.PHONY: container_build
+container_build: container_build_local
+
+.PHONY: container_build_local
+container_build_local:
+	docker build \
+		-t $(APP_CONTAINER_IMAGE_LOCAL) \
+		-f Dockerfile \
+		.
+
+.PHONY: container_build_production
+container_build_production:
+	docker build \
+		--platform linux/amd64 \
+		-t $(APP_CONTAINER_IMAGE_PRODUCTION) \
+		-f Dockerfile \
+		.
