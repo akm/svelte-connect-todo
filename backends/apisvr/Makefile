@@ -54,3 +54,12 @@ container_build:
 		-t $(APP_CONTAINER_IMAGE_LOCAL) \
 		-f Dockerfile \
 		.
+
+.PHONY: test-connections
+test-connections:
+ifeq ($(SERVER_DOMAIN),)
+	@echo "SERVER_DOMAIN is not set. Please set SERVER_DOMAIN to test connections."
+else
+	$(MAKE) -C proto build && \
+	./test-connections.sh
+endif

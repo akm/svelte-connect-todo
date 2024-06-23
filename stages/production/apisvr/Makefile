@@ -94,4 +94,4 @@ service_domain:
 
 .PHONY: test-connections
 test-connections:
-	GCP_SERVICE_DOMAIN=$(GCP_SERVICE_DOMAIN) ./test-connections.sh
+	SERVER_DOMAIN=$(GCP_SERVICE_DOMAIN) $(MAKE) -C $(PATH_TO_APISVR) test-connections
