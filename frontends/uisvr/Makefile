@@ -6,11 +6,6 @@ include $(PATH_TO_PROJECT)/.govelte.config.mk
 
 .PHONY: setup
 setup: install
-	$(MAKE) $(FIREBASE_CONFIG_FILE)
-
-FIREBASE_CONFIG_FILE=src/lib/firebase/firebaseconfig.ts
-$(FIREBASE_CONFIG_FILE):
-	cp $(FIREBASE_CONFIG_FILE).dummy $(FIREBASE_CONFIG_FILE)
 
 DEV_ENVS=\
 	VITE_GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
