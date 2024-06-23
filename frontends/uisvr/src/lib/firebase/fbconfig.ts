@@ -1,5 +1,5 @@
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-export const firebaseConfig = {
+export const fbConfig = {
 	apiKey: 'dummy-firebase-api-key1',
 	authDomain: 'svelte-connect-todo.firebaseapp.com',
 	projectId: 'svelte-connect-todo-gcp-project1',
