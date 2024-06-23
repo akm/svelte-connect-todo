@@ -77,13 +77,13 @@ container_push: container_build_production
 	docker tag $(APP_CONTAINER_IMAGE_PRODUCTION) $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) && \
 	docker push $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION)
 
-GCP_PROJECT_ID?=
+GOOGLE_CLOUD_PROJECT?=
 GCP_REGION?=asia-northeast1
 
-ifeq ($(GCP_PROJECT_ID),)
+ifeq ($(GOOGLE_CLOUD_PROJECT),)
 .PHONY: deploy
 deploy:
-	@echo "GCP_PROJECT_ID is not set. Please set GCP_PROJECT_ID to deploy to GCP."
+	@echo "GOOGLE_CLOUD_PROJECT is not set. Please set GOOGLE_CLOUD_PROJECT to deploy to GCP."
 else
 .PHONY: deploy
 deploy: container_push
@@ -94,7 +94,7 @@ deploy: container_push
 	--memory=128Mi \
 	--use-http2 \
 	--region=$(GCP_REGION) \
-	--project=$(GCP_PROJECT_ID)
+	--project=$(GOOGLE_CLOUD_PROJECT)
 endif
 
 .PHONY: update-traffic
@@ -103,13 +103,13 @@ update-traffic:
 		--to-latest \
 		--platform=managed \
 		--region=$(GCP_REGION) \
-		--project=$(GCP_PROJECT_ID)
+		--project=$(GOOGLE_CLOUD_PROJECT)
 
 .PHONY: inspect_service
 inspect_service:
-	gcloud run services describe $(APP_CONTAINER_IMAGE_NAME) --region=$(GCP_REGION) --project=$(GCP_PROJECT_ID)
+	gcloud run services describe $(APP_CONTAINER_IMAGE_NAME) --region=$(GCP_REGION) --project=$(GOOGLE_CLOUD_PROJECT)
 
-GCP_SERVICE_URL=$(shell gcloud run services describe $(APP_CONTAINER_IMAGE_NAME) --region=$(GCP_REGION) --project=$(GCP_PROJECT_ID) --format=json | jq -r .status.url)
+GCP_SERVICE_URL=$(shell gcloud run services describe $(APP_CONTAINER_IMAGE_NAME) --region=$(GCP_REGION) --project=$(GOOGLE_CLOUD_PROJECT) --format=json | jq -r .status.url)
 .PHONY: service_url
 service_url:
 	@echo $(GCP_SERVICE_URL)
