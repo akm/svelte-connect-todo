@@ -1,7 +1,6 @@
 # Variable substitution
 # https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution
 # 環境変数は local/Makefile で設定されています。
-version: "3.7"
 name: "svelte-connect-todo-mw_localdev"
 services:
   firebase-emulators:
