@@ -60,6 +60,7 @@ test-connections:
 ifeq ($(SERVER_DOMAIN),)
 	@echo "SERVER_DOMAIN is not set. Please set SERVER_DOMAIN to test connections."
 else
+	$(MAKE) install_tools && \
 	$(MAKE) -C proto build && \
 	./test-connections.sh
 endif
