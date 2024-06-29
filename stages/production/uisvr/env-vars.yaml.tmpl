@@ -1,0 +1,11 @@
+# https://cloud.google.com/sdk/gcloud/reference/run/deploy#--env-vars-file
+SK_PUBLIC_FB_CONFIG_API_KEY: "{{ .apiKey }}"
+SK_PUBLIC_FB_CONFIG_AUTH_DOMAIN: "{{ .authDomain }}"
+SK_PUBLIC_FB_CONFIG_PROJECT_ID: "{{ .projectId }}"
+SK_PUBLIC_FB_CONFIG_STORAGE_BUCKET: "{{ .storageBucket }}"
+SK_PUBLIC_FB_CONFIG_MESSAGING_SENDER_ID: "{{ .messagingSenderId }}"
+SK_PUBLIC_FB_CONFIG_APP_ID: "{{ .appId }}"
+SK_PUBLIC_FB_CONFIG_MEASUREMENT_ID: "{{ .measurementId }}"
+
+SK_PUBLIC_APISVR_ORIGIN: {{ .APISVR_ORIGIN }}
+SK_PRIVATE_APISVR_ORIGIN: {{ .APISVR_ORIGIN }}

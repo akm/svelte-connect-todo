@@ -1,0 +1,6 @@
+# https://cloud.google.com/sdk/gcloud/reference/run/deploy#--env-vars-file
+{{ if eq .UISVR_ORIGIN "" -}}
+# APP_CORS_ALLOW_ORIGINS: "UISVR_ORIGIN was empty"
+{{- else -}}
+APP_CORS_ALLOW_ORIGINS: {{ .UISVR_ORIGIN }}
+{{- end }}

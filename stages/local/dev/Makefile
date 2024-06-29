@@ -1,6 +1,10 @@
 PATH_TO_PROJECT=../../..
 include $(PATH_TO_PROJECT)/.govelte.config.mk
 
+TEXT_TEMPLATE_CLI_PATH=$(shell go env GOPATH)/bin/text-template-cli
+$(TEXT_TEMPLATE_CLI_PATH):
+	go install github.com/akm/text-template-cli@latest
+
 APP_RPROXY_ENVOY_YAML=./envoy.yaml
 $(APP_RPROXY_ENVOY_YAML): envoy_yaml_gen
 .PHONY: envoy_yaml_gen
@@ -16,7 +20,7 @@ APP_UISVR_DOT_ENV_PATH_FOR_DEV_all=./dot_env_with_rproxy
 APP_UISVR_DOT_ENV_PATH?=$(APP_UISVR_DOT_ENV_PATH_FOR_DEV_$(DEV_TARGET))
 
 ENVS=\
-	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT) \
+	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
 	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY) \
 	APP_PORT_FIREBASE_AUTH=$(APP_PORT_FIREBASE_AUTH_dev) \
 	APP_PORT_FIREBASE_EMULATOR_SUITE=$(APP_PORT_FIREBASE_EMULATOR_SUITE_dev) \
@@ -77,7 +81,3 @@ rmi: down
 rebuild:
 	$(ENVS) $(MAKE) rmi ; \
 	$(ENVS) docker compose build
-
-TEXT_TEMPLATE_CLI_PATH=$(shell go env GOPATH)/bin/text-template-cli
-$(TEXT_TEMPLATE_CLI_PATH):
-	go install github.com/akm/text-template-cli@latest
