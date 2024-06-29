@@ -41,7 +41,7 @@ $(TEXT_TEMPLATE_CLI):
 text-template-cli-install:
 	go install github.com/akm/text-template-cli@latest
 
-UISVR_ORIGIN=$(shell $(MAKE) -C ../uisvr --no-print-directory service_url)
+UISVR_ORIGIN=$(shell $(MAKE) -C ../uisvr --no-print-directory service_url || echo "")
 .PHONY: uisvr_origin
 uisvr_origin:
 	@echo $(UISVR_ORIGIN)
