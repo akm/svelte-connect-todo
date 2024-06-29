@@ -22,9 +22,6 @@ build:
 	cd $(PATH_TO_UISVR) && \
 	docker build \
 		--platform linux/amd64 \
-		--build-arg GOOS=linux \
-		--build-arg GOARCH=amd64 \
-		--build-arg CGO_ENABLED=0 \
 		-t $(APP_CONTAINER_IMAGE_PRODUCTION) \
 		-f Dockerfile \
 		.
