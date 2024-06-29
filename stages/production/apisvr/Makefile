@@ -54,14 +54,7 @@ $(ENV_VAR_YAML):
 env_vars_yaml_gen: $(TEXT_TEMPLATE_CLI)
 	UISVR_ORIGIN=$(UISVR_ORIGIN) $(TEXT_TEMPLATE_CLI) $(ENV_VAR_YAML).tmpl > $(ENV_VAR_YAML)
 
-ifeq ($(GOOGLE_CLOUD_PROJECT),)
-.PHONY: deploy
-deploy:
-	@echo "GOOGLE_CLOUD_PROJECT is not set. Please set GOOGLE_CLOUD_PROJECT to deploy to GCP."
-else
-.PHONY: deploy
-deploy: push $(ENV_VAR_YAML)
-	$(GCLOUD) run deploy $(APP_CONTAINER_IMAGE_NAME) \
+DEPLOY_OPTIONS=\
 	--image=$(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) \
 	--allow-unauthenticated \
 	--env-vars-file=$(ENV_VAR_YAML) \
@@ -69,6 +62,19 @@ deploy: push $(ENV_VAR_YAML)
 	--memory=128Mi \
 	--use-http2 \
 	--region=$(GCP_REGION)
+
+.PHONY: deploy_options
+deploy_options:
+	@echo $(DEPLOY_OPTIONS_BASE)
+
+ifeq ($(GOOGLE_CLOUD_PROJECT),)
+.PHONY: deploy
+deploy:
+	@echo "GOOGLE_CLOUD_PROJECT is not set. Please set GOOGLE_CLOUD_PROJECT to deploy to GCP."
+else
+.PHONY: deploy
+deploy: push env_vars_yaml_gen
+	$(GCLOUD) run deploy $(APP_CONTAINER_IMAGE_NAME) $(DEPLOY_OPTIONS)
 endif
 
 .PHONY: update-traffic
