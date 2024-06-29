@@ -41,7 +41,7 @@ $(TEXT_TEMPLATE_CLI):
 text-template-cli-install:
 	go install github.com/akm/text-template-cli@latest
 
-UISVR_ORIGIN=$(shell $(MAKE) -C ../uisvr --no-print-directory service_url || echo "")
+UISVR_ORIGIN=$(shell $(MAKE) -C ../uisvr --no-print-directory service_url 2>/dev/null || echo "")
 .PHONY: uisvr_origin
 uisvr_origin:
 	@echo $(UISVR_ORIGIN)
@@ -64,8 +64,9 @@ DEPLOY_OPTIONS_BASE=\
 ENV_VARS_CONTENT=$(shell yq '... comments=""' $(ENV_VAR_YAML))
 
 .PHONY: deploy_options
-deploy_options: env_vars_yaml_gen
-	@echo $(DEPLOY_OPTIONS_BASE) && \
+deploy_options:
+	@$(MAKE) env_vars_yaml_gen >&2 && \
+	echo $(DEPLOY_OPTIONS_BASE) && \
 	[ -n "$(ENV_VARS_CONTENT)" ] && echo "--env-vars-file=$(ENV_VAR_YAML)" || echo ""
 
 ifeq ($(GOOGLE_CLOUD_PROJECT),)
