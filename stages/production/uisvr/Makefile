@@ -31,13 +31,6 @@ push: container_image
 	docker tag $(APP_CONTAINER_IMAGE_PRODUCTION) $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) && \
 	docker push $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION)
 
-TEXT_TEMPLATE_CLI=$(shell go env GOPATH)/bin/text-template-cli
-$(TEXT_TEMPLATE_CLI):
-	$(MAKE) text-template-cli-install
-.PHONY: text-template-cli-install
-text-template-cli-install:
-	go install github.com/akm/text-template-cli@latest
-
 APISVR_ORIGIN=$(shell $(MAKE) -C ../apisvr --no-print-directory service_url)
 .PHONY: apisvr_origin
 apisvr_origin:
@@ -46,6 +39,8 @@ apisvr_origin:
 ENV_VAR_YAML=./env-vars.yaml
 $(ENV_VAR_YAML):
 	$(MAKE) env_vars_yaml_gen
+
+include $(PATH_TO_SHAPEAPPMK)/makefiles/template/text-template-cli.mk
 
 .PHONY: env_vars_yaml_gen
 env_vars_yaml_gen: $(TEXT_TEMPLATE_CLI)

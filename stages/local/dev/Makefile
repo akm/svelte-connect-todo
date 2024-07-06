@@ -1,15 +1,13 @@
 PATH_TO_PROJECT=../../..
 include $(PATH_TO_PROJECT)/.shapeapp.config.mk
 
-TEXT_TEMPLATE_CLI_PATH=$(shell go env GOPATH)/bin/text-template-cli
-$(TEXT_TEMPLATE_CLI_PATH):
-	go install github.com/akm/text-template-cli@latest
+include $(PATH_TO_SHAPEAPPMK)/makefiles/template/text-template-cli.mk
 
 APP_RPROXY_ENVOY_YAML=./envoy.yaml
 $(APP_RPROXY_ENVOY_YAML): envoy_yaml_gen
 .PHONY: envoy_yaml_gen
-envoy_yaml_gen: $(TEXT_TEMPLATE_CLI_PATH)
-	$(ENVS) $(TEXT_TEMPLATE_CLI_PATH) envoy.yaml.template > $(APP_RPROXY_ENVOY_YAML)
+envoy_yaml_gen: $(TEXT_TEMPLATE_CLI)
+	$(ENVS) $(TEXT_TEMPLATE_CLI) envoy.yaml.template > $(APP_RPROXY_ENVOY_YAML)
 
 DEV_TARGET?=all
 
