@@ -2,7 +2,7 @@
 default:
 
 PATH_TO_PROJECT:=../../..
-include $(PATH_TO_PROJECT)/.govelte.config.mk
+include $(PATH_TO_PROJECT)/.shapeapp.config.mk
 
 PATH_TO_STAGE_DIR=..
 include $(PATH_TO_STAGE_DIR)/.config.mk

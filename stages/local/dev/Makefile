@@ -1,5 +1,5 @@
 PATH_TO_PROJECT=../../..
-include $(PATH_TO_PROJECT)/.govelte.config.mk
+include $(PATH_TO_PROJECT)/.shapeapp.config.mk
 
 TEXT_TEMPLATE_CLI_PATH=$(shell go env GOPATH)/bin/text-template-cli
 $(TEXT_TEMPLATE_CLI_PATH):
