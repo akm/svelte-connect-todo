@@ -2,7 +2,7 @@
 default:
 
 PATH_TO_ROOT:=../../..
-include $(PATH_TO_ROOT)/.shapeapp.config.mk
+include $(PATH_TO_ROOT)/.shapeapp.mk
 
 PATH_TO_STAGE_DIR=..
 include $(PATH_TO_STAGE_DIR)/.config.mk

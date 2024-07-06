@@ -2,7 +2,7 @@
 default: build lint test
 
 PATH_TO_ROOT=.
-include $(PATH_TO_ROOT)/.shapeapp.config.mk
+include $(PATH_TO_ROOT)/.shapeapp.mk
 include $(PATH_TO_SHAPEAPPMK)/makefiles/root/asdf.mk
 include $(PATH_TO_SHAPEAPPMK)/makefiles/root/children.mk
 
