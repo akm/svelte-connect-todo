@@ -3,7 +3,7 @@ default: build lint test
 
 PATH_TO_PROJECT=..
 include $(PATH_TO_PROJECT)/.shapeapp.config.mk
-include $(PATH_TO_GOVELTEMK)/makefiles/frontends/children.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/frontends/children.mk
 
 .PHONY: build
 build:
