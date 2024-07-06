@@ -1,8 +1,8 @@
 .PHONY: default
 default: build lint test
 
-PATH_TO_PROJECT:=../..
-include $(PATH_TO_PROJECT)/.shapeapp.config.mk
+PATH_TO_ROOT:=../..
+include $(PATH_TO_ROOT)/.shapeapp.config.mk
 
 .PHONY: setup
 setup: install

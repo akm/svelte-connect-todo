@@ -1,8 +1,8 @@
 .PHONY: default
 default:
 
-PATH_TO_PROJECT:=../../..
-include $(PATH_TO_PROJECT)/.shapeapp.config.mk
+PATH_TO_ROOT:=../../..
+include $(PATH_TO_ROOT)/.shapeapp.config.mk
 
 PATH_TO_STAGE_DIR=..
 include $(PATH_TO_STAGE_DIR)/.config.mk
