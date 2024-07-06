@@ -1,0 +1,3 @@
+[submodule "vendor/shapeappmk"]
+	path = vendor/shapeappmk
+	url = git@github.com:akm/shapeapp.mk.git
