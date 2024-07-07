@@ -3,21 +3,9 @@ include $(PATH_TO_ROOT)/.shapeapp.mk
 
 include $(PATH_TO_SHAPEAPPMK)/makefiles/template/text-template-cli.mk
 
-APP_RPROXY_ENVOY_YAML=./envoy.yaml
-$(APP_RPROXY_ENVOY_YAML): envoy_yaml_gen
-.PHONY: envoy_yaml_gen
-envoy_yaml_gen: $(TEXT_TEMPLATE_CLI)
-	$(ENVS) $(TEXT_TEMPLATE_CLI) envoy.yaml.template > $(APP_RPROXY_ENVOY_YAML)
-
 DEV_TARGET?=all
 
-APP_UISVR_DOT_ENV_PATH_FOR_DEV_apisvr=./dot_env_without_rproxy
-APP_UISVR_DOT_ENV_PATH_FOR_DEV_uisvr=./dot_env_without_rproxy
-APP_UISVR_DOT_ENV_PATH_FOR_DEV_rproxy=./dot_env_with_rproxy
-APP_UISVR_DOT_ENV_PATH_FOR_DEV_all=./dot_env_with_rproxy
-APP_UISVR_DOT_ENV_PATH?=$(APP_UISVR_DOT_ENV_PATH_FOR_DEV_$(DEV_TARGET))
-
-ENVS=\
+BASE_ENVS=\
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
 	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY) \
 	APP_PORT_FIREBASE_AUTH=$(APP_PORT_FIREBASE_AUTH_dev) \
@@ -25,6 +13,22 @@ ENVS=\
 	APP_PORT_APISVR=$(APP_PORT_APISVR_dev) \
 	APP_PORT_UISVR=$(APP_PORT_UISVR_e2e_test) \
 	APP_PORT_RPROXY=$(APP_PORT_RPROXY_dev) \
+	DEV_TARGET=$(DEV_TARGET)
+
+APP_UISVR_DOT_ENV_PATH=./uisvr.env
+$(APP_UISVR_DOT_ENV_PATH): uisvr_env_gen
+.PHONY: uisvr_env_gen
+uisvr_env_gen: $(TEXT_TEMPLATE_CLI)
+	$(BASE_ENVS) $(TEXT_TEMPLATE_CLI) ./uisvr.env.template > $(APP_UISVR_DOT_ENV_PATH)
+
+APP_RPROXY_ENVOY_YAML=./envoy.yaml
+$(APP_RPROXY_ENVOY_YAML): envoy_yaml_gen
+.PHONY: envoy_yaml_gen
+envoy_yaml_gen: $(TEXT_TEMPLATE_CLI)
+	$(BASE_ENVS) $(TEXT_TEMPLATE_CLI) envoy.yaml.template > $(APP_RPROXY_ENVOY_YAML)
+
+ENVS=\
+	$(BASE_ENVS) \
 	APP_UISVR_DOT_ENV=$(APP_UISVR_DOT_ENV_PATH) \
 	APP_RPROXY_ENVOY_YAML=$(APP_RPROXY_ENVOY_YAML)
 
