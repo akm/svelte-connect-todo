@@ -1,8 +1,8 @@
 .PHONY: default
 default: build lint test
 
-PATH_TO_PROJECT:=../..
-include $(PATH_TO_PROJECT)/.govelte.config.mk
+PATH_TO_ROOT:=../..
+include $(PATH_TO_ROOT)/.shapeapp.mk
 
 .PHONY: setup
 setup: install
@@ -14,10 +14,10 @@ DEV_ENVS=\
 
 BUILD_DEPS=setup
 
-include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/base.mk
-include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/dev.mk
-include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/connect-web.mk
-include $(PATH_TO_GOVELTEMK)/makefiles/uisvr/test_integration.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/uisvr/base.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/uisvr/dev.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/uisvr/connect-web.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/uisvr/test_integration.mk
 
 node_run: build
 	PORT=$(APP_PORT_UISVR_e2e_test) node -r dotenv/config build

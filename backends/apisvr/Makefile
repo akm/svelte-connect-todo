@@ -1,18 +1,18 @@
 .PHONY: default
 default: build lint test
 
-PATH_TO_PROJECT:=../..
-include $(PATH_TO_PROJECT)/.govelte.config.mk
+PATH_TO_ROOT:=../..
+include $(PATH_TO_ROOT)/.shapeapp.mk
 
 GO_ROOT_PACKAGE=apisvr
 
-include $(PATH_TO_GOVELTEMK)/makefiles/asdf/reshim.mk
-include $(PATH_TO_GOVELTEMK)/makefiles/git/check.mk
-include $(PATH_TO_GOVELTEMK)/makefiles/golang/build.mk
-include $(PATH_TO_GOVELTEMK)/makefiles/golang/lint.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/asdf/reshim.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/git/check.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/golang/build.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/golang/lint.mk
 
 # connect-go
-include $(PATH_TO_GOVELTEMK)/makefiles/apisvr/connect-go.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/apisvr/connect-go.mk
 
 # run, run_with_devbug
 
@@ -34,12 +34,12 @@ DEV_ENVS=\
 # dev, dev_container_up, dev_container_down
 # PATH_TO_CMD_APISVR needs dot as an argument fo go run
 PATH_TO_CMD_APISVR=./cmd/server
-include $(PATH_TO_GOVELTEMK)/makefiles/apisvr/dev.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/apisvr/dev.mk
 
 TEST_ENVS=\
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
 	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY)
-include $(PATH_TO_GOVELTEMK)/makefiles/apisvr/test.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/apisvr/test.mk
 
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GO_ROOT_PACKAGE)
 APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local
