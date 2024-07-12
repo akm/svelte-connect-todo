@@ -22,11 +22,11 @@ services:
     hostname: mysql
     restart: always
     environment:
-      MYSQL_DATABASE: ${APP_MYSQL_DATABASE_NAME}
+      MYSQL_DATABASE: ${APP_MYSQL_DB_NAME}
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_HOST: "%"
     ports:
-      - "${APP_MYSQL_PORT}:3306"
+      - "${APP_PORT_MYSQL}:3306"
     volumes:
       - ./mysql/conf.d:/etc/mysql/conf.d
       - ./data/mysql/log/:/var/log/mysql
