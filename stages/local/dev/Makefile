@@ -39,7 +39,7 @@ envs:
 DOCKER_COMPOSE_NAME=$(shell cat ./docker-compose.yml | yq .name)
 DOCKER_COMPOSE_SERVICES=$(shell cat docker-compose.yml | yq '.services | select(.build.context != "") | keys | join(" ")')
 
-DOCKER_COMPOSE_SERVICES_FOR_DEV_apisvr=firebase-emulators
+DOCKER_COMPOSE_SERVICES_FOR_DEV_apisvr=firebase-emulators mysql
 DOCKER_COMPOSE_SERVICES_FOR_DEV_uisvr=$(DOCKER_COMPOSE_SERVICES_FOR_DEV_apisvr) apisvr
 DOCKER_COMPOSE_SERVICES_FOR_DEV_rproxy=$(DOCKER_COMPOSE_SERVICES_FOR_DEV_uisvr) uisvr
 DOCKER_COMPOSE_SERVICES_FOR_DEV_all=$(DOCKER_COMPOSE_SERVICES_FOR_DEV_rproxy) rproxy
