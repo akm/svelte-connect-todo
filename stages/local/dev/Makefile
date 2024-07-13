@@ -2,14 +2,17 @@ PATH_TO_ROOT=../../..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 
 include $(PATH_TO_SHAPEAPPMK)/makefiles/template/text-template-cli.mk
+include $(PATH_TO_SHAPEAPPMK)/makefiles/mysql/base.mk
 
 DEV_TARGET?=all
 
 BASE_ENVS=\
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
 	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY) \
+	APP_MYSQL_DB_NAME=$(APP_MYSQL_DB_NAME) \
 	APP_PORT_FIREBASE_AUTH=$(APP_PORT_FIREBASE_AUTH_dev) \
 	APP_PORT_FIREBASE_EMULATOR_SUITE=$(APP_PORT_FIREBASE_EMULATOR_SUITE_dev) \
+	APP_PORT_MYSQL=$(APP_PORT_MYSQL_dev) \
 	APP_PORT_APISVR=$(APP_PORT_APISVR_dev) \
 	APP_PORT_UISVR=$(APP_PORT_UISVR_e2e_test) \
 	APP_PORT_RPROXY=$(APP_PORT_RPROXY_dev) \
@@ -39,7 +42,7 @@ envs:
 DOCKER_COMPOSE_NAME=$(shell cat ./docker-compose.yml | yq .name)
 DOCKER_COMPOSE_SERVICES=$(shell cat docker-compose.yml | yq '.services | select(.build.context != "") | keys | join(" ")')
 
-DOCKER_COMPOSE_SERVICES_FOR_DEV_apisvr=firebase-emulators
+DOCKER_COMPOSE_SERVICES_FOR_DEV_apisvr=firebase-emulators mysql
 DOCKER_COMPOSE_SERVICES_FOR_DEV_uisvr=$(DOCKER_COMPOSE_SERVICES_FOR_DEV_apisvr) apisvr
 DOCKER_COMPOSE_SERVICES_FOR_DEV_rproxy=$(DOCKER_COMPOSE_SERVICES_FOR_DEV_uisvr) uisvr
 DOCKER_COMPOSE_SERVICES_FOR_DEV_all=$(DOCKER_COMPOSE_SERVICES_FOR_DEV_rproxy) rproxy
