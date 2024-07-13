@@ -4,6 +4,7 @@ go 1.22.4
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/akm/goosecond v0.1.0 // indirect
 	github.com/go-sql-driver/mysql v1.8.1 // indirect
 	github.com/mfridman/interpolate v0.0.2 // indirect
 	github.com/pressly/goose/v3 v3.21.1 // indirect
