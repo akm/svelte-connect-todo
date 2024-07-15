@@ -37,8 +37,8 @@ dev_run: setup .env
 .PHONY: dev
 dev: dev_container_up dev_run
 
-BUILD_DEPS=setup
 include $(PATH_TO_SHAPEAPPMK)/sveltekit/npm.mk
+include $(PATH_TO_SHAPEAPPMK)/sveltekit/app.mk
 
 include $(PATH_TO_SHAPEAPPMK)/connect-web/install.mk
 include $(PATH_TO_SHAPEAPPMK)/connect-web/generate.mk
