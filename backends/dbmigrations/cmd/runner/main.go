@@ -39,7 +39,7 @@ func main() {
 		log.Fatalf("goose: failed to set dialect: %v\n", err)
 	}
 
-	dbstring, command := args[1], args[2]
+	dbstring, command := args[0], args[1]
 
 	db, err := goose.OpenDBWithDriver("mysql", dbstring)
 	if err != nil {
@@ -53,8 +53,8 @@ func main() {
 	}()
 
 	arguments := []string{}
-	if len(args) > 3 {
-		arguments = append(arguments, args[3:]...)
+	if len(args) > 2 {
+		arguments = append(arguments, args[2:]...)
 	}
 
 	ctx := context.Background()
