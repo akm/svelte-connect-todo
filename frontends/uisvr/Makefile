@@ -4,8 +4,11 @@ default: build lint test
 PATH_TO_ROOT:=../..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 
+.PHONY: install
+install: npm-install connect-web-install
+
 .PHONY: setup
-setup: install connect-web-install
+setup: npm-ci
 
 DEV_ENVS=\
 	VITE_GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
