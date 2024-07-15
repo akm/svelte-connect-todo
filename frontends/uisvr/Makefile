@@ -18,7 +18,7 @@ include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
 .PHONY: dot_env_gen
 dot_env_gen: $(TEXT_TEMPLATE_CLI)
 	$(CONFIG_ENVS) \
-	$(shell $(MAKE) default-port-envs --no-print-directory) \
+	$(DEFAULT_PORT_ENVS) \
 	$(TEXT_TEMPLATE_CLI) .env-template > .env
 
 PATH_TO_LOCAL_DEV=$(PATH_TO_ROOT)/stages/local/dev
