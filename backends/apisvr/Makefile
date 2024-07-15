@@ -9,6 +9,7 @@ include $(PATH_TO_SHAPEAPPMK)/golang/build.mk
 build: golang-build
 
 include $(PATH_TO_SHAPEAPPMK)/golangci-lint/lint.mk
+lint: golangci-lint-lint
 
 PATH_TO_PROTO=./proto
 include $(PATH_TO_SHAPEAPPMK)/buf/buf.mk
