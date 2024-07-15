@@ -41,7 +41,7 @@ func main() {
 
 	dbstring, command := args[1], args[2]
 
-	db, err := goose.OpenDBWithDriver("sqlite", dbstring)
+	db, err := goose.OpenDBWithDriver("mysql", dbstring)
 	if err != nil {
 		log.Fatalf("goose: failed to open DB: %v\n", err)
 	}
