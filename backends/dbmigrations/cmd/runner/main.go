@@ -1,4 +1,5 @@
-// This is copied from https://github.com/pressly/goose/blob/bfd4286c0fda61ce69e54a272fdf90e72b301aa5/examples/go-migrations/main.go
+// Original source code is
+//   https://github.com/pressly/goose/blob/bfd4286c0fda61ce69e54a272fdf90e72b301aa5/examples/go-migrations/main.go
 
 package main
 
@@ -18,6 +19,7 @@ import (
 var (
 	flags   = flag.NewFlagSet("goose", flag.ExitOnError)
 	dir     = flags.String("dir", ".", "directory with migration files")
+	driver  = flags.String("driver", "mysql", "driver for the migration")
 	dialect = flags.String("dialect", "mysql", "dialect for the migration")
 )
 
@@ -44,12 +46,15 @@ func main() {
 
 	var db *sql.DB
 	if command != "create" {
+		if driver == nil {
+			log.Fatal("goose: missing required flag -driver")
+		}
 		var err error
-		db, err = goose.OpenDBWithDriver("mysql", dbstring)
+		db, err = goose.OpenDBWithDriver(*driver, dbstring)
 		if err != nil {
 			log.Fatalf("goose: failed to open DB: %v\n", err)
 		}
-		log.Printf("succeed to open mysql DB: %v\n", dbstring)
+		log.Printf("succeed to open %s DB: %v\n", *driver, dbstring)
 
 		defer func() {
 			if err := db.Close(); err != nil {
