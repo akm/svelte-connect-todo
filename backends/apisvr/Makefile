@@ -6,6 +6,8 @@ include $(PATH_TO_ROOT)/.shapeapp.mk
 
 include $(PATH_TO_SHAPEAPPMK)/asdf/reshim.mk
 include $(PATH_TO_SHAPEAPPMK)/golang/build.mk
+build: golang-build
+
 include $(PATH_TO_SHAPEAPPMK)/golangci-lint/lint.mk
 
 PATH_TO_PROTO=./proto
