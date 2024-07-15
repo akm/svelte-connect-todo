@@ -1,21 +1,15 @@
 PATH_TO_ROOT=../../..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 
-include $(PATH_TO_SHAPEAPPMK)/makefiles/template/text-template-cli.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/mysql/base.mk
+include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
 
 DEV_TARGET?=all
 
 BASE_ENVS=\
+	$(DEFAULT_PORT_ENVS) \
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
 	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY) \
 	APP_MYSQL_DB_NAME=$(APP_MYSQL_DB_NAME) \
-	APP_PORT_FIREBASE_AUTH=$(APP_PORT_FIREBASE_AUTH_dev) \
-	APP_PORT_FIREBASE_EMULATOR_SUITE=$(APP_PORT_FIREBASE_EMULATOR_SUITE_dev) \
-	APP_PORT_MYSQL=$(APP_PORT_MYSQL_dev) \
-	APP_PORT_APISVR=$(APP_PORT_APISVR_dev) \
-	APP_PORT_UISVR=$(APP_PORT_UISVR_e2e_test) \
-	APP_PORT_RPROXY=$(APP_PORT_RPROXY_dev) \
 	DEV_TARGET=$(DEV_TARGET)
 
 APP_UISVR_DOT_ENV_PATH=./uisvr.env
@@ -24,11 +18,12 @@ $(APP_UISVR_DOT_ENV_PATH): uisvr_env_gen
 uisvr_env_gen: $(TEXT_TEMPLATE_CLI)
 	$(BASE_ENVS) $(TEXT_TEMPLATE_CLI) ./uisvr.env.template > $(APP_UISVR_DOT_ENV_PATH)
 
+APP_RPROXY_ENVOY_YAML_TEMPLATE=$(PATH_TO_MIDDLEWARES)/rproxy/envoy.yaml.template
 APP_RPROXY_ENVOY_YAML=./envoy.yaml
 $(APP_RPROXY_ENVOY_YAML): envoy_yaml_gen
 .PHONY: envoy_yaml_gen
 envoy_yaml_gen: $(TEXT_TEMPLATE_CLI)
-	$(BASE_ENVS) $(TEXT_TEMPLATE_CLI) envoy.yaml.template > $(APP_RPROXY_ENVOY_YAML)
+	$(BASE_ENVS) $(TEXT_TEMPLATE_CLI) $(APP_RPROXY_ENVOY_YAML_TEMPLATE) > $(APP_RPROXY_ENVOY_YAML)
 
 ENVS=\
 	$(BASE_ENVS) \
@@ -38,6 +33,9 @@ ENVS=\
 .PHONY: envs
 envs:
 	@echo $(ENVS)
+.PHONY: setup_envs
+setup_envs: $(APP_UISVR_DOT_ENV_PATH) $(APP_RPROXY_ENVOY_YAML)
+
 
 DOCKER_COMPOSE_NAME=$(shell cat ./docker-compose.yml | yq .name)
 DOCKER_COMPOSE_SERVICES=$(shell cat docker-compose.yml | yq '.services | select(.build.context != "") | keys | join(" ")')
@@ -60,7 +58,7 @@ validate_services:
 	fi
 
 .PHONY: setup
-setup: validate_services $(APP_RPROXY_ENVOY_YAML)
+setup: validate_services setup_envs
 	$(MAKE) -C $(PATH_TO_UISVR) setup
 
 .PHONY: run

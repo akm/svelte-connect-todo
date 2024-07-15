@@ -9,8 +9,8 @@ services:
       context: ../../../middlewares/firebase-emulators/local
       dockerfile: Dockerfile
     ports:
-      - "${APP_PORT_FIREBASE_AUTH}:9099"
-      - "${APP_PORT_FIREBASE_EMULATOR_SUITE}:4000"
+      - "${APP_PORT_FIREBASE_AUTH_dev}:9099"
+      - "${APP_PORT_FIREBASE_EMULATOR_SUITE_dev}:4000"
     networks:
       - network1
     volumes:
@@ -26,9 +26,9 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_HOST: "%"
     ports:
-      - "${APP_PORT_MYSQL}:3306"
+      - "${APP_PORT_MYSQL_dev}:3306"
     volumes:
-      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ../../../middlewares/mysql/local/conf.d:/etc/mysql/conf.d
       - ./data/mysql/log/:/var/log/mysql
       - ./data/mysql/data:/var/lib/mysql
     networks:
@@ -40,12 +40,12 @@ services:
       context: ../../../backends/apisvr
       dockerfile: Dockerfile
     ports:
-      - "${APP_PORT_APISVR}:${APP_PORT_APISVR}"
+      - "${APP_PORT_APISVR_dev}:${APP_PORT_APISVR_dev}"
     environment:
-      - APP_CORS_ALLOW_ORIGINS=http://localhost:${APP_PORT_UISVR},http://localhost:${APP_PORT_RPROXY}
+      - APP_CORS_ALLOW_ORIGINS=http://localhost:${APP_PORT_UISVR_dev},http://localhost:${APP_PORT_UISVR_e2e_test},http://localhost:${APP_PORT_RPROXY_dev}
       - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
       - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
-      - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulators:${APP_PORT_FIREBASE_AUTH}
+      - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulators:${APP_PORT_FIREBASE_AUTH_dev}
     networks:
       - network1
 
@@ -55,13 +55,13 @@ services:
       context: ../../../frontends/uisvr
       dockerfile: Dockerfile
     environment:
-      - PORT=${APP_PORT_UISVR}
+      - PORT=${APP_PORT_UISVR_e2e_test}
       - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
       - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
     volumes:
       - ${APP_UISVR_DOT_ENV}:/srv/uisvr/.env
     ports:
-      - "${APP_PORT_UISVR}:${APP_PORT_UISVR}"
+      - "${APP_PORT_UISVR_e2e_test}:${APP_PORT_UISVR_e2e_test}"
     networks:
       - network1
 
@@ -71,7 +71,7 @@ services:
     volumes:
       - ${APP_RPROXY_ENVOY_YAML}:/envoy.yaml
     ports:
-      - ${APP_PORT_RPROXY}:${APP_PORT_RPROXY}
+      - ${APP_PORT_RPROXY_dev}:${APP_PORT_RPROXY_dev}
     command: -c /envoy.yaml
     networks:
       - network1

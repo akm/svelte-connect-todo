@@ -1,22 +1,19 @@
-.PHONY: setup
-setup: buf.yaml
+.PHONY: default
+default: build lint test
 
-buf.yaml:
-	buf mod init
+PATH_TO_ROOT:=../../..
+include $(PATH_TO_ROOT)/.shapeapp.mk
 
-gen: generate
-
-.PHONY: generate
-generate: buf.yaml
-	buf generate
-
-PROTOSET_BIN=protoset.bin
-$(PROTOSET_BIN): build
-
-.PHONY: protoset_path
-protoset_path:
-	@echo $(PROTOSET_BIN)
+include $(PATH_TO_SHAPEAPPMK)/buf/buf.mk
+include $(PATH_TO_SHAPEAPPMK)/buf/proto/base.mk
+include $(PATH_TO_SHAPEAPPMK)/protobuf/protoc-gen-go.mk
+include $(PATH_TO_SHAPEAPPMK)/connect-go/protoc-gen-connect-go.mk
 
 .PHONY: build
-build: buf.yaml
-	buf build -o $(PROTOSET_BIN)
+build: buf-build
+
+.PHONY: lint
+lint: buf-lint
+
+.PHONY: generate
+generate: buf-generate

@@ -4,23 +4,47 @@ default: build lint test
 PATH_TO_ROOT:=../..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 
+.PHONY: install
+install: npm-install connect-web-install
+
 .PHONY: setup
-setup: install
+setup: npm-ci
 
-DEV_ENVS=\
-	VITE_GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
-	VITE_FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)" \
-	VITE_UISVR_ORIGIN=http://localhost:$(APP_PORT_UISVR_dev)
+include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
 
-BUILD_DEPS=setup
+.env:
+	$(MAKE) dot_env_gen
 
-include $(PATH_TO_SHAPEAPPMK)/makefiles/uisvr/base.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/uisvr/dev.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/uisvr/connect-web.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/uisvr/test_integration.mk
+.PHONY: dot_env_gen
+dot_env_gen: $(TEXT_TEMPLATE_CLI)
+	$(CONFIG_ENVS) \
+	$(DEFAULT_PORT_ENVS) \
+	$(TEXT_TEMPLATE_CLI) .env-template > .env
 
-node_run: build
-	PORT=$(APP_PORT_UISVR_e2e_test) node -r dotenv/config build
+PATH_TO_LOCAL_DEV=$(PATH_TO_ROOT)/stages/local/dev
+.PHONY: dev_container_up
+dev_container_up:
+	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_LOCAL_DEV) up
+
+.PHONY: dev_container_down
+dev_container_down:
+	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_LOCAL_DEV) down
+
+.PHONY: dev_run
+dev_run: setup .env
+	npm run dev
+
+.PHONY: dev
+dev: dev_container_up dev_run
+
+include $(PATH_TO_SHAPEAPPMK)/sveltekit/npm.mk
+include $(PATH_TO_SHAPEAPPMK)/sveltekit/app.mk
+
+include $(PATH_TO_SHAPEAPPMK)/connect-web/install.mk
+include $(PATH_TO_SHAPEAPPMK)/connect-web/generate.mk
+
+.PHONY: generate
+generate: connect-web-generate
 
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-uisvr
 APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local

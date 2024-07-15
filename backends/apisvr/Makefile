@@ -4,44 +4,51 @@ default: build lint test
 PATH_TO_ROOT:=../..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 
-GO_ROOT_PACKAGE=apisvr
+include $(PATH_TO_SHAPEAPPMK)/asdf/reshim.mk
+include $(PATH_TO_SHAPEAPPMK)/golang/build.mk
+build: golang-build
 
-include $(PATH_TO_SHAPEAPPMK)/makefiles/asdf/reshim.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/git/check.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/golang/build.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/golang/lint.mk
+include $(PATH_TO_SHAPEAPPMK)/golangci-lint/lint.mk
+lint: golangci-lint-lint
 
-# connect-go
-include $(PATH_TO_SHAPEAPPMK)/makefiles/apisvr/connect-go.mk
+PATH_TO_PROTO=./proto
+include $(PATH_TO_SHAPEAPPMK)/buf/buf.mk
+include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
 
-# run, run_with_devbug
+.PHONY: generate
+generate: buf-generate
 
-# DEV_MYSQL_DSN?='$(shell $(MAKE) -C $(PATH_TO_MYSQL) --no-print-directory dsn)'
+PATH_TO_LOCAL_DEV=$(PATH_TO_ROOT)/stages/local/dev
+.PHONY: dev_container_up
+dev_container_up:
+	DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_LOCAL_DEV) up
 
-# DEV_SERVER_ENVS_BASE=\
-# 	APP_STAGE=$(APP_STAGE) \
-# 	APP_MYSQL_DSN=$(DEV_MYSQL_DSN) \
-# 	APP_LOG_CONSOLE_WRITER=true \
-# 	FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)"
+.PHONY: dev_container_down
+dev_container_down:
+	DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_LOCAL_DEV) down
 
+APP_CORS_ALLOW_ORIGINS=http://localhost:$(APP_PORT_UISVR_dev),http://localhost:$(APP_PORT_UISVR_e2e_test)
+FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)"
+
+DEV_VARS=\
+	APP_STAGE \
+	APP_CORS_ALLOW_ORIGINS \
+	APP_FIREBASE_API_KEY \
+	FIREBASE_AUTH_EMULATOR_HOST
 DEV_ENVS=\
-	APP_STAGE=$(APP_STAGE) \
-	APP_CORS_ALLOW_ORIGINS=http://localhost:$(APP_PORT_UISVR_dev),http://localhost:$(APP_PORT_UISVR_e2e_test) \
-	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY) \
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
-	FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)"
+	$(foreach var,$(DEV_VARS),$(var)=$($(var)))
 
-# dev, dev_container_up, dev_container_down
-# PATH_TO_CMD_APISVR needs dot as an argument fo go run
 PATH_TO_CMD_APISVR=./cmd/server
-include $(PATH_TO_SHAPEAPPMK)/makefiles/apisvr/dev.mk
+.PHONY: run
+run:
+	$(DEV_ENVS) go run $(PATH_TO_CMD_APISVR)
 
-TEST_ENVS=\
-	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
-	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY)
-include $(PATH_TO_SHAPEAPPMK)/makefiles/apisvr/test.mk
+.PHONY: dev
+dev: dev_container_up run
 
-APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GO_ROOT_PACKAGE)
+include $(PATH_TO_SHAPEAPPMK)/golang/module.mk
+APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GOLANG_MODULE_NAME)
 APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local
 
 .PHONY: container_image_name
@@ -55,12 +62,9 @@ container_build:
 		-f Dockerfile \
 		.
 
+include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
+
 .PHONY: test-connections
-test-connections:
-ifeq ($(SERVER_DOMAIN),)
-	@echo "SERVER_DOMAIN is not set. Please set SERVER_DOMAIN to test connections."
-else
-	$(MAKE) install_tools && \
+test-connections: $(GRPCURL_CLI) $(BUF_CLI)
 	$(MAKE) -C proto build && \
 	./test-connections.sh
-endif
