@@ -41,8 +41,8 @@ run:
 .PHONY: dev
 dev: dev_container_up run
 
-
-APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GO_ROOT_PACKAGE)
+include $(PATH_TO_SHAPEAPPMK)/golang/module.mk
+APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GO_MODULE_NAME)
 APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local
 
 .PHONY: container_image_name
