@@ -40,7 +40,7 @@ services:
       context: ../../../backends/apisvr
       dockerfile: Dockerfile
     ports:
-      - "${APP_PORT_APISVR}:${APP_PORT_APISVR}"
+      - "${APP_PORT_APISVR_dev}:${APP_PORT_APISVR_dev}"
     environment:
       - APP_CORS_ALLOW_ORIGINS=http://localhost:${APP_PORT_UISVR_dev},http://localhost:${APP_PORT_UISVR_e2e_test},http://localhost:${APP_PORT_RPROXY_dev}
       - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}

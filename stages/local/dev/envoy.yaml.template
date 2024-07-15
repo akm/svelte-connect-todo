@@ -48,7 +48,7 @@ static_resources:
                   address:
                     socket_address:
                       address: apisvr
-                      port_value: {{.APP_PORT_APISVR}}
+                      port_value: {{.APP_PORT_APISVR_dev}}
     - name: uisvr-cluster
       connect_timeout: 1s
       type: STRICT_DNS
