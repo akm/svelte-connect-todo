@@ -1,5 +1,4 @@
 // This is copied from https://github.com/pressly/goose/blob/bfd4286c0fda61ce69e54a272fdf90e72b301aa5/examples/go-migrations/main.go
-// This is custom goose binary with sqlite3 support only.
 
 package main
 
@@ -8,13 +7,16 @@ import (
 	"log"
 	"os"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/pressly/goose/v3"
-	_ "modernc.org/sqlite"
+
+	_ "dbmigrations"
 )
 
 var (
-	flags = flag.NewFlagSet("goose", flag.ExitOnError)
-	dir   = flags.String("dir", ".", "directory with migration files")
+	flags   = flag.NewFlagSet("goose", flag.ExitOnError)
+	dir     = flags.String("dir", ".", "directory with migration files")
+	dialect = flags.String("dialect", "mysql", "dialect for the migration")
 )
 
 func main() {
@@ -24,6 +26,14 @@ func main() {
 	if len(args) < 3 {
 		flags.Usage()
 		return
+	}
+
+	if dialect == nil {
+		log.Fatal("goose: missing required flag -dialect")
+	}
+	goose.SetBaseFS(nil)
+	if err := goose.SetDialect(*dialect); err != nil {
+		log.Fatalf("goose: failed to set dialect: %v\n", err)
 	}
 
 	dbstring, command := args[1], args[2]
