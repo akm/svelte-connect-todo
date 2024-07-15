@@ -84,3 +84,18 @@ rmi: down
 rebuild:
 	$(ENVS) $(MAKE) rmi ; \
 	$(ENVS) docker compose build
+
+MYSQL_ENVS=\
+	MYSQL_USER_NAME=root \
+	MYSQL_USER_PASSWORD= \
+	MYSQL_HOST=127.0.0.1 \
+	MYSQL_PORT=$(APP_PORT_MYSQL_dev) \
+	MYSQL_DB_NAME=$(APP_MYSQL_DB_NAME)
+
+.PHONY: mysql-dsn
+mysql-dsn:
+	@$(MYSQL_ENVS) $(MAKE) -C $(PATH_TO_SHAPEAPPMK)/mysql dsn --no-print-directory
+
+.PHONY: mysql-console
+mysql-console:
+	@$(MYSQL_ENVS) $(MAKE) -C $(PATH_TO_SHAPEAPPMK)/mysql console
