@@ -5,7 +5,7 @@ PATH_TO_ROOT:=../..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 
 .PHONY: setup
-setup: install
+setup: install connect-web-install
 
 DEV_ENVS=\
 	VITE_GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
@@ -14,13 +14,11 @@ DEV_ENVS=\
 
 BUILD_DEPS=setup
 
-include $(PATH_TO_SHAPEAPPMK)/makefiles/uisvr/base.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/uisvr/dev.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/uisvr/connect-web.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/uisvr/test_integration.mk
+PATH_TO_LOCAL_DEV=$(PATH_TO_ROOT)/stages/local/dev
+include $(PATH_TO_SHAPEAPPMK)/sveltekit/npm.mk
 
-node_run: build
-	PORT=$(APP_PORT_UISVR_e2e_test) node -r dotenv/config build
+include $(PATH_TO_SHAPEAPPMK)/connect-web/install.mk
+include $(PATH_TO_SHAPEAPPMK)/connect-web/generate.mk
 
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-uisvr
 APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local

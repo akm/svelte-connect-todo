@@ -4,25 +4,23 @@ default: build lint test
 PATH_TO_ROOT:=../..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 
-GO_ROOT_PACKAGE=apisvr
+include $(PATH_TO_SHAPEAPPMK)/asdf/reshim.mk
+include $(PATH_TO_SHAPEAPPMK)/golang/build.mk
+include $(PATH_TO_SHAPEAPPMK)/golangci-lint/lint.mk
 
-include $(PATH_TO_SHAPEAPPMK)/makefiles/asdf/reshim.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/git/check.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/golang/build.mk
-include $(PATH_TO_SHAPEAPPMK)/makefiles/golang/lint.mk
+PATH_TO_PROTO=./proto
+include $(PATH_TO_SHAPEAPPMK)/buf/buf.mk
+include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
+include $(PATH_TO_SHAPEAPPMK)/buf/proto/base.mk
 
-# connect-go
-include $(PATH_TO_SHAPEAPPMK)/makefiles/apisvr/connect-go.mk
+PATH_TO_LOCAL_DEV=$(PATH_TO_ROOT)/stages/local/dev
+.PHONY: dev_container_up
+dev_container_up:
+	DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_LOCAL_DEV) up
 
-# run, run_with_devbug
-
-# DEV_MYSQL_DSN?='$(shell $(MAKE) -C $(PATH_TO_MYSQL) --no-print-directory dsn)'
-
-# DEV_SERVER_ENVS_BASE=\
-# 	APP_STAGE=$(APP_STAGE) \
-# 	APP_MYSQL_DSN=$(DEV_MYSQL_DSN) \
-# 	APP_LOG_CONSOLE_WRITER=true \
-# 	FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)"
+.PHONY: dev_container_down
+dev_container_down:
+	DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_LOCAL_DEV) down
 
 DEV_ENVS=\
 	APP_STAGE=$(APP_STAGE) \
@@ -31,15 +29,14 @@ DEV_ENVS=\
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
 	FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)"
 
-# dev, dev_container_up, dev_container_down
-# PATH_TO_CMD_APISVR needs dot as an argument fo go run
 PATH_TO_CMD_APISVR=./cmd/server
-include $(PATH_TO_SHAPEAPPMK)/makefiles/apisvr/dev.mk
+.PHONY: run
+run:
+	$(DEV_ENVS) go run $(PATH_TO_CMD_APISVR)
 
-TEST_ENVS=\
-	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
-	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY)
-include $(PATH_TO_SHAPEAPPMK)/makefiles/apisvr/test.mk
+.PHONY: dev
+dev: dev_container_up run
+
 
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GO_ROOT_PACKAGE)
 APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local

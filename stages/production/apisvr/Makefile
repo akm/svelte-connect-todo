@@ -43,7 +43,7 @@ ENV_VAR_YAML=./env-vars.yaml
 $(ENV_VAR_YAML):
 	$(MAKE) env_vars_yaml_gen
 
-include $(PATH_TO_SHAPEAPPMK)/makefiles/template/text-template-cli.mk
+include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
 
 .PHONY: env_vars_yaml_gen
 env_vars_yaml_gen: $(TEXT_TEMPLATE_CLI)
