@@ -4,6 +4,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"flag"
 	"log"
 	"os"
@@ -41,16 +42,19 @@ func main() {
 
 	dbstring, command := args[0], args[1]
 
-	db, err := goose.OpenDBWithDriver("mysql", dbstring)
-	if err != nil {
-		log.Fatalf("goose: failed to open DB: %v\n", err)
-	}
-
-	defer func() {
-		if err := db.Close(); err != nil {
-			log.Fatalf("goose: failed to close DB: %v\n", err)
+	var db *sql.DB
+	if command != "create" {
+		db, err := goose.OpenDBWithDriver("mysql", dbstring)
+		if err != nil {
+			log.Fatalf("goose: failed to open DB: %v\n", err)
 		}
-	}()
+
+		defer func() {
+			if err := db.Close(); err != nil {
+				log.Fatalf("goose: failed to close DB: %v\n", err)
+			}
+		}()
+	}
 
 	arguments := []string{}
 	if len(args) > 2 {
