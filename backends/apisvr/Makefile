@@ -12,6 +12,9 @@ PATH_TO_PROTO=./proto
 include $(PATH_TO_SHAPEAPPMK)/buf/buf.mk
 include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
 
+.PHONY: generate
+generate: buf-generate
+
 PATH_TO_LOCAL_DEV=$(PATH_TO_ROOT)/stages/local/dev
 .PHONY: dev_container_up
 dev_container_up:

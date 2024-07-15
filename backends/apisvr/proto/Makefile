@@ -8,3 +8,12 @@ include $(PATH_TO_SHAPEAPPMK)/buf/buf.mk
 include $(PATH_TO_SHAPEAPPMK)/buf/proto/base.mk
 include $(PATH_TO_SHAPEAPPMK)/protobuf/protoc-gen-go.mk
 include $(PATH_TO_SHAPEAPPMK)/connect-go/protoc-gen-connect-go.mk
+
+.PHONY: build
+build: buf-build
+
+.PHONY: lint
+lint: buf-lint
+
+.PHONY: generate
+generate: buf-generate
