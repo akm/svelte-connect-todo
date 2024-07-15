@@ -98,4 +98,4 @@ mysql-dsn:
 
 .PHONY: mysql-console
 mysql-console:
-	@$(MYSQL_ENVS) $(MAKE) -C $(PATH_TO_SHAPEAPPMK)/mysql console
+	$(MYSQL_ENVS) $(MAKE) -C $(PATH_TO_SHAPEAPPMK)/mysql console
