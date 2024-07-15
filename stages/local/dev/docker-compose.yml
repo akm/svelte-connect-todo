@@ -26,7 +26,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_HOST: "%"
     ports:
-      - "${APP_PORT_MYSQL}:3306"
+      - "${APP_PORT_MYSQL_dev}:3306"
     volumes:
       - ./mysql/conf.d:/etc/mysql/conf.d
       - ./data/mysql/log/:/var/log/mysql
