@@ -1,1 +1,1 @@
-package dbmigrations
+package migrations
