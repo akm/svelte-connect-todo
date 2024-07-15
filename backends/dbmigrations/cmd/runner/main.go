@@ -20,7 +20,9 @@ var (
 )
 
 func main() {
-	flags.Parse(os.Args[1:])
+	if err := flags.Parse(os.Args[1:]); err != nil {
+		log.Fatalf("goose: failed to parse flags: %v\n", err)
+	}
 	args := flags.Args()
 
 	if len(args) < 3 {
