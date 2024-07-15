@@ -43,6 +43,9 @@ include $(PATH_TO_SHAPEAPPMK)/sveltekit/npm.mk
 include $(PATH_TO_SHAPEAPPMK)/connect-web/install.mk
 include $(PATH_TO_SHAPEAPPMK)/connect-web/generate.mk
 
+.PHONY: generate
+generate: connect-web-generate
+
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-uisvr
 APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local
 
