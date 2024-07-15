@@ -11,7 +11,6 @@ include $(PATH_TO_SHAPEAPPMK)/golangci-lint/lint.mk
 PATH_TO_PROTO=./proto
 include $(PATH_TO_SHAPEAPPMK)/buf/buf.mk
 include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
-include $(PATH_TO_SHAPEAPPMK)/buf/proto/base.mk
 
 PATH_TO_LOCAL_DEV=$(PATH_TO_ROOT)/stages/local/dev
 .PHONY: dev_container_up
