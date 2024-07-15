@@ -37,6 +37,9 @@ ENVS=\
 .PHONY: envs
 envs:
 	@echo $(ENVS)
+.PHONY: setup_envs
+setup_envs: $(APP_UISVR_DOT_ENV_PATH) $(APP_RPROXY_ENVOY_YAML)
+
 
 DOCKER_COMPOSE_NAME=$(shell cat ./docker-compose.yml | yq .name)
 DOCKER_COMPOSE_SERVICES=$(shell cat docker-compose.yml | yq '.services | select(.build.context != "") | keys | join(" ")')
@@ -59,7 +62,7 @@ validate_services:
 	fi
 
 .PHONY: setup
-setup: validate_services $(APP_RPROXY_ENVOY_YAML)
+setup: validate_services setup_envs
 	$(MAKE) -C $(PATH_TO_UISVR) setup
 
 .PHONY: run
