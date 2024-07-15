@@ -28,7 +28,7 @@ services:
     ports:
       - "${APP_PORT_MYSQL_dev}:3306"
     volumes:
-      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ../../../middlewares/mysql/local/conf.d:/etc/mysql/conf.d
       - ./data/mysql/log/:/var/log/mysql
       - ./data/mysql/data:/var/lib/mysql
     networks:
