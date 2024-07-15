@@ -61,4 +61,4 @@ static_resources:
                   address:
                     socket_address:
                       address: uisvr
-                      port_value: {{.APP_PORT_UISVR}}
+                      port_value: {{.APP_PORT_UISVR_e2e_test}}

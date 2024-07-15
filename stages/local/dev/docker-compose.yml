@@ -55,13 +55,13 @@ services:
       context: ../../../frontends/uisvr
       dockerfile: Dockerfile
     environment:
-      - PORT=${APP_PORT_UISVR}
+      - PORT=${APP_PORT_UISVR_e2e_test}
       - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
       - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
     volumes:
       - ${APP_UISVR_DOT_ENV}:/srv/uisvr/.env
     ports:
-      - "${APP_PORT_UISVR}:${APP_PORT_UISVR}"
+      - "${APP_PORT_UISVR_e2e_test}:${APP_PORT_UISVR_e2e_test}"
     networks:
       - network1
 
