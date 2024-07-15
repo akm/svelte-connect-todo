@@ -10,14 +10,33 @@ install: npm-install connect-web-install
 .PHONY: setup
 setup: npm-ci
 
-DEV_ENVS=\
-	VITE_GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
-	VITE_FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)" \
-	VITE_UISVR_ORIGIN=http://localhost:$(APP_PORT_UISVR_dev)
+include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
 
-BUILD_DEPS=setup
+.env:
+	$(MAKE) dot_env_gen
+
+.PHONY: dot_env_gen
+dot_env_gen: $(TEXT_TEMPLATE_CLI)
+	$(shell $(MAKE) config-envs --no-print-directory) \
+	$(TEXT_TEMPLATE_CLI) .env-template > .env
 
 PATH_TO_LOCAL_DEV=$(PATH_TO_ROOT)/stages/local/dev
+.PHONY: dev_container_up
+dev_container_up:
+	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_LOCAL_DEV) up
+
+.PHONY: dev_container_down
+dev_container_down:
+	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_LOCAL_DEV) down
+
+.PHONY: dev_run
+dev_run: setup .env
+	npm run dev
+
+.PHONY: dev
+dev: dev_container_up dev_run
+
+BUILD_DEPS=setup
 include $(PATH_TO_SHAPEAPPMK)/sveltekit/npm.mk
 
 include $(PATH_TO_SHAPEAPPMK)/connect-web/install.mk
