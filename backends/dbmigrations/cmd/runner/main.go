@@ -44,10 +44,12 @@ func main() {
 
 	var db *sql.DB
 	if command != "create" {
-		db, err := goose.OpenDBWithDriver("mysql", dbstring)
+		var err error
+		db, err = goose.OpenDBWithDriver("mysql", dbstring)
 		if err != nil {
 			log.Fatalf("goose: failed to open DB: %v\n", err)
 		}
+		log.Printf("succeed to open mysql DB: %v\n", dbstring)
 
 		defer func() {
 			if err := db.Close(); err != nil {
