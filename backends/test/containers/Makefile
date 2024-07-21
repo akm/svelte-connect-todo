@@ -37,7 +37,7 @@ setup: validate_services
 .PHONY: run
 run: setup docker-compose-run
 .PHONY: up
-up: setup docker-compose-up
+up: setup docker-compose-up mysql-wait
 .PHONY: down
 down: docker-compose-down
 .PHONY: rmi
