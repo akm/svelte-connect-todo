@@ -2,31 +2,28 @@ PATH_TO_ROOT=../../..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 
 include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
+include $(PATH_TO_SHAPEAPPMK)/docker-compose/base.mk
 
-ENVS=\
+DOCKER_COMPOSE_ENVS=\
 	$(DEFAULT_PORT_ENVS) \
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
 	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY) \
 	APP_MYSQL_DB_NAME=$(APP_MYSQL_DB_NAME)
 
-.PHONY: envs
-envs:
-	@echo $(ENVS)
-
-DOCKER_COMPOSE_NAME=$(shell cat ./docker-compose.yml | yq .name)
-DOCKER_COMPOSE_SERVICES_FULL=$(shell cat docker-compose.yml | yq '.services | select(.build.context != "") | keys | join(" ")')
+.PHONY: docker_compose_envs
+docker_compose_envs:
+	@echo $(DOCKER_COMPOSE_ENVS)
 
 DOCKER_COMPOSE_SERVICE_REQUIRED?=mysql
 
-DOCKER_COMPOSE_SERVICES_WITH_mysql=mysql
-DOCKER_COMPOSE_SERVICES_WITH_firebase_emulators=firebase-emulators $(DOCKER_COMPOSE_SERVICES_WITH_mysql)
-DOCKER_COMPOSE_SERVICES_all=$(DOCKER_COMPOSE_SERVICES_WITH_firebase_emulators)
-
-SERVICES?=$(DOCKER_COMPOSE_SERVICES_WITH_$(DOCKER_COMPOSE_SERVICE_REQUIRED))
+TARGET_SERVICES_WITH_mysql=mysql
+TARGET_SERVICES_WITH_firebase_emulators=firebase-emulators $(TARGET_SERVICES_WITH_mysql)
+TARGET_SERVICES_WITH_ALL=$(TARGET_SERVICES_WITH_firebase_emulators)
+TARGET_SERVICES?=$(TARGET_SERVICES_WITH_$(DOCKER_COMPOSE_SERVICE_REQUIRED))
 
 .PHONY: validate_services
 validate_services:
-	@if [ "$(DOCKER_COMPOSE_SERVICES_all)" = "$(DOCKER_COMPOSE_SERVICES_FULL)" ] ;\
+	@if [ "$(sort $(TARGET_SERVICES_WITH_ALL))" = "$(sort $(DOCKER_COMPOSE_SERVICES_ALL))" ] ;\
 	then \
 		echo "services are valid"; \
 	else \
@@ -38,27 +35,15 @@ validate_services:
 setup: validate_services
 
 .PHONY: run
-run: setup
-	$(ENVS) docker compose up ${SERVICES}
-
+run: setup docker-compose-run
 .PHONY: up
-up: setup
-	$(ENVS) docker compose up -d ${SERVICES}
-
+up: setup docker-compose-up
 .PHONY: down
-down:
-	$(ENVS) docker compose down ${SERVICES}
-
+down: docker-compose-down
 .PHONY: rmi
-rmi: down
-	for service in $(DOCKER_COMPOSE_SERVICES_FULL); do \
-		docker rmi $(DOCKER_COMPOSE_NAME)-$$service:latest; \
-	done
-
+rmi: docker-compose-rmi
 .PHONY: rebuild
-rebuild:
-	$(ENVS) $(MAKE) rmi ; \
-	$(ENVS) docker compose build
+rebuild: docker-compose-rebuild
 
 MYSQL_ENVS=\
 	MYSQL_USER_NAME=root \
@@ -70,6 +55,10 @@ MYSQL_ENVS=\
 .PHONY: mysql-dsn
 mysql-dsn:
 	@$(MYSQL_ENVS) $(MAKE) -C $(PATH_TO_SHAPEAPPMK)/mysql dsn --no-print-directory
+
+.PHONY: mysql-wait
+mysql-wait:
+	$(MYSQL_ENVS) $(MAKE) -C $(PATH_TO_SHAPEAPPMK)/mysql wait
 
 .PHONY: mysql-console
 mysql-console:
