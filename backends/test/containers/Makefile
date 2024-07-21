@@ -56,5 +56,5 @@ include $(PATH_TO_SHAPEAPPMK)/mysql/base.mk
 
 .PHONY: dbmigration-up
 dbmigration-up:
-	GOOSE_DSN='$(MYSQL_DSN)' \
+	APP_ENV=unit_test GOOSE_DSN='$(MYSQL_DSN)' \
 	$(MAKE) -C $(PATH_TO_DBMIGRATIONS) up
