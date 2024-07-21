@@ -1,9 +1,9 @@
-# Local development stage - stages/local/dev
+# Local development stage - stages/local
 
 ## How to run
 
 ```
-make -C stages/local/dev up
+make -C stages/local up
 ```
 
 and Open http://localhost:8000/ in browser.
@@ -11,7 +11,7 @@ and Open http://localhost:8000/ in browser.
 ## How to shutdown
 
 ```
-make -C stages/local/dev down
+make -C stages/local down
 ```
 
 ## How to develop
@@ -22,7 +22,7 @@ You can launch the server manually on host instead of container.
 When you want to launch containers for uisvr, Run the following;
 
 ```
-DEV_TARGET=uisvr make -C stages/local/dev up
+DEV_TARGET=uisvr make -C stages/local up
 ```
 
 When you want to debug uisvr, just do this

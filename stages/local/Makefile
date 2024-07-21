@@ -18,7 +18,7 @@ $(APP_UISVR_DOT_ENV_PATH): uisvr_env_gen
 uisvr_env_gen: $(TEXT_TEMPLATE_CLI)
 	$(BASE_ENVS) $(TEXT_TEMPLATE_CLI) ./uisvr.env.template > $(APP_UISVR_DOT_ENV_PATH)
 
-APP_RPROXY_ENVOY_YAML_TEMPLATE=$(PATH_TO_MIDDLEWARES)/rproxy/envoy.yaml.template
+APP_RPROXY_ENVOY_YAML_TEMPLATE=$(PATH_TO_MIDDLEWARES)/rproxy/local/envoy.yaml.template
 APP_RPROXY_ENVOY_YAML=./envoy.yaml
 $(APP_RPROXY_ENVOY_YAML): envoy_yaml_gen
 .PHONY: envoy_yaml_gen

@@ -18,14 +18,14 @@ include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
 .PHONY: generate
 generate: buf-generate
 
-PATH_TO_LOCAL_DEV=$(PATH_TO_ROOT)/stages/local/dev
+PATH_TO_LOCAL=$(PATH_TO_ROOT)/stages/local
 .PHONY: dev_container_up
 dev_container_up:
-	DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_LOCAL_DEV) up
+	DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_LOCAL) up
 
 .PHONY: dev_container_down
 dev_container_down:
-	DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_LOCAL_DEV) down
+	DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_LOCAL) down
 
 APP_CORS_ALLOW_ORIGINS=http://localhost:$(APP_PORT_UISVR_dev),http://localhost:$(APP_PORT_UISVR_e2e_test)
 FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)"
