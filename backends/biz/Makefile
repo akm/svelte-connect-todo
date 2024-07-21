@@ -31,5 +31,5 @@ dump-schema-sql: test-containers-up dump-schema-sql-impl test-containers-down
 dump-schema-sql-impl:
 	$(MYSQL_ENVS) \
 	DUMP_OPTS=--no-data \
-	DUMP_DEST=$(abspath $(SCHEMA_SQL)) \
+	DUMP_POST_PROCESS='| grep -v "Dump completed on" > $(abspath $(SCHEMA_SQL))' \
 	$(MAKE) -C $(PATH_TO_SHAPEAPPMK)/mysql dump
