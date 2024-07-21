@@ -11,9 +11,8 @@ build: golang-build
 include $(PATH_TO_SHAPEAPPMK)/golangci-lint/lint.mk
 lint: golangci-lint-lint
 
-GOOSE_TARGET_STAGE?=local/dev
-GOOSE_TARGET_STAGE_PATH?=$(PATH_TO_ROOT)/stages/$(GOOSE_TARGET_STAGE)
-GOOSE_DSN=$(shell $(MAKE) -C $(GOOSE_TARGET_STAGE_PATH) mysql-dsn)
+GOOSE_TARGET_ENV_PATH?=$(PATH_TO_ROOT)/stages/local/dev
+GOOSE_DSN?=$(shell $(MAKE) -C $(GOOSE_TARGET_ENV_PATH) mysql-dsn)
 GOOSE_MAIN_PACKAGE=./cmd/runner
 GOOSE_ENVS=\
 	APP_ENV=$(APP_ENV) \
