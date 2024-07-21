@@ -1,12 +1,12 @@
 # Variable substitution
 # https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution
 # 環境変数は local/Makefile で設定されています。
-name: "svelte-connect-todo-mw_localdev"
+name: "svelte-connect-todo-local"
 services:
   firebase-emulators:
     hostname: firebase-emulators
     build:
-      context: ../../../middlewares/firebase-emulators/local
+      context: ../../middlewares/firebase-emulators/local
       dockerfile: Dockerfile
     ports:
       - "${APP_PORT_FIREBASE_AUTH_dev}:9099"
@@ -28,7 +28,7 @@ services:
     ports:
       - "${APP_PORT_MYSQL_dev}:3306"
     volumes:
-      - ../../../middlewares/mysql/local/conf.d:/etc/mysql/conf.d
+      - ../../middlewares/mysql/local/conf.d:/etc/mysql/conf.d
       - ./data/mysql/log/:/var/log/mysql
       - ./data/mysql/data:/var/lib/mysql
     networks:
@@ -37,7 +37,7 @@ services:
   apisvr:
     hostname: apisvr
     build:
-      context: ../../../backends/apisvr
+      context: ../../backends/apisvr
       dockerfile: Dockerfile
     ports:
       - "${APP_PORT_APISVR_dev}:${APP_PORT_APISVR_dev}"
@@ -52,7 +52,7 @@ services:
   uisvr:
     hostname: uisvr
     build:
-      context: ../../../frontends/uisvr
+      context: ../../frontends/uisvr
       dockerfile: Dockerfile
     environment:
       - PORT=${APP_PORT_UISVR_e2e_test}

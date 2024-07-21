@@ -52,23 +52,7 @@ MYSQL_ENVS=\
 	MYSQL_PORT=$(APP_PORT_MYSQL_unit_test) \
 	MYSQL_DB_NAME=$(APP_MYSQL_DB_NAME)
 
-.PHONY: mysql-envs
-mysql-envs:
-	@echo '$(MYSQL_ENVS)'
-
-MYSQL_DSN=$(shell $(MYSQL_ENVS) $(MAKE) -C $(PATH_TO_SHAPEAPPMK)/mysql dsn --no-print-directory)
-
-.PHONY: mysql-dsn
-mysql-dsn:
-	@echo '$(MYSQL_DSN)'
-
-.PHONY: mysql-wait
-mysql-wait:
-	$(MYSQL_ENVS) $(MAKE) -C $(PATH_TO_SHAPEAPPMK)/mysql wait
-
-.PHONY: mysql-console
-mysql-console:
-	$(MYSQL_ENVS) $(MAKE) -C $(PATH_TO_SHAPEAPPMK)/mysql console
+include $(PATH_TO_SHAPEAPPMK)/mysql/base.mk
 
 .PHONY: dbmigration-up
 dbmigration-up:
