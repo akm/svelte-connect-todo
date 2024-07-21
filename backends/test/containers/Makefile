@@ -37,7 +37,7 @@ setup: validate_services
 .PHONY: run
 run: setup docker-compose-run
 .PHONY: up
-up: setup docker-compose-up mysql-wait
+up: setup docker-compose-up mysql-wait dbmigration-up
 .PHONY: down
 down: docker-compose-down
 .PHONY: rmi
@@ -65,3 +65,8 @@ mysql-wait:
 .PHONY: mysql-console
 mysql-console:
 	$(MYSQL_ENVS) $(MAKE) -C $(PATH_TO_SHAPEAPPMK)/mysql console
+
+.PHONY: dbmigration-up
+dbmigration-up:
+	APP_ENV=unit_test GOOSE_DSN='$(MYSQL_DSN)' \
+	$(MAKE) -C $(PATH_TO_DBMIGRATIONS) up
