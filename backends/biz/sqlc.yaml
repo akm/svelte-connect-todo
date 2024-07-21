@@ -2,7 +2,7 @@ version: "2"
 sql:
   - engine: "mysql"
     queries:
-      - "queries/users.sql"
+      - "queries/tasks.sql"
     schema: "schema.sql"
     gen:
       go:
