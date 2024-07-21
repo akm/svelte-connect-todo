@@ -1,0 +1,33 @@
+# Variable substitution
+# https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution
+# 環境変数は local/Makefile で設定されています。
+name: "svelte-connect-todo-backends-test"
+services:
+  firebase-emulators:
+    hostname: firebase-emulators
+    build:
+      context: ../../../middlewares/firebase-emulators/local
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_PORT_FIREBASE_AUTH_unit_test}:9099"
+    networks:
+      - network1
+    command: firebase emulators:start --import /srv/firebase-emulators/data/firebase --export-on-exit /srv/firebase-emulators/data/firebase
+
+  mysql:
+    image: mysql:8.0.38
+    hostname: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${APP_MYSQL_DB_NAME}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "${APP_PORT_MYSQL_unit_test}:3306"
+    volumes:
+      - ../../../middlewares/mysql/local/conf.d:/etc/mysql/conf.d
+    networks:
+      - network1
+
+networks:
+  network1:
