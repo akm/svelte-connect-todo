@@ -16,8 +16,19 @@ $(SCHEMA_SQL): dump-schema-sql
 
 MYSQL_ENVS=$(shell $(MAKE) -C ../test/containers mysql-envs --no-print-directory)
 
+.PHONY: test-containers-up
+test-containers-up:
+	$(MAKE) -C ../test/containers up
+
+.PHONY: test-containers-down
+test-containers-down:
+	$(MAKE) -C ../test/containers down
+
 .PHONY: dump-schema-sql
-dump-schema-sql:
+dump-schema-sql: test-containers-up dump-schema-sql-impl test-containers-down
+
+.PHONY: dump-schema-sql-impl
+dump-schema-sql-impl:
 	$(MYSQL_ENVS) \
 	DUMP_OPTS=--no-data \
 	DUMP_DEST=$(abspath $(SCHEMA_SQL)) \
