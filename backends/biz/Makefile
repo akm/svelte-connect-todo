@@ -29,7 +29,8 @@ test-containers-down:
 	$(MAKE) -C ../test/containers down
 
 .PHONY: dump-schema-sql
-dump-schema-sql: test-containers-up dump-schema-sql-impl test-containers-down
+dump-schema-sql: test-containers-down test-containers-up dump-schema-sql-impl
+	$(MAKE) test-containers-down
 
 .PHONY: dump-schema-sql-impl
 dump-schema-sql-impl:
