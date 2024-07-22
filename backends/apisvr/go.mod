@@ -51,3 +51,5 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240311132316-a219d84964c2 // indirect
 	google.golang.org/grpc v1.62.1 // indirect
 )
+
+replace biz => ../biz
