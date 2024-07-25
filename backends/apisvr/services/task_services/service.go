@@ -2,16 +2,24 @@ package taskservices
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 
 	v1 "apisvr/gen/task/v1"
 	"apisvr/gen/task/v1/taskv1connect"
+	"apisvr/services/base"
 
 	"connectrpc.com/connect"
 )
 
-type TaskService struct{}
+type TaskService struct {
+	base.ServiceBase
+}
+
+func NewTaskService(pool *sql.DB) *TaskService {
+	return &TaskService{ServiceBase: *base.NewServiceBase("TaskService", pool)}
+}
 
 var _ taskv1connect.TaskServiceHandler = (*TaskService)(nil)
 
