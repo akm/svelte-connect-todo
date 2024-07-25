@@ -12,9 +12,9 @@ message DeleteRequest {
 }
 
 enum TaskStatus {
-  TASK_STATUS_UNKNOWN_UNSPECIFIED = 0;
-  TASK_STATUS_TODO = 1;
-  TASK_STATUS_DONE = 2;
+  UNKNOWN_UNSPECIFIED = 0;
+  TODO = 1;
+  DONE = 2;
 }
 
 message TaskResponse {
