@@ -7,13 +7,13 @@ require (
 	connectrpc.com/connect v1.16.0
 	connectrpc.com/cors v0.1.0
 	firebase.google.com/go/v4 v4.14.0
+	github.com/go-sql-driver/mysql v1.8.1
 	github.com/rs/cors v1.10.1
 	golang.org/x/net v0.24.0
 	google.golang.org/protobuf v1.33.0
 )
 
 require (
-	biz v0.0.0-00010101000000-000000000000 // indirect
 	cloud.google.com/go v0.112.1 // indirect
 	cloud.google.com/go/compute v1.24.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
@@ -26,7 +26,6 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-sql-driver/mysql v1.8.1 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
