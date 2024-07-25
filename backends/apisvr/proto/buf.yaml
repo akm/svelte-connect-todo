@@ -9,3 +9,6 @@ lint:
   except:
     - RPC_RESPONSE_STANDARD_NAME
     - RPC_REQUEST_RESPONSE_UNIQUE
+    # C++ とは違って Go の生成された enum のエントリが重複することはないので冗長な prefix は削除
+    # https://buf.build/docs/lint/rules#enum_value_prefix
+    - ENUM_VALUE_PREFIX
