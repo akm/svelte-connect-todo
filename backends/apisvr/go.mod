@@ -14,6 +14,7 @@ require (
 )
 
 require (
+	biz v0.0.0-00010101000000-000000000000 // indirect
 	cloud.google.com/go v0.112.1 // indirect
 	cloud.google.com/go/compute v1.24.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
