@@ -47,6 +47,28 @@ run:
 .PHONY: dev
 dev: dev_container_up run
 
+PATRH_TO_BIN_LOCAL=bin/server-local
+.PHONY: path_to_bin_local
+path_to_bin_local:
+	@echo $(PATRH_TO_BIN_LOCAL)
+$(PATRH_TO_BIN_LOCAL): build_bin_local
+.PHONY: build_bin_local
+build_bin_local:
+	go build -o $(PATRH_TO_BIN_LOCAL) $(PATH_TO_CMD_APISVR)
+
+PATRH_TO_BIN_PRODUCTION=bin/server-production
+.PHONY: path_to_bin_production
+path_to_bin_production:
+	@echo $(PATRH_TO_BIN_PRODUCTION)
+$(PATRH_TO_BIN_PRODUCTION): build_bin_production
+.PHONY: build_bin_production
+build_bin_production:
+	GOOS=linux \
+	GOARCH=amd64 \
+	CGO_ENABLED=0 \
+	go mod download && \
+	go build -mod=readonly -v -o $(PATRH_TO_BIN_PRODUCTION) $(PATH_TO_CMD_APISVR)
+
 include $(PATH_TO_SHAPEAPPMK)/golang/module.mk
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GOLANG_MODULE_NAME)
 APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local
@@ -56,7 +78,7 @@ container_image_name:
 	@echo $(APP_CONTAINER_IMAGE_NAME)
 
 .PHONY: container_build
-container_build:
+container_build: build_bin_local
 	docker build \
 		-t $(APP_CONTAINER_IMAGE_LOCAL) \
 		-f Dockerfile \

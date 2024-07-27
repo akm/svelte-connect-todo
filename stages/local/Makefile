@@ -56,8 +56,12 @@ validate_services:
 	fi
 
 .PHONY: setup
-setup: validate_services setup_envs
+setup: validate_services setup_envs build_apisvr_bin
 	$(MAKE) -C $(PATH_TO_UISVR) setup
+
+.PHONY: build_apisvr_bin
+build_apisvr_bin:
+	$(MAKE) -C $(PATH_TO_APISVR) build_bin_local
 
 .PHONY: run
 run: setup docker-compose-run
