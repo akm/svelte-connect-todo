@@ -57,11 +57,11 @@ var (
 
 // TaskServiceClient is a client for the task.v1.TaskService service.
 type TaskServiceClient interface {
-	List(context.Context, *connect.Request[v1.TaskListRequest]) (*connect.Response[v1.TaskListResponse], error)
-	Show(context.Context, *connect.Request[v1.TaskId]) (*connect.Response[v1.Task], error)
-	Create(context.Context, *connect.Request[v1.TaskCreateRequest]) (*connect.Response[v1.Task], error)
-	Update(context.Context, *connect.Request[v1.Task]) (*connect.Response[v1.Task], error)
-	Delete(context.Context, *connect.Request[v1.TaskId]) (*connect.Response[v1.TaskId], error)
+	List(context.Context, *connect.Request[v1.TaskServiceListRequest]) (*connect.Response[v1.TaskServiceListResponse], error)
+	Show(context.Context, *connect.Request[v1.ShowRequest]) (*connect.Response[v1.TaskResponse], error)
+	Create(context.Context, *connect.Request[v1.TaskServiceCreateRequest]) (*connect.Response[v1.TaskResponse], error)
+	Update(context.Context, *connect.Request[v1.TaskServiceUpdateRequest]) (*connect.Response[v1.TaskResponse], error)
+	Delete(context.Context, *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.TaskResponse], error)
 }
 
 // NewTaskServiceClient constructs a client for the task.v1.TaskService service. By default, it uses
@@ -74,31 +74,31 @@ type TaskServiceClient interface {
 func NewTaskServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) TaskServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &taskServiceClient{
-		list: connect.NewClient[v1.TaskListRequest, v1.TaskListResponse](
+		list: connect.NewClient[v1.TaskServiceListRequest, v1.TaskServiceListResponse](
 			httpClient,
 			baseURL+TaskServiceListProcedure,
 			connect.WithSchema(taskServiceListMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		show: connect.NewClient[v1.TaskId, v1.Task](
+		show: connect.NewClient[v1.ShowRequest, v1.TaskResponse](
 			httpClient,
 			baseURL+TaskServiceShowProcedure,
 			connect.WithSchema(taskServiceShowMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		create: connect.NewClient[v1.TaskCreateRequest, v1.Task](
+		create: connect.NewClient[v1.TaskServiceCreateRequest, v1.TaskResponse](
 			httpClient,
 			baseURL+TaskServiceCreateProcedure,
 			connect.WithSchema(taskServiceCreateMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		update: connect.NewClient[v1.Task, v1.Task](
+		update: connect.NewClient[v1.TaskServiceUpdateRequest, v1.TaskResponse](
 			httpClient,
 			baseURL+TaskServiceUpdateProcedure,
 			connect.WithSchema(taskServiceUpdateMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		delete: connect.NewClient[v1.TaskId, v1.TaskId](
+		delete: connect.NewClient[v1.DeleteRequest, v1.TaskResponse](
 			httpClient,
 			baseURL+TaskServiceDeleteProcedure,
 			connect.WithSchema(taskServiceDeleteMethodDescriptor),
@@ -109,45 +109,45 @@ func NewTaskServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // taskServiceClient implements TaskServiceClient.
 type taskServiceClient struct {
-	list   *connect.Client[v1.TaskListRequest, v1.TaskListResponse]
-	show   *connect.Client[v1.TaskId, v1.Task]
-	create *connect.Client[v1.TaskCreateRequest, v1.Task]
-	update *connect.Client[v1.Task, v1.Task]
-	delete *connect.Client[v1.TaskId, v1.TaskId]
+	list   *connect.Client[v1.TaskServiceListRequest, v1.TaskServiceListResponse]
+	show   *connect.Client[v1.ShowRequest, v1.TaskResponse]
+	create *connect.Client[v1.TaskServiceCreateRequest, v1.TaskResponse]
+	update *connect.Client[v1.TaskServiceUpdateRequest, v1.TaskResponse]
+	delete *connect.Client[v1.DeleteRequest, v1.TaskResponse]
 }
 
 // List calls task.v1.TaskService.List.
-func (c *taskServiceClient) List(ctx context.Context, req *connect.Request[v1.TaskListRequest]) (*connect.Response[v1.TaskListResponse], error) {
+func (c *taskServiceClient) List(ctx context.Context, req *connect.Request[v1.TaskServiceListRequest]) (*connect.Response[v1.TaskServiceListResponse], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
 // Show calls task.v1.TaskService.Show.
-func (c *taskServiceClient) Show(ctx context.Context, req *connect.Request[v1.TaskId]) (*connect.Response[v1.Task], error) {
+func (c *taskServiceClient) Show(ctx context.Context, req *connect.Request[v1.ShowRequest]) (*connect.Response[v1.TaskResponse], error) {
 	return c.show.CallUnary(ctx, req)
 }
 
 // Create calls task.v1.TaskService.Create.
-func (c *taskServiceClient) Create(ctx context.Context, req *connect.Request[v1.TaskCreateRequest]) (*connect.Response[v1.Task], error) {
+func (c *taskServiceClient) Create(ctx context.Context, req *connect.Request[v1.TaskServiceCreateRequest]) (*connect.Response[v1.TaskResponse], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
 // Update calls task.v1.TaskService.Update.
-func (c *taskServiceClient) Update(ctx context.Context, req *connect.Request[v1.Task]) (*connect.Response[v1.Task], error) {
+func (c *taskServiceClient) Update(ctx context.Context, req *connect.Request[v1.TaskServiceUpdateRequest]) (*connect.Response[v1.TaskResponse], error) {
 	return c.update.CallUnary(ctx, req)
 }
 
 // Delete calls task.v1.TaskService.Delete.
-func (c *taskServiceClient) Delete(ctx context.Context, req *connect.Request[v1.TaskId]) (*connect.Response[v1.TaskId], error) {
+func (c *taskServiceClient) Delete(ctx context.Context, req *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.TaskResponse], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
 // TaskServiceHandler is an implementation of the task.v1.TaskService service.
 type TaskServiceHandler interface {
-	List(context.Context, *connect.Request[v1.TaskListRequest]) (*connect.Response[v1.TaskListResponse], error)
-	Show(context.Context, *connect.Request[v1.TaskId]) (*connect.Response[v1.Task], error)
-	Create(context.Context, *connect.Request[v1.TaskCreateRequest]) (*connect.Response[v1.Task], error)
-	Update(context.Context, *connect.Request[v1.Task]) (*connect.Response[v1.Task], error)
-	Delete(context.Context, *connect.Request[v1.TaskId]) (*connect.Response[v1.TaskId], error)
+	List(context.Context, *connect.Request[v1.TaskServiceListRequest]) (*connect.Response[v1.TaskServiceListResponse], error)
+	Show(context.Context, *connect.Request[v1.ShowRequest]) (*connect.Response[v1.TaskResponse], error)
+	Create(context.Context, *connect.Request[v1.TaskServiceCreateRequest]) (*connect.Response[v1.TaskResponse], error)
+	Update(context.Context, *connect.Request[v1.TaskServiceUpdateRequest]) (*connect.Response[v1.TaskResponse], error)
+	Delete(context.Context, *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.TaskResponse], error)
 }
 
 // NewTaskServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -207,22 +207,22 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect.HandlerOption
 // UnimplementedTaskServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedTaskServiceHandler struct{}
 
-func (UnimplementedTaskServiceHandler) List(context.Context, *connect.Request[v1.TaskListRequest]) (*connect.Response[v1.TaskListResponse], error) {
+func (UnimplementedTaskServiceHandler) List(context.Context, *connect.Request[v1.TaskServiceListRequest]) (*connect.Response[v1.TaskServiceListResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("task.v1.TaskService.List is not implemented"))
 }
 
-func (UnimplementedTaskServiceHandler) Show(context.Context, *connect.Request[v1.TaskId]) (*connect.Response[v1.Task], error) {
+func (UnimplementedTaskServiceHandler) Show(context.Context, *connect.Request[v1.ShowRequest]) (*connect.Response[v1.TaskResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("task.v1.TaskService.Show is not implemented"))
 }
 
-func (UnimplementedTaskServiceHandler) Create(context.Context, *connect.Request[v1.TaskCreateRequest]) (*connect.Response[v1.Task], error) {
+func (UnimplementedTaskServiceHandler) Create(context.Context, *connect.Request[v1.TaskServiceCreateRequest]) (*connect.Response[v1.TaskResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("task.v1.TaskService.Create is not implemented"))
 }
 
-func (UnimplementedTaskServiceHandler) Update(context.Context, *connect.Request[v1.Task]) (*connect.Response[v1.Task], error) {
+func (UnimplementedTaskServiceHandler) Update(context.Context, *connect.Request[v1.TaskServiceUpdateRequest]) (*connect.Response[v1.TaskResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("task.v1.TaskService.Update is not implemented"))
 }
 
-func (UnimplementedTaskServiceHandler) Delete(context.Context, *connect.Request[v1.TaskId]) (*connect.Response[v1.TaskId], error) {
+func (UnimplementedTaskServiceHandler) Delete(context.Context, *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.TaskResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("task.v1.TaskService.Delete is not implemented"))
 }

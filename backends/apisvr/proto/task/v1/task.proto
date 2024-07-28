@@ -4,41 +4,50 @@ package task.v1;
 
 option go_package = "apisvr/gen/task/v1;taskv1";
 
-enum Status {
-  STATUS_UNKNOWN_UNSPECIFIED = 0;
-  STATUS_TODO = 1;
-  STATUS_DONE = 2;
+message ShowRequest {
+  uint64 id = 1;
+}
+message DeleteRequest {
+  uint64 id = 1;
 }
 
-message Task {
+enum TaskStatus {
+  UNKNOWN_UNSPECIFIED = 0;
+  TODO = 1;
+  DONE = 2;
+}
+
+message TaskResponse {
   uint64 id = 1;
   string name = 2;
-  Status status = 3;
+  TaskStatus status = 3;
 }
 
-message TaskId {
+message TaskServiceCreateRequest {
+  string name = 2;
+  TaskStatus status = 3;
+}
+
+message TaskServiceUpdateRequest {
   uint64 id = 1;
+  string name = 2;
+  TaskStatus status = 3;
 }
 
-message TaskListRequest {
+message TaskServiceListRequest {
   uint64 offset = 1;
   uint64 limit = 2;
 }
 
-message TaskListResponse {
+message TaskServiceListResponse {
   uint64 total = 1;
-  repeated Task items = 2;
-}
-
-message TaskCreateRequest {
-  string name = 1;
-  Status status = 2;
+  repeated TaskResponse items = 2;
 }
 
 service TaskService {
-  rpc List(TaskListRequest) returns (TaskListResponse) {}
-  rpc Show(TaskId) returns (Task) {}
-  rpc Create(TaskCreateRequest) returns (Task) {}
-  rpc Update(Task) returns (Task) {}
-  rpc Delete(TaskId) returns (TaskId) {}
+  rpc List(TaskServiceListRequest) returns (TaskServiceListResponse) {}
+  rpc Show(ShowRequest) returns (TaskResponse) {}
+  rpc Create(TaskServiceCreateRequest) returns (TaskResponse) {}
+  rpc Update(TaskServiceUpdateRequest) returns (TaskResponse) {}
+  rpc Delete(DeleteRequest) returns (TaskResponse) {}
 }
