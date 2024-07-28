@@ -47,27 +47,51 @@ run:
 .PHONY: dev
 dev: dev_container_up run
 
-PATRH_TO_BIN_LOCAL=bin/server-local
-.PHONY: path_to_bin_local
-path_to_bin_local:
-	@echo $(PATRH_TO_BIN_LOCAL)
-$(PATRH_TO_BIN_LOCAL): build_bin_local
-.PHONY: build_bin_local
-build_bin_local:
-	go build -o $(PATRH_TO_BIN_LOCAL) $(PATH_TO_CMD_APISVR)
+BUILD_TARGET=./cmd/server
+BINARY_FILE_BASE=./bin/server
 
-PATRH_TO_BIN_PRODUCTION=bin/server-production
-.PHONY: path_to_bin_production
-path_to_bin_production:
-	@echo $(PATRH_TO_BIN_PRODUCTION)
-$(PATRH_TO_BIN_PRODUCTION): build_bin_production
-.PHONY: build_bin_production
-build_bin_production:
-	GOOS=linux \
-	GOARCH=amd64 \
-	CGO_ENABLED=0 \
-	go mod download && \
-	go build -mod=readonly -v -o $(PATRH_TO_BIN_PRODUCTION) $(PATH_TO_CMD_APISVR)
+BINNARY_FILE_linux_amd64=$(BINARY_FILE_BASE)-linux-amd64
+.PHONY: build-linux-amd64
+build-linux-amd64:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+		go build -o $(BINNARY_FILE_linux_amd64) $(BUILD_TARGET)
+
+BINNARY_FILE_linux_arm64=$(BINARY_FILE_BASE)-linux-arm64
+.PHONY: build-linux-arm64
+build-linux-arm64:
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 \
+		go build -o $(BINNARY_FILE_linux_arm64) $(BUILD_TARGET)
+
+BINNARY_FILE_darwin_arm64=$(BINARY_FILE_BASE)-darwin-arm64
+.PHONY: build-darwin-arm64
+build-darwin-arm64:
+	CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 \
+		go build -o $(BINNARY_FILE_darwin_arm64) $(BUILD_TARGET)
+
+BINNARY_FILE_dev=$(BINARY_FILE_BASE)-dev
+.PHONY: build-dev
+build-dev:
+	go build -o $(BINNARY_FILE_dev) $(BUILD_TARGET)
+
+BINARY_FILE_FOR_local=$(BINNARY_FILE_linux_$(LOCAL_GOARCH))
+$(BINARY_FILE_FOR_local):
+	$(MAKE) build-local
+.PHONY: build-local
+build-local: build-linux-$(LOCAL_GOARCH)
+.PHONY: binary-file-for-local
+binary-file-for-local:
+	@echo "$(BINARY_FILE_FOR_local)"
+
+BINARY_FILE_FOR_production=$(BINNARY_FILE_linux_amd64)
+$(BINARY_FILE_FOR_production):
+	$(MAKE) build-production
+.PHONY: build-production
+build-production: build-linux-amd64
+.PHONY: binary-file-for-production
+binary-file-for-production:
+	@echo "$(BINARY_FILE_FOR_production)"
+
+BINARY_FILE=$(BINARY_FILE_FOR_$(APP_STAGE_TYPE))
 
 include $(PATH_TO_SHAPEAPPMK)/golang/module.mk
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GOLANG_MODULE_NAME)
