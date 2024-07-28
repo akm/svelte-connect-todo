@@ -7,3 +7,5 @@ GCLOUD=gcloud --project $(GOOGLE_CLOUD_PROJECT)
 
 APP_CONTAINER_REPOSITORY?=akima
 APP_CONTAINER_IMAGE_TAG=$(shell git show --format='%h' --no-patch)
+
+APP_STAGE_TYPE=production

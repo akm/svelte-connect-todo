@@ -20,12 +20,18 @@ import (
 )
 
 func main() {
+	pool, err := connectDB()
+	if err != nil {
+		log.Fatalf("DB connection error: %v", err) //nolint:gocritic
+	}
+	defer pool.Close()
+
 	mux := http.NewServeMux()
 
 	// Instantiate the YOUR services and Mount them here.
 	authmw := authn.NewMiddleware(auth.Authenticate)
 
-	taskService := &taskservices.TaskService{}
+	taskService := taskservices.NewTaskService(pool)
 	path, handler := taskv1connect.NewTaskServiceHandler(taskService)
 	mux.Handle(path, authmw.Wrap(handler))
 

@@ -1,8 +1,11 @@
 PATH_TO_ROOT=../..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 
+APP_STAGE_TYPE=local
+
 include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
 include $(PATH_TO_SHAPEAPPMK)/docker-compose/base.mk
+include $(PATH_TO_SHAPEAPPMK)/golang/build.mk
 
 DEV_TARGET?=all
 
@@ -11,6 +14,8 @@ DOCKER_COMPOSE_ENVS_BASE=\
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
 	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY) \
 	APP_MYSQL_DB_NAME=$(APP_MYSQL_DB_NAME) \
+	APP_MYSQL_DSN='$(shell $(MAKE) mysql-dsn)' \
+	APP_BINARY_PATH_IN_APISVR=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory binary-file-for-local) \
 	DEV_TARGET=$(DEV_TARGET)
 
 APP_UISVR_DOT_ENV_PATH=./uisvr.env
@@ -42,7 +47,7 @@ TARGET_SERVICES_FOR_DEV_apisvr=firebase-emulators mysql
 TARGET_SERVICES_FOR_DEV_uisvr=$(TARGET_SERVICES_FOR_DEV_apisvr) apisvr
 TARGET_SERVICES_FOR_DEV_rproxy=$(TARGET_SERVICES_FOR_DEV_uisvr) uisvr
 TARGET_SERVICES_FOR_DEV_all=$(TARGET_SERVICES_FOR_DEV_rproxy) rproxy
-DOCKER_COMPOSE_TARGET_SERVICES?=$(TARGET_SERVICES_FOR_DEV_$(DEV_TARGET))
+DOCKER_COMPOSE_TARGET_SERVICES=$(TARGET_SERVICES_FOR_DEV_$(DEV_TARGET))
 
 .PHONY: validate_services
 validate_services:
@@ -55,8 +60,12 @@ validate_services:
 	fi
 
 .PHONY: setup
-setup: validate_services setup_envs
+setup: validate_services setup_envs build_apisvr_bin
 	$(MAKE) -C $(PATH_TO_UISVR) setup
+
+.PHONY: build_apisvr_bin
+build_apisvr_bin:
+	$(MAKE) -C $(PATH_TO_APISVR) build-local
 
 .PHONY: run
 run: setup docker-compose-run
@@ -69,10 +78,12 @@ rmi: docker-compose-rmi
 .PHONY: rebuild
 rebuild: docker-compose-rebuild
 
+MYSQL_HOST=$(shell [ "$(DEV_TARGET)" = "apisvr" ] && echo "127.0.0.1" || echo "mysql")
+
 MYSQL_ENVS=\
 	MYSQL_USER_NAME=root \
 	MYSQL_USER_PASSWORD= \
-	MYSQL_HOST=127.0.0.1 \
+	MYSQL_HOST=$(MYSQL_HOST) \
 	MYSQL_PORT=$(APP_PORT_MYSQL_dev) \
 	MYSQL_DB_NAME=$(APP_MYSQL_DB_NAME)
 

@@ -37,6 +37,7 @@ DEV_VARS=\
 	FIREBASE_AUTH_EMULATOR_HOST
 DEV_ENVS=\
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
+	DB_DSN='$(shell $(MAKE) -C $(PATH_TO_LOCAL) mysql-dsn)' \
 	$(foreach var,$(DEV_VARS),$(var)=$($(var)))
 
 PATH_TO_CMD_APISVR=./cmd/server
@@ -47,18 +48,65 @@ run:
 .PHONY: dev
 dev: dev_container_up run
 
+BUILD_TARGET=./cmd/server
+BINARY_FILE_BASE=./bin/server
+
+BINNARY_FILE_linux_amd64=$(BINARY_FILE_BASE)-linux-amd64
+.PHONY: build-linux-amd64
+build-linux-amd64:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+		go build -o $(BINNARY_FILE_linux_amd64) $(BUILD_TARGET)
+
+BINNARY_FILE_linux_arm64=$(BINARY_FILE_BASE)-linux-arm64
+.PHONY: build-linux-arm64
+build-linux-arm64:
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 \
+		go build -o $(BINNARY_FILE_linux_arm64) $(BUILD_TARGET)
+
+BINNARY_FILE_darwin_arm64=$(BINARY_FILE_BASE)-darwin-arm64
+.PHONY: build-darwin-arm64
+build-darwin-arm64:
+	CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 \
+		go build -o $(BINNARY_FILE_darwin_arm64) $(BUILD_TARGET)
+
+BINNARY_FILE_dev=$(BINARY_FILE_BASE)-dev
+.PHONY: build-dev
+build-dev:
+	go build -o $(BINNARY_FILE_dev) $(BUILD_TARGET)
+
+BINARY_FILE_FOR_local=$(BINNARY_FILE_linux_$(LOCAL_GOARCH))
+$(BINARY_FILE_FOR_local):
+	$(MAKE) build-local
+.PHONY: build-local
+build-local: build-linux-$(LOCAL_GOARCH)
+.PHONY: binary-file-for-local
+binary-file-for-local:
+	@echo "$(BINARY_FILE_FOR_local)"
+
+BINARY_FILE_FOR_production=$(BINNARY_FILE_linux_amd64)
+$(BINARY_FILE_FOR_production):
+	$(MAKE) build-production
+.PHONY: build-production
+build-production: build-linux-amd64
+.PHONY: binary-file-for-production
+binary-file-for-production:
+	@echo "$(BINARY_FILE_FOR_production)"
+
+BINARY_FILE=$(BINARY_FILE_FOR_$(APP_STAGE_TYPE))
+
 include $(PATH_TO_SHAPEAPPMK)/golang/module.mk
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GOLANG_MODULE_NAME)
-APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local
+APP_CONTAINER_IMAGE_dev=$(APP_CONTAINER_IMAGE_NAME):dev
 
 .PHONY: container_image_name
 container_image_name:
 	@echo $(APP_CONTAINER_IMAGE_NAME)
 
 .PHONY: container_build
-container_build:
+container_build: $(BINARY_FILE)
 	docker build \
-		-t $(APP_CONTAINER_IMAGE_LOCAL) \
+		-t $(APP_CONTAINER_IMAGE_dev) \
+		--build-arg APP_BIN_PATH=$(BINARY_FILE) \
 		-f Dockerfile \
 		.
 

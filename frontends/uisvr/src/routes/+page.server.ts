@@ -4,7 +4,7 @@ import { redirect } from '@sveltejs/kit';
 import { TaskService } from '../gen/task/v1/task_connect';
 import { createPromiseClient } from '@connectrpc/connect';
 import { createConnectTransport } from '@connectrpc/connect-node'; // NOT from '@connectrpc/connect-web';
-import { Status } from '../gen/task/v1/task_pb';
+import { TaskStatus } from '../gen/task/v1/task_pb';
 import { apisvrOrigin } from '$lib/server/apisvr';
 
 export async function load(event: ServerLoadEvent): Promise<{ tasks: Task[] }> {
@@ -34,7 +34,7 @@ export async function load(event: ServerLoadEvent): Promise<{ tasks: Task[] }> {
 		tasks: taskListResp.items.map((task) => ({
 			id: task.id,
 			name: task.name,
-			done: task.status === Status.DONE
+			done: task.status === TaskStatus.DONE
 		}))
 	};
 }
