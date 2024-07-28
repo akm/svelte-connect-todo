@@ -3,7 +3,7 @@
 	import { TaskService } from '../gen/task/v1/task_connect';
 	import { createPromiseClient } from '@connectrpc/connect';
 	import { createConnectTransport } from '@connectrpc/connect-web';
-	import { Status } from '../gen/task/v1/task_pb';
+	import { TaskStatus } from '../gen/task/v1/task_pb';
 	import { apisvrOrigin } from '$lib/apisvr';
 	import Icon from '@iconify/svelte';
 
@@ -27,7 +27,7 @@
 					const input = e.currentTarget;
 					const name = input.value;
 
-					const response = await client.create({ name, status: Status.TODO });
+					const response = await client.create({ name, status: TaskStatus.TODO });
 					const { id } = response;
 					data.tasks = [...data.tasks, { id, name, done: false }];
 
@@ -49,7 +49,7 @@
 							await client.update({
 								id: task.id,
 								name: task.name,
-								status: done ? Status.DONE : Status.TODO
+								status: done ? TaskStatus.DONE : TaskStatus.TODO
 							});
 						}}
 					/>
