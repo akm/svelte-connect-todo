@@ -78,10 +78,12 @@ rmi: docker-compose-rmi
 .PHONY: rebuild
 rebuild: docker-compose-rebuild
 
+MYSQL_HOST=$(shell [ "$(DEV_TARGET)" = "apisvr" ] && echo "127.0.0.1" || echo "mysql")
+
 MYSQL_ENVS=\
 	MYSQL_USER_NAME=root \
 	MYSQL_USER_PASSWORD= \
-	MYSQL_HOST=127.0.0.1 \
+	MYSQL_HOST=$(MYSQL_HOST) \
 	MYSQL_PORT=$(APP_PORT_MYSQL_dev) \
 	MYSQL_DB_NAME=$(APP_MYSQL_DB_NAME)
 
