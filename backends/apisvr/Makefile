@@ -37,6 +37,7 @@ DEV_VARS=\
 	FIREBASE_AUTH_EMULATOR_HOST
 DEV_ENVS=\
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
+	DB_DSN='$(shell $(MAKE) -C $(PATH_TO_LOCAL) mysql-dsn)' \
 	$(foreach var,$(DEV_VARS),$(var)=$($(var)))
 
 PATH_TO_CMD_APISVR=./cmd/server
