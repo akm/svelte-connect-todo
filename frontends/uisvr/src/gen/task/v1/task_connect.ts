@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Task, TaskCreateRequest, TaskId, TaskListRequest, TaskListResponse } from "./task_pb.js";
+import { DeleteRequest, ShowRequest, TaskResponse, TaskServiceCreateRequest, TaskServiceListRequest, TaskServiceListResponse, TaskServiceUpdateRequest } from "./task_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -17,8 +17,8 @@ export const TaskService = {
      */
     list: {
       name: "List",
-      I: TaskListRequest,
-      O: TaskListResponse,
+      I: TaskServiceListRequest,
+      O: TaskServiceListResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -26,8 +26,8 @@ export const TaskService = {
      */
     show: {
       name: "Show",
-      I: TaskId,
-      O: Task,
+      I: ShowRequest,
+      O: TaskResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -35,8 +35,8 @@ export const TaskService = {
      */
     create: {
       name: "Create",
-      I: TaskCreateRequest,
-      O: Task,
+      I: TaskServiceCreateRequest,
+      O: TaskResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -44,8 +44,8 @@ export const TaskService = {
      */
     update: {
       name: "Update",
-      I: Task,
-      O: Task,
+      I: TaskServiceUpdateRequest,
+      O: TaskResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -53,8 +53,8 @@ export const TaskService = {
      */
     delete: {
       name: "Delete",
-      I: TaskId,
-      O: TaskId,
+      I: DeleteRequest,
+      O: TaskResponse,
       kind: MethodKind.Unary,
     },
   }
