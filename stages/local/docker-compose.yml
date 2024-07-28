@@ -39,6 +39,8 @@ services:
     build:
       context: ../../backends/apisvr
       dockerfile: Dockerfile
+      args:
+        APP_BIN_PATH: "${APP_BINARY_PATH_IN_APISVR}"
     ports:
       - "${APP_PORT_APISVR_dev}:${APP_PORT_APISVR_dev}"
     environment:

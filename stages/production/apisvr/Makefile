@@ -20,10 +20,10 @@ container_image: build
 .PHONY: build
 build:
 	cd $(PATH_TO_APISVR) && \
-	$(MAKE) build_bin_production && \
+	$(MAKE) build-production && \
 	docker build \
 		--platform linux/amd64 \
-		--build-arg APP_BIN_PATH=$(shell $(MAKE) path_to_bin_production --no-print-directory) \
+		--build-arg APP_BIN_PATH=$(shell $(MAKE) binary-file-for-production --no-print-directory) \
 		-t $(APP_CONTAINER_IMAGE_PRODUCTION) \
 		-f Dockerfile \
 		.
