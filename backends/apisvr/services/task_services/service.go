@@ -109,7 +109,7 @@ func (s *TaskService) Create(ctx context.Context, req *connect.Request[v1.TaskSe
 		return nil, err
 	}
 	if err = validator.Validate(req.Msg); err != nil {
-		return nil, fmt.Errorf("validation failed: %v", err)
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	} else {
 		log.Println("validation succeeded")
 	}
@@ -167,7 +167,7 @@ func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.TaskSe
 		return nil, err
 	}
 	if err = validator.Validate(req.Msg); err != nil {
-		return nil, fmt.Errorf("validation failed: %v", err)
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	} else {
 		log.Println("validation succeeded")
 	}
