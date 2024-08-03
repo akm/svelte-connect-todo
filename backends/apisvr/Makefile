@@ -113,6 +113,5 @@ container_build: $(BINARY_FILE)
 include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
 
 .PHONY: test-connections
-test-connections: $(GRPCURL_CLI) $(BUF_CLI)
-	$(MAKE) -C proto build && \
-	./test-connections.sh
+test-connections: 
+	$(MAKE) -C proto test-connections
