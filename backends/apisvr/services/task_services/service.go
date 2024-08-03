@@ -4,10 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 
 	"connectrpc.com/connect"
-	"github.com/bufbuild/protovalidate-go"
 
 	v1 "apisvr/gen/task/v1"
 	"apisvr/gen/task/v1/taskv1connect"
@@ -104,14 +102,8 @@ func (s *TaskService) Show(ctx context.Context, req *connect.Request[v1.ShowRequ
 func (s *TaskService) Create(ctx context.Context, req *connect.Request[v1.TaskServiceCreateRequest]) (*connect.Response[v1.TaskResponse], error) {
 	s.StartAction(ctx, "Create")
 
-	validator, err := protovalidate.New()
-	if err != nil {
+	if err := s.ValidateMsg(ctx, req.Msg); err != nil {
 		return nil, err
-	}
-	if err = validator.Validate(req.Msg); err != nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, err)
-	} else {
-		log.Println("validation succeeded")
 	}
 
 	queries := models.New(s.Pool)
@@ -162,14 +154,8 @@ func (s *TaskService) Create(ctx context.Context, req *connect.Request[v1.TaskSe
 func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.TaskServiceUpdateRequest]) (*connect.Response[v1.TaskResponse], error) {
 	s.StartAction(ctx, "Update")
 
-	validator, err := protovalidate.New()
-	if err != nil {
+	if err := s.ValidateMsg(ctx, req.Msg); err != nil {
 		return nil, err
-	}
-	if err = validator.Validate(req.Msg); err != nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, err)
-	} else {
-		log.Println("validation succeeded")
 	}
 
 	queries := models.New(s.Pool)
