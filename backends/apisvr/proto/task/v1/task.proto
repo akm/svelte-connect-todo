@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package task.v1;
 
+import "buf/validate/validate.proto";
+
 option go_package = "apisvr/gen/task/v1;taskv1";
 
 message ShowRequest {
@@ -24,13 +26,15 @@ message TaskResponse {
 }
 
 message TaskServiceCreateRequest {
-  string name = 2;
+  // タスク名は1文字以上である必要があります。
+  string name = 2 [(buf.validate.field).string.min_len = 1];
   TaskStatus status = 3;
 }
 
 message TaskServiceUpdateRequest {
   uint64 id = 1;
-  string name = 2;
+  // タスク名は1文字以上である必要があります。
+  string name = 2 [(buf.validate.field).string.min_len = 1];
   TaskStatus status = 3;
 }
 
