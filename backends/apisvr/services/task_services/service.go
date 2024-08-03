@@ -102,6 +102,10 @@ func (s *TaskService) Show(ctx context.Context, req *connect.Request[v1.ShowRequ
 func (s *TaskService) Create(ctx context.Context, req *connect.Request[v1.TaskServiceCreateRequest]) (*connect.Response[v1.TaskResponse], error) {
 	s.StartAction(ctx, "Create")
 
+	if err := s.ValidateMsg(ctx, req.Msg); err != nil {
+		return nil, err
+	}
+
 	queries := models.New(s.Pool)
 
 	var st models.TasksStatus
@@ -149,6 +153,10 @@ func (s *TaskService) Create(ctx context.Context, req *connect.Request[v1.TaskSe
 
 func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.TaskServiceUpdateRequest]) (*connect.Response[v1.TaskResponse], error) {
 	s.StartAction(ctx, "Update")
+
+	if err := s.ValidateMsg(ctx, req.Msg); err != nil {
+		return nil, err
+	}
 
 	queries := models.New(s.Pool)
 

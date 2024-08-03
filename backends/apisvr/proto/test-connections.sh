@@ -34,6 +34,8 @@ fi
 
 curl -v -L --header "Content-Type: application/json" --data '{}' ${APISVR_ORIGIN}/task.v1.TaskService/List
 
+curl -v -L --header "Content-Type: application/json" --data '{"name":"task1", "status":"TODO"}' ${APISVR_ORIGIN}/task.v1.TaskService/Create
+
 buf curl --schema . --protocol connect ${APISVR_ORIGIN}/task.v1.TaskService/List
 buf curl --schema . --protocol grpcweb ${APISVR_ORIGIN}/task.v1.TaskService/List
 

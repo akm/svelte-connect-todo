@@ -17,3 +17,9 @@ lint: buf-lint
 
 .PHONY: generate
 generate: buf-generate
+
+include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
+
+.PHONY: test-connections
+test-connections: $(GRPCURL_CLI) $(BUF_CLI) build
+	./test-connections.sh

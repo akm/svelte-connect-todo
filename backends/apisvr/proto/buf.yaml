@@ -3,6 +3,8 @@ name: buf.build/akima/svelte-connect-todo
 breaking:
   use:
     - FILE
+deps:
+  - buf.build/bufbuild/protovalidate
 lint:
   use:
     - DEFAULT

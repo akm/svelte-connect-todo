@@ -37,7 +37,7 @@ DEV_VARS=\
 	FIREBASE_AUTH_EMULATOR_HOST
 DEV_ENVS=\
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
-	DB_DSN='$(shell $(MAKE) -C $(PATH_TO_LOCAL) mysql-dsn)' \
+	DB_DSN='$(shell DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_LOCAL) mysql-dsn)' \
 	$(foreach var,$(DEV_VARS),$(var)=$($(var)))
 
 PATH_TO_CMD_APISVR=./cmd/server
@@ -113,6 +113,5 @@ container_build: $(BINARY_FILE)
 include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
 
 .PHONY: test-connections
-test-connections: $(GRPCURL_CLI) $(BUF_CLI)
-	$(MAKE) -C proto build && \
-	./test-connections.sh
+test-connections: 
+	$(MAKE) -C proto test-connections
