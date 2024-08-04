@@ -78,7 +78,7 @@ func (s *TaskService) Show(ctx context.Context, req *connect.Request[v1.ShowRequ
 	queries := models.New(s.Pool)
 	task, err := queries.GetTask(ctx, req.Msg.Id)
 	if err != nil {
-		return nil, err
+		return nil, s.ToConnectError(err)
 	}
 
 	var st v1.TaskStatus
@@ -205,7 +205,7 @@ func (s *TaskService) Delete(ctx context.Context, req *connect.Request[v1.Delete
 	queries := models.New(s.Pool)
 	task, err := queries.GetTask(ctx, req.Msg.Id)
 	if err != nil {
-		return nil, err
+		return nil, s.ToConnectError(err)
 	}
 
 	var st v1.TaskStatus
