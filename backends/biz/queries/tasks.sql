@@ -9,6 +9,10 @@ ORDER BY id ASC;
 SELECT * FROM tasks 
 WHERE id = ? LIMIT 1;
 
+-- name: GetTaskForUpdate :one
+SELECT * FROM tasks 
+WHERE id = ? LIMIT 1 FOR UPDATE;
+
 -- name: CreateTask :execresult
 INSERT INTO tasks (
   name, status
