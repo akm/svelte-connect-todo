@@ -13,6 +13,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-testfixtures/testfixtures/v3"
 	"github.com/stretchr/testify/assert"
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
 var (
@@ -123,8 +124,22 @@ func TestTaskServiceCreate(t *testing.T) {
 				Status: taskv1.TaskStatus_TODO,
 			},
 		})
-		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "name is required")
+		if assert.Error(t, err) {
+			if assert.IsTypef(t, &connect.Error{}, err, "expected *connect.Error, got %T", err) {
+				details := err.(*connect.Error).Details()
+				if assert.Len(t, details, 1) {
+					detail := details[0]
+					assert.Equal(t, "google.rpc.BadRequest.FieldViolation", detail.Type())
+					val, err := detail.Value()
+					assert.NoError(t, err)
+					if assert.IsType(t, &errdetails.BadRequest_FieldViolation{}, val, "expected *errdetails.BadRequest_FieldViolation, got %T", val) {
+						fieldViolation := val.(*errdetails.BadRequest_FieldViolation)
+						assert.Equal(t, "name", fieldViolation.Field)
+						assert.Equal(t, "value length must be at least 1 characters", fieldViolation.Description)
+					}
+				}
+			}
+		}
 		assert.Nil(t, resp)
 	})
 	t.Run("invalid status", func(t *testing.T) {
@@ -169,8 +184,22 @@ func TestTaskServiceUpdate(t *testing.T) {
 				Status: taskv1.TaskStatus_DONE,
 			},
 		})
-		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "name is required")
+		if assert.Error(t, err) {
+			if assert.IsTypef(t, &connect.Error{}, err, "expected *connect.Error, got %T", err) {
+				details := err.(*connect.Error).Details()
+				if assert.Len(t, details, 1) {
+					detail := details[0]
+					assert.Equal(t, "google.rpc.BadRequest.FieldViolation", detail.Type())
+					val, err := detail.Value()
+					assert.NoError(t, err)
+					if assert.IsType(t, &errdetails.BadRequest_FieldViolation{}, val, "expected *errdetails.BadRequest_FieldViolation, got %T", val) {
+						fieldViolation := val.(*errdetails.BadRequest_FieldViolation)
+						assert.Equal(t, "name", fieldViolation.Field)
+						assert.Equal(t, "value length must be at least 1 characters", fieldViolation.Description)
+					}
+				}
+			}
+		}
 		assert.Nil(t, resp)
 	})
 	t.Run("invalid status", func(t *testing.T) {
@@ -195,8 +224,10 @@ func TestTaskServiceUpdate(t *testing.T) {
 				Status: taskv1.TaskStatus_DONE,
 			},
 		})
-		if assert.Error(t, err) {
-			assert.Contains(t, err.Error(), "not found")
+		if assert.IsTypef(t, &connect.Error{}, err, "expected connect.Error, got %T", err) {
+			connectErr := err.(*connect.Error)
+			assert.Equal(t, connect.CodeNotFound, connectErr.Code())
+			assert.Contains(t, connectErr.Message(), "task not found")
 		}
 		assert.Nil(t, resp)
 	})
@@ -222,7 +253,11 @@ func TestTaskServiceDelete(t *testing.T) {
 			Msg: &taskv1.DeleteRequest{Id: 999999},
 		})
 		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "not found")
+		if assert.IsTypef(t, &connect.Error{}, err, "expected connect.Error, got %T", err) {
+			connectErr := err.(*connect.Error)
+			assert.Equal(t, connect.CodeNotFound, connectErr.Code())
+			assert.Contains(t, connectErr.Message(), "task not found")
+		}
 		assert.Nil(t, resp)
 	})
 }
