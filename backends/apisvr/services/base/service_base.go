@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"log"
 
 	"connectrpc.com/connect"
@@ -52,4 +53,20 @@ func (s *ServiceBase) ValidateMsg(ctx context.Context, msg protoreflect.ProtoMes
 		}
 	}
 	return nil
+}
+
+func (s *ServiceBase) ToConnectError(err error) *connect.Error {
+	if err == nil {
+		return nil
+	}
+	if _, ok := err.(*connect.Error); ok {
+		return err.(*connect.Error)
+	}
+
+	switch err {
+	case sql.ErrNoRows:
+		return connect.NewError(connect.CodeNotFound, fmt.Errorf("task not found"))
+	default:
+		return connect.NewError(connect.CodeInternal, err)
+	}
 }

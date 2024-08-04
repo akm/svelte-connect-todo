@@ -115,3 +115,30 @@ include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
 .PHONY: test-connections
 test-connections: 
 	$(MAKE) -C proto test-connections
+
+PATH_TO_BACKENDS_TEST_CONTAINERS=$(PATH_TO_BACKENDS)/test/containers
+.PHONY: test_container_up
+test_container_up:
+	$(MAKE) -C $(PATH_TO_BACKENDS_TEST_CONTAINERS) up
+
+.PHONY: test_container_down
+test_container_down:
+	$(MAKE) -C $(PATH_TO_BACKENDS_TEST_CONTAINERS) down
+
+# テストに渡される TEST_FIXTURE_DIR は絶対パス。テストはそれぞれの_test.goファイルのディレクトリで実行されるため。
+TEST_FIXTURE_DIR=$(abspath $(PATH_TO_BIZ)/test/fixtures)
+
+TEST_VARS=\
+	APP_STAGE \
+	APP_CORS_ALLOW_ORIGINS \
+	APP_FIREBASE_API_KEY \
+	FIREBASE_AUTH_EMULATOR_HOST
+TEST_ENVS=\
+	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
+	TEST_DB_DSN='$(shell $(MAKE) -C $(PATH_TO_BACKENDS_TEST_CONTAINERS) mysql-dsn)' \
+	TEST_FIXTURE_DIR=$(TEST_FIXTURE_DIR) \
+	$(foreach var,$(TEST_VARS),$(var)=$($(var)))
+
+.PHONY: test
+test: test_container_up
+	$(TEST_ENVS) go test ./...

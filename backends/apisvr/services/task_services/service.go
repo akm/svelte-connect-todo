@@ -78,7 +78,7 @@ func (s *TaskService) Show(ctx context.Context, req *connect.Request[v1.ShowRequ
 	queries := models.New(s.Pool)
 	task, err := queries.GetTask(ctx, req.Msg.Id)
 	if err != nil {
-		return nil, err
+		return nil, s.ToConnectError(err)
 	}
 
 	var st v1.TaskStatus
@@ -158,7 +158,17 @@ func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.TaskSe
 		return nil, err
 	}
 
-	queries := models.New(s.Pool)
+	// 参考 https://docs.sqlc.dev/en/stable/howto/transactions.html
+	tx, err := s.Pool.Begin()
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	qtx := models.New(s.Pool).WithTx(tx)
+	if _, err := qtx.GetTaskForUpdate(ctx, req.Msg.Id); err != nil {
+		return nil, s.ToConnectError(err)
+	}
 
 	var st models.TasksStatus
 	switch req.Msg.Status {
@@ -175,8 +185,8 @@ func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.TaskSe
 		Name:   req.Msg.Name,
 		Status: st,
 	}
-	if err := queries.UpdateTask(ctx, task); err != nil {
-		return nil, err
+	if err := qtx.UpdateTask(ctx, task); err != nil {
+		return nil, s.ToConnectError(err)
 	}
 
 	{
@@ -205,7 +215,7 @@ func (s *TaskService) Delete(ctx context.Context, req *connect.Request[v1.Delete
 	queries := models.New(s.Pool)
 	task, err := queries.GetTask(ctx, req.Msg.Id)
 	if err != nil {
-		return nil, err
+		return nil, s.ToConnectError(err)
 	}
 
 	var st v1.TaskStatus
