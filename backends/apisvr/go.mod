@@ -11,7 +11,9 @@ require (
 	firebase.google.com/go/v4 v4.14.0
 	github.com/bufbuild/protovalidate-go v0.6.3
 	github.com/go-sql-driver/mysql v1.8.1
+	github.com/go-testfixtures/testfixtures/v3 v3.12.0
 	github.com/rs/cors v1.10.1
+	github.com/stretchr/testify v1.9.0
 	golang.org/x/net v0.24.0
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240401170217-c3f982113cda
 	google.golang.org/protobuf v1.34.2
@@ -37,7 +39,6 @@ require (
 	github.com/go-faster/errors v0.7.1 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-testfixtures/testfixtures/v3 v3.12.0 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
@@ -54,7 +55,6 @@ require (
 	github.com/segmentio/asm v1.2.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/stoewer/go-strcase v1.3.0 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.49.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.49.0 // indirect
