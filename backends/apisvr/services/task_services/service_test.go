@@ -20,15 +20,19 @@ func TestMain(m *testing.M) {
 	// Open connection to the test database.
 	// Do NOT import fixtures in a production database!
 	// Existing data would be deleted.
-	db, err = sql.Open("mysql", os.Getenv("TEST_DB_DSN"))
+	dsn := os.Getenv("TEST_DB_DSN")
+	log.Printf("TEST_DB_DSN: %s", dsn)
+	db, err = sql.Open("mysql", dsn)
 	if err != nil {
-
+		log.Fatalf("unable to open database: %v", err)
 	}
 
+	fixtureDir := os.Getenv("TEST_FIXTURE_DIR")
+	log.Printf("TEST_FIXTURE_DIR: %s", fixtureDir)
 	fixtures, err = testfixtures.New(
-		testfixtures.Database(db),                             // You database connection
-		testfixtures.Dialect("mysql"),                         // Available: "postgresql", "timescaledb", "mysql", "mariadb", "sqlite" and "sqlserver"
-		testfixtures.Directory(os.Getenv("TEST_FIXTURE_DIR")), // The directory containing the YAML files
+		testfixtures.Database(db),          // You database connection
+		testfixtures.Dialect("mysql"),      // Available: "postgresql", "timescaledb", "mysql", "mariadb", "sqlite" and "sqlserver"
+		testfixtures.Directory(fixtureDir), // The directory containing the YAML files
 	)
 	if err != nil {
 		log.Fatalf("unable to load fixtures: %v", err)
