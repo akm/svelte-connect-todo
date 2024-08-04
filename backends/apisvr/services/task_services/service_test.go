@@ -50,4 +50,6 @@ func prepareTestDatabase(t *testing.T) {
 
 func TestTaskServiceList(t *testing.T) {
 	prepareTestDatabase(t)
+
+	t.Error("not implemented")
 }
