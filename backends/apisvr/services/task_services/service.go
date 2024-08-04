@@ -159,7 +159,6 @@ func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.TaskSe
 	}
 
 	// 参考 https://docs.sqlc.dev/en/stable/howto/transactions.html
-	// でも SELECT FOR UPDATE についての記載はない・・・
 	tx, err := s.Pool.Begin()
 	if err != nil {
 		return nil, err
@@ -167,7 +166,7 @@ func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.TaskSe
 	defer tx.Rollback()
 
 	qtx := models.New(s.Pool).WithTx(tx)
-	if _, err := qtx.GetTask(ctx, req.Msg.Id); err != nil {
+	if _, err := qtx.GetTaskForUpdate(ctx, req.Msg.Id); err != nil {
 		return nil, s.ToConnectError(err)
 	}
 
