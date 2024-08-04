@@ -34,6 +34,7 @@ func TestMain(m *testing.M) {
 		testfixtures.Database(db),          // You database connection
 		testfixtures.Dialect("mysql"),      // Available: "postgresql", "timescaledb", "mysql", "mariadb", "sqlite" and "sqlserver"
 		testfixtures.Directory(fixtureDir), // The directory containing the YAML files
+		testfixtures.SkipResetSequences(),  // Disable the execution of the SQL command that resets the sequences
 	)
 	if err != nil {
 		log.Fatalf("unable to load fixtures: %v", err)
