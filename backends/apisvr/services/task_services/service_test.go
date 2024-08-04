@@ -74,66 +74,155 @@ func TestTaskServiceList(t *testing.T) {
 func TestTaskServiceShow(t *testing.T) {
 	prepareTestDatabase(t)
 
-	ctx := context.Background()
-
 	srv := NewTaskService(pool)
-	resp, err := srv.Show(ctx, &connect.Request[taskv1.ShowRequest]{
-		Msg: &taskv1.ShowRequest{Id: 1},
+
+	t.Run("valid id", func(t *testing.T) {
+		ctx := context.Background()
+		resp, err := srv.Show(ctx, &connect.Request[taskv1.ShowRequest]{
+			Msg: &taskv1.ShowRequest{Id: 1},
+		})
+		assert.NoError(t, err)
+		assert.Equal(t, uint64(1), resp.Msg.Id)
+		assert.Equal(t, "Survey the market", resp.Msg.Name)
+		assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Status)
 	})
-	assert.NoError(t, err)
-	assert.Equal(t, uint64(1), resp.Msg.Id)
-	assert.Equal(t, "Survey the market", resp.Msg.Name)
-	assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Status)
+	t.Run("invalid id", func(t *testing.T) {
+		ctx := context.Background()
+		resp, err := srv.Show(ctx, &connect.Request[taskv1.ShowRequest]{
+			Msg: &taskv1.ShowRequest{Id: 999999},
+		})
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "not found")
+		assert.Nil(t, resp)
+	})
 }
 
 func TestTaskServiceCreate(t *testing.T) {
 	prepareTestDatabase(t)
 
-	ctx := context.Background()
-
 	srv := NewTaskService(pool)
-	resp, err := srv.Create(ctx, &connect.Request[taskv1.TaskServiceCreateRequest]{
-		Msg: &taskv1.TaskServiceCreateRequest{
-			Name:   "Implement the project",
-			Status: taskv1.TaskStatus_TODO,
-		},
+
+	t.Run("valid task", func(t *testing.T) {
+		ctx := context.Background()
+		resp, err := srv.Create(ctx, &connect.Request[taskv1.TaskServiceCreateRequest]{
+			Msg: &taskv1.TaskServiceCreateRequest{
+				Name:   "Implement the project",
+				Status: taskv1.TaskStatus_TODO,
+			},
+		})
+		assert.NoError(t, err)
+		assert.Greater(t, resp.Msg.Id, uint64(2))
+		assert.Equal(t, "Implement the project", resp.Msg.Name)
+		assert.Equal(t, taskv1.TaskStatus_TODO, resp.Msg.Status)
 	})
-	assert.NoError(t, err)
-	assert.Greater(t, resp.Msg.Id, uint64(2))
-	assert.Equal(t, "Implement the project", resp.Msg.Name)
-	assert.Equal(t, taskv1.TaskStatus_TODO, resp.Msg.Status)
+	t.Run("empty name", func(t *testing.T) {
+		ctx := context.Background()
+		resp, err := srv.Create(ctx, &connect.Request[taskv1.TaskServiceCreateRequest]{
+			Msg: &taskv1.TaskServiceCreateRequest{
+				Name:   "",
+				Status: taskv1.TaskStatus_TODO,
+			},
+		})
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "name is required")
+		assert.Nil(t, resp)
+	})
+	t.Run("invalid status", func(t *testing.T) {
+		ctx := context.Background()
+		resp, err := srv.Create(ctx, &connect.Request[taskv1.TaskServiceCreateRequest]{
+			Msg: &taskv1.TaskServiceCreateRequest{
+				Name:   "Implement the project",
+				Status: taskv1.TaskStatus_UNKNOWN_UNSPECIFIED,
+			},
+		})
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "unknown status")
+		assert.Nil(t, resp)
+	})
 }
 
 func TestTaskServiceUpdate(t *testing.T) {
 	prepareTestDatabase(t)
 
-	ctx := context.Background()
-
 	srv := NewTaskService(pool)
-	resp, err := srv.Update(ctx, &connect.Request[taskv1.TaskServiceUpdateRequest]{
-		Msg: &taskv1.TaskServiceUpdateRequest{
-			Id:     2,
-			Name:   "Make the project schedule",
-			Status: taskv1.TaskStatus_DONE,
-		},
+
+	t.Run("valid task", func(t *testing.T) {
+		ctx := context.Background()
+		resp, err := srv.Update(ctx, &connect.Request[taskv1.TaskServiceUpdateRequest]{
+			Msg: &taskv1.TaskServiceUpdateRequest{
+				Id:     2,
+				Name:   "Make the project schedule",
+				Status: taskv1.TaskStatus_DONE,
+			},
+		})
+		assert.NoError(t, err)
+		assert.Equal(t, uint64(2), resp.Msg.Id)
+		assert.Equal(t, "Make the project schedule", resp.Msg.Name)
+		assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Status)
 	})
-	assert.NoError(t, err)
-	assert.Equal(t, uint64(2), resp.Msg.Id)
-	assert.Equal(t, "Make the project schedule", resp.Msg.Name)
-	assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Status)
+	t.Run("empty name", func(t *testing.T) {
+		ctx := context.Background()
+		resp, err := srv.Update(ctx, &connect.Request[taskv1.TaskServiceUpdateRequest]{
+			Msg: &taskv1.TaskServiceUpdateRequest{
+				Id:     2,
+				Name:   "",
+				Status: taskv1.TaskStatus_DONE,
+			},
+		})
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "name is required")
+		assert.Nil(t, resp)
+	})
+	t.Run("invalid status", func(t *testing.T) {
+		ctx := context.Background()
+		resp, err := srv.Update(ctx, &connect.Request[taskv1.TaskServiceUpdateRequest]{
+			Msg: &taskv1.TaskServiceUpdateRequest{
+				Id:     2,
+				Name:   "Make the project schedule",
+				Status: taskv1.TaskStatus_UNKNOWN_UNSPECIFIED,
+			},
+		})
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "unknown status")
+		assert.Nil(t, resp)
+	})
+	t.Run("invalid id", func(t *testing.T) {
+		ctx := context.Background()
+		resp, err := srv.Update(ctx, &connect.Request[taskv1.TaskServiceUpdateRequest]{
+			Msg: &taskv1.TaskServiceUpdateRequest{
+				Id:     999999,
+				Name:   "Make the project schedule",
+				Status: taskv1.TaskStatus_DONE,
+			},
+		})
+		if assert.Error(t, err) {
+			assert.Contains(t, err.Error(), "not found")
+		}
+		assert.Nil(t, resp)
+	})
 }
 
 func TestTaskServiceDelete(t *testing.T) {
 	prepareTestDatabase(t)
-
-	ctx := context.Background()
-
 	srv := NewTaskService(pool)
-	resp, err := srv.Delete(ctx, &connect.Request[taskv1.DeleteRequest]{
-		Msg: &taskv1.DeleteRequest{Id: 1},
+
+	t.Run("valid task", func(t *testing.T) {
+		ctx := context.Background()
+		resp, err := srv.Delete(ctx, &connect.Request[taskv1.DeleteRequest]{
+			Msg: &taskv1.DeleteRequest{Id: 1},
+		})
+		assert.NoError(t, err)
+		assert.Equal(t, uint64(1), resp.Msg.Id)
+		assert.Equal(t, "Survey the market", resp.Msg.Name)
+		assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Status)
 	})
-	assert.NoError(t, err)
-	assert.Equal(t, uint64(1), resp.Msg.Id)
-	assert.Equal(t, "Survey the market", resp.Msg.Name)
-	assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Status)
+	t.Run("invalid id", func(t *testing.T) {
+		ctx := context.Background()
+		resp, err := srv.Delete(ctx, &connect.Request[taskv1.DeleteRequest]{
+			Msg: &taskv1.DeleteRequest{Id: 999999},
+		})
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "not found")
+		assert.Nil(t, resp)
+	})
 }
