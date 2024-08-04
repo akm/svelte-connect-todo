@@ -125,6 +125,9 @@ test_container_up:
 test_container_down:
 	$(MAKE) -C $(PATH_TO_BACKENDS_TEST_CONTAINERS) down
 
+# テストに渡される TEST_FIXTURE_DIR は絶対パス。テストはそれぞれの_test.goファイルのディレクトリで実行されるため。
+TEST_FIXTURE_DIR=$(abspath $(PATH_TO_BIZ)/test/fixtures)
+
 TEST_VARS=\
 	APP_STAGE \
 	APP_CORS_ALLOW_ORIGINS \
@@ -132,7 +135,8 @@ TEST_VARS=\
 	FIREBASE_AUTH_EMULATOR_HOST
 TEST_ENVS=\
 	GOOGLE_CLOUD_PROJECT=$(GOOGLE_CLOUD_PROJECT_LOCAL) \
-	DB_DSN='$(shell $(MAKE) -C $(PATH_TO_BACKENDS_TEST_CONTAINERS) mysql-dsn)' \
+	TEST_DB_DSN='$(shell $(MAKE) -C $(PATH_TO_BACKENDS_TEST_CONTAINERS) mysql-dsn)' \
+	TEST_FIXTURE_DIR=$(TEST_FIXTURE_DIR) \
 	$(foreach var,$(TEST_VARS),$(var)=$($(var)))
 
 .PHONY: test
