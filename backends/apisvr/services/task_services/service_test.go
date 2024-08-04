@@ -1,13 +1,18 @@
 package taskservices
 
 import (
+	"context"
 	"database/sql"
 	"log"
 	"os"
 	"testing"
 
+	taskv1 "apisvr/gen/task/v1"
+
+	"connectrpc.com/connect"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-testfixtures/testfixtures/v3"
+	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -44,13 +49,91 @@ func TestMain(m *testing.M) {
 }
 
 func prepareTestDatabase(t *testing.T) {
-	if err := fixtures.Load(); err != nil {
-		t.Fatalf("unable to load fixtures: %v", err)
-	}
+	err := fixtures.Load()
+	assert.NoError(t, err)
 }
 
 func TestTaskServiceList(t *testing.T) {
 	prepareTestDatabase(t)
 
-	t.Error("not implemented")
+	ctx := context.Background()
+
+	srv := NewTaskService(pool)
+	resp, err := srv.List(ctx, &connect.Request[taskv1.TaskServiceListRequest]{
+		Msg: &taskv1.TaskServiceListRequest{},
+	})
+	assert.NoError(t, err)
+
+	assert.Equal(t, "Survey the market", resp.Msg.Items[0].Name)
+	assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Items[0].Status)
+
+	assert.Equal(t, "Plan the project", resp.Msg.Items[1].Name)
+	assert.Equal(t, taskv1.TaskStatus_TODO, resp.Msg.Items[1].Status)
+}
+
+func TestTaskServiceShow(t *testing.T) {
+	prepareTestDatabase(t)
+
+	ctx := context.Background()
+
+	srv := NewTaskService(pool)
+	resp, err := srv.Show(ctx, &connect.Request[taskv1.ShowRequest]{
+		Msg: &taskv1.ShowRequest{Id: 1},
+	})
+	assert.NoError(t, err)
+	assert.Equal(t, uint64(1), resp.Msg.Id)
+	assert.Equal(t, "Survey the market", resp.Msg.Name)
+	assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Status)
+}
+
+func TestTaskServiceCreate(t *testing.T) {
+	prepareTestDatabase(t)
+
+	ctx := context.Background()
+
+	srv := NewTaskService(pool)
+	resp, err := srv.Create(ctx, &connect.Request[taskv1.TaskServiceCreateRequest]{
+		Msg: &taskv1.TaskServiceCreateRequest{
+			Name:   "Implement the project",
+			Status: taskv1.TaskStatus_TODO,
+		},
+	})
+	assert.NoError(t, err)
+	assert.Greater(t, resp.Msg.Id, uint64(2))
+	assert.Equal(t, "Implement the project", resp.Msg.Name)
+	assert.Equal(t, taskv1.TaskStatus_TODO, resp.Msg.Status)
+}
+
+func TestTaskServiceUpdate(t *testing.T) {
+	prepareTestDatabase(t)
+
+	ctx := context.Background()
+
+	srv := NewTaskService(pool)
+	resp, err := srv.Update(ctx, &connect.Request[taskv1.TaskServiceUpdateRequest]{
+		Msg: &taskv1.TaskServiceUpdateRequest{
+			Id:     2,
+			Name:   "Make the project schedule",
+			Status: taskv1.TaskStatus_DONE,
+		},
+	})
+	assert.NoError(t, err)
+	assert.Equal(t, uint64(2), resp.Msg.Id)
+	assert.Equal(t, "Make the project schedule", resp.Msg.Name)
+	assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Status)
+}
+
+func TestTaskServiceDelete(t *testing.T) {
+	prepareTestDatabase(t)
+
+	ctx := context.Background()
+
+	srv := NewTaskService(pool)
+	resp, err := srv.Delete(ctx, &connect.Request[taskv1.DeleteRequest]{
+		Msg: &taskv1.DeleteRequest{Id: 1},
+	})
+	assert.NoError(t, err)
+	assert.Equal(t, uint64(1), resp.Msg.Id)
+	assert.Equal(t, "Survey the market", resp.Msg.Name)
+	assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Status)
 }
