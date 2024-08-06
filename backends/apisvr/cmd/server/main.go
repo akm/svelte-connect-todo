@@ -47,12 +47,12 @@ func main() {
 
 	// https://connectrpc.com/docs/go/deployment/
 	// https://github.com/connectrpc/examples-go/blob/main/cmd/demoserver/main.go
-	muxHandler := withCORS(h2c.NewHandler(serviceMux, &http2.Server{}))
-	muxHandler = withRequestDumping(muxHandler)
+	serviceMuxHandler := withCORS(h2c.NewHandler(serviceMux, &http2.Server{}))
+	serviceMuxHandler = withRequestDumping(serviceMuxHandler)
 
 	srv := &http.Server{
 		Addr:              serverHostAndPort,
-		Handler:           h2c.NewHandler(muxHandler, &http2.Server{}),
+		Handler:           h2c.NewHandler(serviceMuxHandler, &http2.Server{}),
 		ReadHeaderTimeout: time.Second,
 		ReadTimeout:       5 * time.Minute,
 		WriteTimeout:      5 * time.Minute,
