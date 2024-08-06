@@ -49,7 +49,7 @@ func main() {
 	// https://connectrpc.com/docs/go/deployment/
 	// https://github.com/connectrpc/examples-go/blob/main/cmd/demoserver/main.go
 	rootMux := http.NewServeMux()
-	rootMux.Handle("/images/{id}", http.HandlerFunc(images.GetImage))
+	rootMux.Handle("GET /images/{id}", http.HandlerFunc(images.GetImage))
 	rootMux.Handle("/", h2c.NewHandler(serviceMux, &http2.Server{}))
 
 	serviceMuxHandler := withCORS(rootMux)
