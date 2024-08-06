@@ -16,6 +16,7 @@ import (
 
 	"apisvr/gen/task/v1/taskv1connect"
 	"apisvr/services/auth"
+	"apisvr/services/images"
 	taskservices "apisvr/services/task_services"
 )
 
@@ -26,14 +27,14 @@ func main() {
 	}
 	defer pool.Close()
 
-	mux := http.NewServeMux()
+	serviceMux := http.NewServeMux()
 
 	// Instantiate the YOUR services and Mount them here.
 	authmw := authn.NewMiddleware(auth.Authenticate)
 
 	taskService := taskservices.NewTaskService(pool)
 	path, handler := taskv1connect.NewTaskServiceHandler(taskService)
-	mux.Handle(path, authmw.Wrap(handler))
+	serviceMux.Handle(path, authmw.Wrap(handler))
 
 	// https://cloud.google.com/run/docs/triggering/grpc?hl=ja
 	serverHostAndPort := os.Getenv("APP_SERVER_HOST_AND_PORT")
@@ -47,12 +48,16 @@ func main() {
 
 	// https://connectrpc.com/docs/go/deployment/
 	// https://github.com/connectrpc/examples-go/blob/main/cmd/demoserver/main.go
-	muxHandler := withCORS(h2c.NewHandler(mux, &http2.Server{}))
-	muxHandler = withRequestDumping(muxHandler)
+	rootMux := http.NewServeMux()
+	rootMux.Handle("GET /images/{id}", http.HandlerFunc(images.GetImage))
+	rootMux.Handle("/", h2c.NewHandler(serviceMux, &http2.Server{}))
+
+	serviceMuxHandler := withCORS(rootMux)
+	serviceMuxHandler = withRequestDumping(serviceMuxHandler)
 
 	srv := &http.Server{
 		Addr:              serverHostAndPort,
-		Handler:           h2c.NewHandler(muxHandler, &http2.Server{}),
+		Handler:           serviceMuxHandler,
 		ReadHeaderTimeout: time.Second,
 		ReadTimeout:       5 * time.Minute,
 		WriteTimeout:      5 * time.Minute,
