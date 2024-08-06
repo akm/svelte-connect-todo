@@ -26,14 +26,14 @@ func main() {
 	}
 	defer pool.Close()
 
-	mux := http.NewServeMux()
+	serviceMux := http.NewServeMux()
 
 	// Instantiate the YOUR services and Mount them here.
 	authmw := authn.NewMiddleware(auth.Authenticate)
 
 	taskService := taskservices.NewTaskService(pool)
 	path, handler := taskv1connect.NewTaskServiceHandler(taskService)
-	mux.Handle(path, authmw.Wrap(handler))
+	serviceMux.Handle(path, authmw.Wrap(handler))
 
 	// https://cloud.google.com/run/docs/triggering/grpc?hl=ja
 	serverHostAndPort := os.Getenv("APP_SERVER_HOST_AND_PORT")
@@ -47,7 +47,7 @@ func main() {
 
 	// https://connectrpc.com/docs/go/deployment/
 	// https://github.com/connectrpc/examples-go/blob/main/cmd/demoserver/main.go
-	muxHandler := withCORS(h2c.NewHandler(mux, &http2.Server{}))
+	muxHandler := withCORS(h2c.NewHandler(serviceMux, &http2.Server{}))
 	muxHandler = withRequestDumping(muxHandler)
 
 	srv := &http.Server{
