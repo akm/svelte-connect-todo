@@ -16,6 +16,7 @@ import (
 
 	"apisvr/gen/task/v1/taskv1connect"
 	"apisvr/services/auth"
+	"apisvr/services/images"
 	taskservices "apisvr/services/task_services"
 )
 
@@ -47,7 +48,11 @@ func main() {
 
 	// https://connectrpc.com/docs/go/deployment/
 	// https://github.com/connectrpc/examples-go/blob/main/cmd/demoserver/main.go
-	serviceMuxHandler := withCORS(h2c.NewHandler(serviceMux, &http2.Server{}))
+	rootMux := http.NewServeMux()
+	rootMux.Handle("/images/{id}", http.HandlerFunc(images.GetImage))
+	rootMux.Handle("/", h2c.NewHandler(serviceMux, &http2.Server{}))
+
+	serviceMuxHandler := withCORS(rootMux)
 	serviceMuxHandler = withRequestDumping(serviceMuxHandler)
 
 	srv := &http.Server{
