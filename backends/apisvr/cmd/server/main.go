@@ -52,7 +52,7 @@ func main() {
 
 	srv := &http.Server{
 		Addr:              serverHostAndPort,
-		Handler:           h2c.NewHandler(serviceMuxHandler, &http2.Server{}),
+		Handler:           serviceMuxHandler,
 		ReadHeaderTimeout: time.Second,
 		ReadTimeout:       5 * time.Minute,
 		WriteTimeout:      5 * time.Minute,
