@@ -49,50 +49,50 @@ run:
 dev: dev_container_up run
 
 GOLANG_BUILD_TARGET=./cmd/server
-BINARY_FILE_BASE=./bin/server
+GOLANG_BUILD_OUTPUT_BASE=./bin/server
 
-BINARY_FILE_linux_amd64=$(BINARY_FILE_BASE)-linux-amd64
+GOLANG_BUILD_OUTPUT_linux_amd64=$(GOLANG_BUILD_OUTPUT_BASE)-linux-amd64
 .PHONY: build-linux-amd64
 build-linux-amd64:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-		go build -o $(BINARY_FILE_linux_amd64) $(GOLANG_BUILD_TARGET)
+		go build -o $(GOLANG_BUILD_OUTPUT_linux_amd64) $(GOLANG_BUILD_TARGET)
 
-BINARY_FILE_linux_arm64=$(BINARY_FILE_BASE)-linux-arm64
+GOLANG_BUILD_OUTPUT_linux_arm64=$(GOLANG_BUILD_OUTPUT_BASE)-linux-arm64
 .PHONY: build-linux-arm64
 build-linux-arm64:
 	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 \
-		go build -o $(BINARY_FILE_linux_arm64) $(GOLANG_BUILD_TARGET)
+		go build -o $(GOLANG_BUILD_OUTPUT_linux_arm64) $(GOLANG_BUILD_TARGET)
 
-BINARY_FILE_darwin_arm64=$(BINARY_FILE_BASE)-darwin-arm64
+GOLANG_BUILD_OUTPUT_darwin_arm64=$(GOLANG_BUILD_OUTPUT_BASE)-darwin-arm64
 .PHONY: build-darwin-arm64
 build-darwin-arm64:
 	CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 \
-		go build -o $(BINARY_FILE_darwin_arm64) $(GOLANG_BUILD_TARGET)
+		go build -o $(GOLANG_BUILD_OUTPUT_darwin_arm64) $(GOLANG_BUILD_TARGET)
 
-BINARY_FILE_dev=$(BINARY_FILE_BASE)-dev
+GOLANG_BUILD_OUTPUT_dev=$(GOLANG_BUILD_OUTPUT_BASE)-dev
 .PHONY: build-dev
 build-dev:
-	go build -o $(BINARY_FILE_dev) $(GOLANG_BUILD_TARGET)
+	go build -o $(GOLANG_BUILD_OUTPUT_dev) $(GOLANG_BUILD_TARGET)
 
-BINARY_FILE_FOR_local=$(BINARY_FILE_linux_$(LOCAL_GOARCH))
-$(BINARY_FILE_FOR_local):
+GOLANG_BUILD_OUTPUT_FOR_local=$(GOLANG_BUILD_OUTPUT_linux_$(LOCAL_GOARCH))
+$(GOLANG_BUILD_OUTPUT_FOR_local):
 	$(MAKE) build-local
 .PHONY: build-local
 build-local: build-linux-$(LOCAL_GOARCH)
 .PHONY: binary-file-for-local
 binary-file-for-local:
-	@echo "$(BINARY_FILE_FOR_local)"
+	@echo "$(GOLANG_BUILD_OUTPUT_FOR_local)"
 
-BINARY_FILE_FOR_production=$(BINARY_FILE_linux_amd64)
-$(BINARY_FILE_FOR_production):
+GOLANG_BUILD_OUTPUT_FOR_production=$(GOLANG_BUILD_OUTPUT_linux_amd64)
+$(GOLANG_BUILD_OUTPUT_FOR_production):
 	$(MAKE) build-production
 .PHONY: build-production
 build-production: build-linux-amd64
 .PHONY: binary-file-for-production
 binary-file-for-production:
-	@echo "$(BINARY_FILE_FOR_production)"
+	@echo "$(GOLANG_BUILD_OUTPUT_FOR_production)"
 
-BINARY_FILE=$(BINARY_FILE_FOR_$(APP_STAGE_TYPE))
+BINARY_FILE=$(GOLANG_BUILD_OUTPUT_FOR_$(APP_STAGE_TYPE))
 
 include $(PATH_TO_SHAPEAPPMK)/golang/module.mk
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GOLANG_MODULE_NAME)
