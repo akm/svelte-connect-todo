@@ -85,9 +85,9 @@ binary-file-for-local:
 
 GOLANG_BUILD_OUTPUT_FOR_production=$(GOLANG_BUILD_OUTPUT_linux_amd64)
 $(GOLANG_BUILD_OUTPUT_FOR_production):
-	$(MAKE) build-production
-.PHONY: build-production
-build-production: golang-build-linux-amd64
+	$(MAKE) golang-build-production
+.PHONY: golang-build-production
+golang-build-production: golang-build-linux-amd64
 .PHONY: binary-file-for-production
 binary-file-for-production:
 	@echo "$(GOLANG_BUILD_OUTPUT_FOR_production)"
