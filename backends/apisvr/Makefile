@@ -18,7 +18,7 @@ include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
 .PHONY: generate
 generate: buf-generate
 
-
+PATH_TO_DEV_CONTAINERS=$(PATH_TO_ROOT)/stages/local
 APP_CORS_ALLOW_ORIGINS=http://localhost:$(APP_PORT_UISVR_dev),http://localhost:$(APP_PORT_UISVR_e2e_test)
 FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)"
 
@@ -32,7 +32,6 @@ DEV_ENVS=\
 	DB_DSN='$(shell DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_DEV_CONTAINERS) mysql-dsn)' \
 	$(foreach var,$(DEV_VARS),$(var)=$($(var)))
 
-PATH_TO_DEV_CONTAINERS=$(PATH_TO_ROOT)/stages/local
 PATH_TO_DEV_RUN_PACKAGE=./cmd/server
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/dev.mk
 
@@ -76,13 +75,6 @@ test-connections:
 	$(MAKE) -C proto test-connections
 
 PATH_TO_TEST_CONTAINERS=$(PATH_TO_BACKENDS)/test/containers
-.PHONY: test-containers-up
-test-containers-up:
-	$(MAKE) -C $(PATH_TO_TEST_CONTAINERS) up
-
-.PHONY: dev-containers-test
-test-containers-down:
-	$(MAKE) -C $(PATH_TO_TEST_CONTAINERS) down
 
 # テストに渡される TEST_FIXTURE_DIR は絶対パス。テストはそれぞれの_test.goファイルのディレクトリで実行されるため。
 TEST_FIXTURE_DIR=$(abspath $(PATH_TO_BIZ)/test/fixtures)
@@ -98,9 +90,7 @@ TEST_ENVS=\
 	TEST_FIXTURE_DIR=$(TEST_FIXTURE_DIR) \
 	$(foreach var,$(TEST_VARS),$(var)=$($(var)))
 
-.PHONY: test-run
-test-run:
-	$(TEST_ENVS) go test ./...
+include $(PATH_TO_SHAPEAPPMK)/default/apisvr/test.mk
 
 .PHONY: test
 test: test-containers-up test-run
