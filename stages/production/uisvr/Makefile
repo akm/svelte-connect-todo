@@ -14,9 +14,6 @@ APP_CONTAINER_IMAGE_PRODUCTION=$(APP_CONTAINER_IMAGE_NAME):$(APP_CONTAINER_IMAGE
 container_image_name:
 	@echo $(APP_CONTAINER_IMAGE_NAME)
 
-.PHONY: container_image
-container_image: build
-
 .PHONY: build
 build:
 	cd $(PATH_TO_UISVR) && \
@@ -27,7 +24,7 @@ build:
 		.
 
 .PHONY: push
-push: container_image
+push: build
 	docker tag $(APP_CONTAINER_IMAGE_PRODUCTION) $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) && \
 	docker push $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION)
 
