@@ -21,14 +21,14 @@ dot_env_gen: $(TEXT_TEMPLATE_CLI)
 	$(DEFAULT_PORT_ENVS) \
 	$(TEXT_TEMPLATE_CLI) .env-template > .env
 
-PATH_TO_LOCAL=$(PATH_TO_ROOT)/stages/local
+PATH_TO_DEV_CONTAINERS=$(PATH_TO_ROOT)/stages/local
 .PHONY: dev-containers-up
 dev-containers-up:
-	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_LOCAL) up
+	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_DEV_CONTAINERS) up
 
 .PHONY: dev-containers-down
 dev-containers-down:
-	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_LOCAL) down
+	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_DEV_CONTAINERS) down
 
 .PHONY: dev_run
 dev_run: setup .env
