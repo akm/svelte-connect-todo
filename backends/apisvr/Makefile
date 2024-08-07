@@ -70,8 +70,8 @@ golang-build-darwin-arm64:
 		go build -o $(GOLANG_BUILD_OUTPUT_darwin_arm64) $(GOLANG_BUILD_TARGET)
 
 GOLANG_BUILD_OUTPUT_dev=$(GOLANG_BUILD_OUTPUT_BASE)-dev
-.PHONY: build-dev
-build-dev:
+.PHONY: golang-build-dev
+golang-build-dev:
 	go build -o $(GOLANG_BUILD_OUTPUT_dev) $(GOLANG_BUILD_TARGET)
 
 GOLANG_BUILD_OUTPUT_FOR_local=$(GOLANG_BUILD_OUTPUT_linux_$(LOCAL_GOARCH))
