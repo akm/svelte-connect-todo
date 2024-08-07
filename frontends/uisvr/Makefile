@@ -22,8 +22,8 @@ dot_env_gen: $(TEXT_TEMPLATE_CLI)
 	$(TEXT_TEMPLATE_CLI) .env-template > .env
 
 PATH_TO_LOCAL=$(PATH_TO_ROOT)/stages/local
-.PHONY: dev_container_up
-dev_container_up:
+.PHONY: dev-containers-up
+dev-containers-up:
 	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_LOCAL) up
 
 .PHONY: dev_container_down
@@ -35,7 +35,7 @@ dev_run: setup .env
 	npm run dev
 
 .PHONY: dev
-dev: dev_container_up dev_run
+dev: dev-containers-up dev_run
 
 include $(PATH_TO_SHAPEAPPMK)/sveltekit/npm.mk
 include $(PATH_TO_SHAPEAPPMK)/sveltekit/app.mk

@@ -19,8 +19,8 @@ include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
 generate: buf-generate
 
 PATH_TO_LOCAL=$(PATH_TO_ROOT)/stages/local
-.PHONY: dev_container_up
-dev_container_up:
+.PHONY: dev-containers-up
+dev-containers-up:
 	DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_LOCAL) up
 
 .PHONY: dev_container_down
@@ -46,7 +46,7 @@ run:
 	$(DEV_ENVS) go run $(PATH_TO_CMD_APISVR)
 
 .PHONY: dev
-dev: dev_container_up run
+dev: dev-containers-up run
 
 GOLANG_BINARY_TARGET=./cmd/server
 GOLANG_BINARY_OUTPUT_BASE=./bin/server
