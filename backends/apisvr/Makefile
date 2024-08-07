@@ -80,8 +80,8 @@ PATH_TO_TEST_CONTAINERS=$(PATH_TO_BACKENDS)/test/containers
 test-containers-up:
 	$(MAKE) -C $(PATH_TO_TEST_CONTAINERS) up
 
-.PHONY: test_container_down
-test_container_down:
+.PHONY: dev-containers-test
+test-containers-down:
 	$(MAKE) -C $(PATH_TO_TEST_CONTAINERS) down
 
 # テストに渡される TEST_FIXTURE_DIR は絶対パス。テストはそれぞれの_test.goファイルのディレクトリで実行されるため。
