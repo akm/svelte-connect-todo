@@ -76,8 +76,8 @@ test-connections:
 	$(MAKE) -C proto test-connections
 
 PATH_TO_TEST_CONTAINERS=$(PATH_TO_BACKENDS)/test/containers
-.PHONY: test_container_up
-test_container_up:
+.PHONY: test-containers-up
+test-containers-up:
 	$(MAKE) -C $(PATH_TO_TEST_CONTAINERS) up
 
 .PHONY: test_container_down
@@ -99,5 +99,5 @@ TEST_ENVS=\
 	$(foreach var,$(TEST_VARS),$(var)=$($(var)))
 
 .PHONY: test
-test: test_container_up
+test: test-containers-up
 	$(TEST_ENVS) go test ./...
