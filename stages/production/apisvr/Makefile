@@ -17,7 +17,7 @@ container_image_name:
 .PHONY: build
 build:
 	cd $(PATH_TO_APISVR) && \
-	$(MAKE) golang-build-production && \
+	$(MAKE) golang-binary-production && \
 	docker build \
 		--platform linux/amd64 \
 		--build-arg APP_BIN_PATH=$(shell $(MAKE) binary-file-for-production --no-print-directory) \
