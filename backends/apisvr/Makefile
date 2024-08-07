@@ -18,14 +18,6 @@ include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
 .PHONY: generate
 generate: buf-generate
 
-PATH_TO_DEV_CONTAINERS=$(PATH_TO_ROOT)/stages/local
-.PHONY: dev-containers-up
-dev-containers-up:
-	DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_DEV_CONTAINERS) up
-
-.PHONY: dev-containers-down
-dev-containers-down:
-	DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_DEV_CONTAINERS) down
 
 APP_CORS_ALLOW_ORIGINS=http://localhost:$(APP_PORT_UISVR_dev),http://localhost:$(APP_PORT_UISVR_e2e_test)
 FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)"
@@ -40,11 +32,9 @@ DEV_ENVS=\
 	DB_DSN='$(shell DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_DEV_CONTAINERS) mysql-dsn)' \
 	$(foreach var,$(DEV_VARS),$(var)=$($(var)))
 
-PATH_TO_CMD_APISVR=./cmd/server
-PATH_TO_DEV_RUN_PACKAGE=$(PATH_TO_CMD_APISVR)
-.PHONY: dev-run
-dev-run:
-	$(DEV_ENVS) go run $(PATH_TO_DEV_RUN_PACKAGE)
+PATH_TO_DEV_CONTAINERS=$(PATH_TO_ROOT)/stages/local
+PATH_TO_DEV_RUN_PACKAGE=./cmd/server
+include $(PATH_TO_SHAPEAPPMK)/default/apisvr/dev.mk
 
 .PHONY: run
 run: dev-run
