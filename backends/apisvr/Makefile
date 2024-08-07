@@ -48,7 +48,7 @@ include $(PATH_TO_SHAPEAPPMK)/golang/binary.mk
 .PHONY: binary-file-for-local
 binary-file-for-local: golang-binary-path-for-stage-local
 .PHONY: binary-file-for-production
-binary-file-for-production: golang-binary-file-for-production
+binary-file-for-production: golang-binary-path-for-stage-production
 
 BINARY_FILE=$(GOLANG_BINARY_OUTPUT_FOR_$(APP_STAGE_TYPE))
 
