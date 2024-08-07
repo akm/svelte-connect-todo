@@ -98,6 +98,9 @@ TEST_ENVS=\
 	TEST_FIXTURE_DIR=$(TEST_FIXTURE_DIR) \
 	$(foreach var,$(TEST_VARS),$(var)=$($(var)))
 
-.PHONY: test
-test: test-containers-up
+.PHONY: test-run
+test-run:
 	$(TEST_ENVS) go test ./...
+
+.PHONY: test
+test: test-containers-up test-run
