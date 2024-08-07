@@ -7,11 +7,11 @@ include $(PATH_TO_ROOT)/.shapeapp.mk
 PATH_TO_STAGE_DIR=..
 include $(PATH_TO_STAGE_DIR)/.config.mk
 
-APP_CONTAINER_IMAGE_NAME=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory container_image_name)
+APP_CONTAINER_IMAGE_NAME=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory docker-container-image-name)
 APP_CONTAINER_IMAGE_PRODUCTION=$(APP_CONTAINER_IMAGE_NAME):$(APP_CONTAINER_IMAGE_TAG)
 
-.PHONY: container_image_name
-container_image_name:
+.PHONY: docker-container-image-name
+docker-container-image-name:
 	@echo $(APP_CONTAINER_IMAGE_NAME)
 
 .PHONY: build

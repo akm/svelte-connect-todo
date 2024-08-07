@@ -54,8 +54,8 @@ include $(PATH_TO_SHAPEAPPMK)/golang/module.mk
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GOLANG_MODULE_NAME)
 APP_CONTAINER_IMAGE_dev=$(APP_CONTAINER_IMAGE_NAME):dev
 
-.PHONY: container_image_name
-container_image_name:
+.PHONY: docker-container-image-name
+docker-container-image-name:
 	@echo $(APP_CONTAINER_IMAGE_NAME)
 
 .PHONY: container_build

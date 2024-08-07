@@ -50,8 +50,8 @@ generate: connect-web-generate
 APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-uisvr
 APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local
 
-.PHONY: container_image_name
-container_image_name:
+.PHONY: docker-container-image-name
+docker-container-image-name:
 	@echo $(APP_CONTAINER_IMAGE_NAME)
 
 .PHONY: container_build
