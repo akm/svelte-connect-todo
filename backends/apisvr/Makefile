@@ -52,14 +52,14 @@ GOLANG_BUILD_TARGET=./cmd/server
 GOLANG_BUILD_OUTPUT_BASE=./bin/server
 
 GOLANG_BUILD_OUTPUT_linux_amd64=$(GOLANG_BUILD_OUTPUT_BASE)-linux-amd64
-.PHONY: build-linux-amd64
-build-linux-amd64:
+.PHONY: golang-build-linux-amd64
+golang-build-linux-amd64:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
 		go build -o $(GOLANG_BUILD_OUTPUT_linux_amd64) $(GOLANG_BUILD_TARGET)
 
 GOLANG_BUILD_OUTPUT_linux_arm64=$(GOLANG_BUILD_OUTPUT_BASE)-linux-arm64
-.PHONY: build-linux-arm64
-build-linux-arm64:
+.PHONY: golang-build-linux-arm64
+golang-build-linux-arm64:
 	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 \
 		go build -o $(GOLANG_BUILD_OUTPUT_linux_arm64) $(GOLANG_BUILD_TARGET)
 
@@ -78,7 +78,7 @@ GOLANG_BUILD_OUTPUT_FOR_local=$(GOLANG_BUILD_OUTPUT_linux_$(LOCAL_GOARCH))
 $(GOLANG_BUILD_OUTPUT_FOR_local):
 	$(MAKE) build-local
 .PHONY: build-local
-build-local: build-linux-$(LOCAL_GOARCH)
+build-local: golang-build-linux-$(LOCAL_GOARCH)
 .PHONY: binary-file-for-local
 binary-file-for-local:
 	@echo "$(GOLANG_BUILD_OUTPUT_FOR_local)"
@@ -87,7 +87,7 @@ GOLANG_BUILD_OUTPUT_FOR_production=$(GOLANG_BUILD_OUTPUT_linux_amd64)
 $(GOLANG_BUILD_OUTPUT_FOR_production):
 	$(MAKE) build-production
 .PHONY: build-production
-build-production: build-linux-amd64
+build-production: golang-build-linux-amd64
 .PHONY: binary-file-for-production
 binary-file-for-production:
 	@echo "$(GOLANG_BUILD_OUTPUT_FOR_production)"
