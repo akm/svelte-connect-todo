@@ -76,9 +76,9 @@ golang-build-dev:
 
 GOLANG_BUILD_OUTPUT_FOR_local=$(GOLANG_BUILD_OUTPUT_linux_$(LOCAL_GOARCH))
 $(GOLANG_BUILD_OUTPUT_FOR_local):
-	$(MAKE) build-local
-.PHONY: build-local
-build-local: golang-build-linux-$(LOCAL_GOARCH)
+	$(MAKE) golang-build-local
+.PHONY: golang-build-local
+golang-build-local: golang-build-linux-$(LOCAL_GOARCH)
 .PHONY: binary-file-for-local
 binary-file-for-local:
 	@echo "$(GOLANG_BUILD_OUTPUT_FOR_local)"
