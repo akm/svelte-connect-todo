@@ -48,31 +48,31 @@ run:
 .PHONY: dev
 dev: dev_container_up run
 
-BUILD_TARGET=./cmd/server
+GOLANG_BUILD_TARGET=./cmd/server
 BINARY_FILE_BASE=./bin/server
 
 BINNARY_FILE_linux_amd64=$(BINARY_FILE_BASE)-linux-amd64
 .PHONY: build-linux-amd64
 build-linux-amd64:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-		go build -o $(BINNARY_FILE_linux_amd64) $(BUILD_TARGET)
+		go build -o $(BINNARY_FILE_linux_amd64) $(GOLANG_BUILD_TARGET)
 
 BINNARY_FILE_linux_arm64=$(BINARY_FILE_BASE)-linux-arm64
 .PHONY: build-linux-arm64
 build-linux-arm64:
 	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 \
-		go build -o $(BINNARY_FILE_linux_arm64) $(BUILD_TARGET)
+		go build -o $(BINNARY_FILE_linux_arm64) $(GOLANG_BUILD_TARGET)
 
 BINNARY_FILE_darwin_arm64=$(BINARY_FILE_BASE)-darwin-arm64
 .PHONY: build-darwin-arm64
 build-darwin-arm64:
 	CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 \
-		go build -o $(BINNARY_FILE_darwin_arm64) $(BUILD_TARGET)
+		go build -o $(BINNARY_FILE_darwin_arm64) $(GOLANG_BUILD_TARGET)
 
 BINNARY_FILE_dev=$(BINARY_FILE_BASE)-dev
 .PHONY: build-dev
 build-dev:
-	go build -o $(BINNARY_FILE_dev) $(BUILD_TARGET)
+	go build -o $(BINNARY_FILE_dev) $(GOLANG_BUILD_TARGET)
 
 BINARY_FILE_FOR_local=$(BINNARY_FILE_linux_$(LOCAL_GOARCH))
 $(BINARY_FILE_FOR_local):
