@@ -79,8 +79,8 @@ $(GOLANG_BUILD_OUTPUT_FOR_local):
 	$(MAKE) golang-build-local
 .PHONY: golang-build-local
 golang-build-local: golang-build-linux-$(LOCAL_GOARCH)
-.PHONY: binary-file-for-local
-binary-file-for-local:
+.PHONY: golang-binary-file-for-local
+golang-binary-file-for-local:
 	@echo "$(GOLANG_BUILD_OUTPUT_FOR_local)"
 
 GOLANG_BUILD_OUTPUT_FOR_production=$(GOLANG_BUILD_OUTPUT_linux_amd64)
@@ -88,9 +88,14 @@ $(GOLANG_BUILD_OUTPUT_FOR_production):
 	$(MAKE) golang-build-production
 .PHONY: golang-build-production
 golang-build-production: golang-build-linux-amd64
-.PHONY: binary-file-for-production
-binary-file-for-production:
+.PHONY: golang-binary-file-for-production
+golang-binary-file-for-production:
 	@echo "$(GOLANG_BUILD_OUTPUT_FOR_production)"
+
+.PHONY: binary-file-for-local
+binary-file-for-local: golang-binary-file-for-local
+.PHONY: binary-file-for-production
+binary-file-for-production: golang-binary-file-for-production
 
 BINARY_FILE=$(GOLANG_BUILD_OUTPUT_FOR_$(APP_STAGE_TYPE))
 
