@@ -12,10 +12,11 @@ export async function load(event: ServerLoadEvent): Promise<{ tasks: Task[] }> {
 		throw redirect(302, '/signin');
 	}
 
-	console.log('load: event.constructor', event.constructor);
+	const httpVersion = apisvrOrigin.startsWith('https://') ? '2' : '1.1';
+	console.log('load: {apisvrOrigin, httpVersion}', { apisvrOrigin, httpVersion });
 
 	const transport = createConnectTransport({
-		httpVersion: '2',
+		httpVersion,
 		baseUrl: apisvrOrigin,
 		interceptors: [
 			(next) => async (req) => {
