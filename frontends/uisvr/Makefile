@@ -26,8 +26,8 @@ PATH_TO_LOCAL=$(PATH_TO_ROOT)/stages/local
 dev-containers-up:
 	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_LOCAL) up
 
-.PHONY: dev_container_down
-dev_container_down:
+.PHONY: dev-containers-down
+dev-containers-down:
 	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_LOCAL) down
 
 .PHONY: dev_run
