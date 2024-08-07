@@ -15,7 +15,7 @@ DOCKER_COMPOSE_ENVS_BASE=\
 	APP_FIREBASE_API_KEY=$(APP_FIREBASE_API_KEY) \
 	APP_MYSQL_DB_NAME=$(APP_MYSQL_DB_NAME) \
 	APP_MYSQL_DSN='$(shell $(MAKE) mysql-dsn)' \
-	APP_BINARY_PATH_IN_APISVR=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory binary-file-for-local) \
+	APP_BINARY_PATH_IN_APISVR=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory golang-binary-path-for-stage-local) \
 	DEV_TARGET=$(DEV_TARGET)
 
 APP_UISVR_DOT_ENV_PATH=./uisvr.env
