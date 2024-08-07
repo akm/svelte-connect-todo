@@ -41,9 +41,13 @@ DEV_ENVS=\
 	$(foreach var,$(DEV_VARS),$(var)=$($(var)))
 
 PATH_TO_CMD_APISVR=./cmd/server
+PATH_TO_DEV_RUN_PACKAGE=$(PATH_TO_CMD_APISVR)
+.PHONY: dev-run
+dev-run:
+	$(DEV_ENVS) go run $(PATH_TO_DEV_RUN_PACKAGE)
+
 .PHONY: run
-run:
-	$(DEV_ENVS) go run $(PATH_TO_CMD_APISVR)
+run: dev-run
 
 .PHONY: dev
 dev: dev-containers-up run
