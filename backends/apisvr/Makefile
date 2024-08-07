@@ -74,20 +74,24 @@ GOLANG_BINARY_OUTPUT_dev=$(GOLANG_BINARY_OUTPUT_BASE)-dev
 golang-binary-dev:
 	go build -o $(GOLANG_BINARY_OUTPUT_dev) $(GOLANG_BINARY_TARGET)
 
-GOLANG_BINARY_OUTPUT_FOR_local=$(GOLANG_BINARY_OUTPUT_linux_$(LOCAL_GOARCH))
+GOLANG_BINARY_GOOS_FOR_local?=linux
+GOLANG_BINARY_GOOS_FOR_production?=linux
+GOLANG_BINARY_GOARCH_FOR_production?=amd64
+
+GOLANG_BINARY_OUTPUT_FOR_local=$(GOLANG_BINARY_OUTPUT_$(GOLANG_BINARY_GOOS_FOR_local)_$(LOCAL_GOARCH))
 $(GOLANG_BINARY_OUTPUT_FOR_local):
 	$(MAKE) golang-binary-local
 .PHONY: golang-binary-local
-golang-binary-local: golang-binary-linux-$(LOCAL_GOARCH)
+golang-binary-local: golang-binary-$(GOLANG_BINARY_GOOS_FOR_local)-$(LOCAL_GOARCH)
 .PHONY: golang-binary-file-for-local
 golang-binary-file-for-local:
 	@echo "$(GOLANG_BINARY_OUTPUT_FOR_local)"
 
-GOLANG_BINARY_OUTPUT_FOR_production=$(GOLANG_BINARY_OUTPUT_linux_amd64)
+GOLANG_BINARY_OUTPUT_FOR_production=$(GOLANG_BINARY_OUTPUT_$(GOLANG_BINARY_GOOS_FOR_production)_$(GOLANG_BINARY_GOARCH_FOR_production))
 $(GOLANG_BINARY_OUTPUT_FOR_production):
 	$(MAKE) golang-binary-production
 .PHONY: golang-binary-production
-golang-binary-production: golang-binary-linux-amd64
+golang-binary-production: golang-binary-$(GOLANG_BINARY_GOOS_FOR_production)-$(GOLANG_BINARY_GOARCH_FOR_production)
 .PHONY: golang-binary-file-for-production
 golang-binary-file-for-production:
 	@echo "$(GOLANG_BINARY_OUTPUT_FOR_production)"
