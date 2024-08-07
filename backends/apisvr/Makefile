@@ -64,8 +64,8 @@ golang-build-linux-arm64:
 		go build -o $(GOLANG_BUILD_OUTPUT_linux_arm64) $(GOLANG_BUILD_TARGET)
 
 GOLANG_BUILD_OUTPUT_darwin_arm64=$(GOLANG_BUILD_OUTPUT_BASE)-darwin-arm64
-.PHONY: build-darwin-arm64
-build-darwin-arm64:
+.PHONY: golang-build-darwin-arm64
+golang-build-darwin-arm64:
 	CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 \
 		go build -o $(GOLANG_BUILD_OUTPUT_darwin_arm64) $(GOLANG_BUILD_TARGET)
 
