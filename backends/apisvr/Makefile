@@ -45,9 +45,6 @@ GOLANG_BINARY_TARGET=./cmd/server
 GOLANG_BINARY_OUTPUT_BASE=./bin/server
 include $(PATH_TO_SHAPEAPPMK)/golang/binary.mk
 
-.PHONY: binary-file-for-production
-binary-file-for-production: golang-binary-path-for-stage-production
-
 BINARY_FILE=$(GOLANG_BINARY_OUTPUT_FOR_$(APP_STAGE_TYPE))
 
 include $(PATH_TO_SHAPEAPPMK)/golang/module.mk

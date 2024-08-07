@@ -20,7 +20,7 @@ build:
 	$(MAKE) golang-binary-production && \
 	docker build \
 		--platform linux/amd64 \
-		--build-arg APP_BIN_PATH=$(shell $(MAKE) binary-file-for-production --no-print-directory) \
+		--build-arg APP_BIN_PATH=$(shell $(MAKE) golang-binary-path-for-stage-production --no-print-directory) \
 		-t $(APP_CONTAINER_IMAGE_PRODUCTION) \
 		-f Dockerfile \
 		.
