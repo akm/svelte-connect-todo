@@ -65,7 +65,7 @@ setup: validate_services setup_envs build_apisvr_bin
 
 .PHONY: build_apisvr_bin
 build_apisvr_bin:
-	$(MAKE) -C $(PATH_TO_APISVR) golang-binary-local
+	$(MAKE) -C $(PATH_TO_APISVR) golang-binary-build-for-stage-local
 
 .PHONY: run
 run: setup docker-compose-run
