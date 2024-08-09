@@ -9,9 +9,9 @@ include $(PATH_TO_STAGE_DIR)/.config.mk
 
 include $(PATH_TO_SHAPEAPPMK)/git/current.mk
 
-DOCKER_IMAGE_NAME=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory docker-image-name)
-DOCKER_IMAGE_TAG_COMMIT_HASH=$(DOCKER_IMAGE_NAME):$(GIT_CURRENT_COMMIT_HASH_SHORT)
-DOCKER_IMAGE_TAG?=$(DOCKER_IMAGE_NAME):$(APP_STAGE_TYPE)
+DOCKER_IMAGE_REPOSITORY=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory docker-image-name)
+DOCKER_IMAGE_TAG_COMMIT_HASH=$(DOCKER_IMAGE_REPOSITORY):$(GIT_CURRENT_COMMIT_HASH_SHORT)
+DOCKER_IMAGE_TAG?=$(DOCKER_IMAGE_REPOSITORY):$(APP_STAGE_TYPE)
 DOCKER_IMAGE_BUILD_OPTS=\
 	--platform linux/amd64 \
 	--build-arg APP_BIN_PATH=$(shell $(MAKE) golang-binary-path-for-stage-production --no-print-directory) \
@@ -59,7 +59,7 @@ deploy_options:
 	echo $(DEPLOY_OPTIONS_BASE) && \
 	[ -n "$(ENV_VARS_CONTENT)" ] && echo "--env-vars-file=$(ENV_VAR_YAML)" || echo ""
 
-GOOGLE_CLOUD_RUN_SERVICE_NAME=$(DOCKER_IMAGE_NAME)
+GOOGLE_CLOUD_RUN_SERVICE_NAME=$(DOCKER_IMAGE_REPOSITORY)
 
 ifeq ($(GOOGLE_CLOUD_PROJECT),)
 .PHONY: deploy
