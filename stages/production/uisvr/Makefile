@@ -10,6 +10,7 @@ include $(PATH_TO_STAGE_DIR)/.config.mk
 include $(PATH_TO_SHAPEAPPMK)/git/current.mk
 DOCKER_CONTAINER_IMAGE_NAME=$(shell $(MAKE) -C $(PATH_TO_UISVR) --no-print-directory docker-container-image-name)
 DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH=$(DOCKER_CONTAINER_IMAGE_NAME):$(GIT_CURRENT_COMMIT_HASH_SHORT)
+DOCKER_CONTAINER_IMAGE_TAG?=$(DOCKER_CONTAINER_IMAGE_NAME):$(APP_STAGE_TYPE)
 
 .PHONY: docker-container-image-name
 docker-container-image-name:
@@ -20,13 +21,13 @@ build:
 	cd $(PATH_TO_UISVR) && \
 	docker build \
 		--platform linux/amd64 \
-		-t $(DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH) \
+		-t $(DOCKER_CONTAINER_IMAGE_TAG) \
 		-f Dockerfile \
 		.
 
 .PHONY: push
 push: build
-	docker tag $(DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH) $(APP_CONTAINER_REPOSITORY)/$(DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH) && \
+	docker tag $(DOCKER_CONTAINER_IMAGE_TAG) $(APP_CONTAINER_REPOSITORY)/$(DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH) && \
 	docker push $(APP_CONTAINER_REPOSITORY)/$(DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH)
 
 APISVR_ORIGIN=$(shell $(MAKE) -C ../apisvr --no-print-directory service_url)
