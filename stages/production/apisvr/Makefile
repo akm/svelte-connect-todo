@@ -10,8 +10,8 @@ include $(PATH_TO_STAGE_DIR)/.config.mk
 include $(PATH_TO_SHAPEAPPMK)/git/current.mk
 
 DOCKER_IMAGE_REPOSITORY=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory docker-image-name)
-DOCKER_IMAGE_TAG_COMMIT_HASH=$(DOCKER_IMAGE_REPOSITORY):$(GIT_CURRENT_COMMIT_HASH_SHORT)
-DOCKER_IMAGE_TAG?=$(DOCKER_IMAGE_REPOSITORY):$(APP_STAGE_TYPE)
+DOCKER_IMAGE_NAME_COMMIT_HASH=$(DOCKER_IMAGE_REPOSITORY):$(GIT_CURRENT_COMMIT_HASH_SHORT)
+DOCKER_IMAGE_NAME?=$(DOCKER_IMAGE_REPOSITORY):$(APP_STAGE_TYPE)
 DOCKER_IMAGE_BUILD_OPTS=\
 	--platform linux/amd64 \
 	--build-arg APP_BIN_PATH=$(shell $(MAKE) golang-binary-path-for-stage-production --no-print-directory) \
@@ -26,8 +26,8 @@ build:
 
 .PHONY: push
 push: build
-	docker tag $(DOCKER_IMAGE_TAG) $(APP_CONTAINER_REPOSITORY)/$(DOCKER_IMAGE_TAG_COMMIT_HASH) && \
-	docker push $(APP_CONTAINER_REPOSITORY)/$(DOCKER_IMAGE_TAG_COMMIT_HASH)
+	docker tag $(DOCKER_IMAGE_NAME) $(APP_CONTAINER_REPOSITORY)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) && \
+	docker push $(APP_CONTAINER_REPOSITORY)/$(DOCKER_IMAGE_NAME_COMMIT_HASH)
 
 UISVR_ORIGIN=$(shell $(MAKE) -C ../uisvr --no-print-directory service_url 2>/dev/null || echo "")
 .PHONY: uisvr_origin
@@ -45,7 +45,7 @@ env_vars_yaml_gen: $(TEXT_TEMPLATE_CLI)
 	UISVR_ORIGIN=$(UISVR_ORIGIN) $(TEXT_TEMPLATE_CLI) $(ENV_VAR_YAML).tmpl > $(ENV_VAR_YAML)
 
 DEPLOY_OPTIONS_BASE=\
-	--image=$(APP_CONTAINER_REPOSITORY)/$(DOCKER_IMAGE_TAG_COMMIT_HASH) \
+	--image=$(APP_CONTAINER_REPOSITORY)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) \
 	--allow-unauthenticated \
 	--port=$(APP_PORT_APISVR_dev) \
 	--memory=128Mi \

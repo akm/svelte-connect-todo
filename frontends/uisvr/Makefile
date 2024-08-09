@@ -48,5 +48,5 @@ include $(PATH_TO_SHAPEAPPMK)/connect-web/generate.mk
 generate: connect-web-generate
 
 DOCKER_IMAGE_REPOSITORY=$(APP_BASE_NAME)-uisvr
-DOCKER_IMAGE_TAG?=$(DOCKER_IMAGE_REPOSITORY):$(APP_STAGE_TYPE)
+DOCKER_IMAGE_NAME?=$(DOCKER_IMAGE_REPOSITORY):$(APP_STAGE_TYPE)
 include $(PATH_TO_SHAPEAPPMK)/docker/image.mk
