@@ -9,7 +9,7 @@ include $(PATH_TO_STAGE_DIR)/.config.mk
 
 include $(PATH_TO_SHAPEAPPMK)/git/current.mk
 
-DOCKER_IMAGE_NAME=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory docker-container-image-name)
+DOCKER_IMAGE_NAME=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory docker-image-name)
 DOCKER_IMAGE_TAG_COMMIT_HASH=$(DOCKER_IMAGE_NAME):$(GIT_CURRENT_COMMIT_HASH_SHORT)
 DOCKER_IMAGE_TAG?=$(DOCKER_IMAGE_NAME):$(APP_STAGE_TYPE)
 DOCKER_IMAGE_BUILD_OPTS=\
@@ -22,7 +22,7 @@ include $(PATH_TO_SHAPEAPPMK)/docker/container-image.mk
 build:
 	cd $(PATH_TO_APISVR) && \
 	$(MAKE) golang-binary-build-for-stage-production && \
-	$(MAKE) docker-container-image-build
+	$(MAKE) docker-image-build
 
 .PHONY: push
 push: build
