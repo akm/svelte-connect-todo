@@ -49,14 +49,4 @@ generate: connect-web-generate
 
 DOCKER_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-uisvr
 DOCKER_CONTAINER_IMAGE_TAG?=$(DOCKER_CONTAINER_IMAGE_NAME):$(APP_STAGE_TYPE)
-
-.PHONY: docker-container-image-name
-docker-container-image-name:
-	@echo $(DOCKER_CONTAINER_IMAGE_NAME)
-
-.PHONY: docker-container-image-build
-docker-container-image-build:
-	docker build \
-		-t $(DOCKER_CONTAINER_IMAGE_TAG) \
-		-f Dockerfile \
-		.
+include $(PATH_TO_SHAPEAPPMK)/docker/container-image.mk

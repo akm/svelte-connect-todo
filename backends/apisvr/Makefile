@@ -51,20 +51,14 @@ include $(PATH_TO_SHAPEAPPMK)/golang/binary.mk
 BINARY_FILE=$(GOLANG_BINARY_PATH_FOR_STAGE_$(APP_STAGE_TYPE))
 
 include $(PATH_TO_SHAPEAPPMK)/golang/module.mk
+
 DOCKER_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GOLANG_MODULE_NAME)
 DOCKER_CONTAINER_IMAGE_TAG?=$(DOCKER_CONTAINER_IMAGE_NAME):$(APP_STAGE_TYPE)
-
-.PHONY: docker-container-image-name
-docker-container-image-name:
-	@echo $(DOCKER_CONTAINER_IMAGE_NAME)
-
-.PHONY: docker-container-image-build
-docker-container-image-build: $(BINARY_FILE)
-	docker build \
-		-t $(DOCKER_CONTAINER_IMAGE_TAG) \
-		--build-arg APP_BIN_PATH=$(BINARY_FILE) \
-		-f Dockerfile \
-		.
+DOCKER_CONTAINER_IMAGE_BUILD_DEPS=$(BINARY_FILE)
+DOCKER_CONTAINER_IMAGE_BUILD_OPTS=\
+	--build-arg APP_BIN_PATH=$(BINARY_FILE) \
+	-f Dockerfile
+include $(PATH_TO_SHAPEAPPMK)/docker/container-image.mk
 
 include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
 
