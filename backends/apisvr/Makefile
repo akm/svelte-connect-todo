@@ -52,7 +52,7 @@ BINARY_FILE=$(GOLANG_BINARY_PATH_FOR_STAGE_$(APP_STAGE_TYPE))
 
 include $(PATH_TO_SHAPEAPPMK)/golang/module.mk
 DOCKER_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GOLANG_MODULE_NAME)
-APP_CONTAINER_IMAGE_dev=$(DOCKER_CONTAINER_IMAGE_NAME):dev
+DOCKER_CONTAINER_IMAGE_TAG?=$(DOCKER_CONTAINER_IMAGE_NAME):$(APP_STAGE_TYPE)
 
 .PHONY: docker-container-image-name
 docker-container-image-name:
@@ -61,7 +61,7 @@ docker-container-image-name:
 .PHONY: docker-container-image-build
 docker-container-image-build: $(BINARY_FILE)
 	docker build \
-		-t $(APP_CONTAINER_IMAGE_dev) \
+		-t $(DOCKER_CONTAINER_IMAGE_TAG) \
 		--build-arg APP_BIN_PATH=$(BINARY_FILE) \
 		-f Dockerfile \
 		.
