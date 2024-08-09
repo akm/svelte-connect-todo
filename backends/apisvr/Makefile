@@ -58,8 +58,8 @@ APP_CONTAINER_IMAGE_dev=$(APP_CONTAINER_IMAGE_NAME):dev
 docker-container-image-name:
 	@echo $(APP_CONTAINER_IMAGE_NAME)
 
-.PHONY: container_build
-container_build: $(BINARY_FILE)
+.PHONY: docker-container-image-build
+docker-container-image-build: $(BINARY_FILE)
 	docker build \
 		-t $(APP_CONTAINER_IMAGE_dev) \
 		--build-arg APP_BIN_PATH=$(BINARY_FILE) \

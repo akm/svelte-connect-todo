@@ -54,8 +54,8 @@ APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local
 docker-container-image-name:
 	@echo $(APP_CONTAINER_IMAGE_NAME)
 
-.PHONY: container_build
-container_build:
+.PHONY: docker-container-image-build
+docker-container-image-build:
 	docker build \
 		-t $(APP_CONTAINER_IMAGE_LOCAL) \
 		-f Dockerfile \
