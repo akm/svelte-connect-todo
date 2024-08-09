@@ -60,6 +60,8 @@ deploy_options:
 	echo $(DEPLOY_OPTIONS_BASE) && \
 	[ -n "$(ENV_VARS_CONTENT)" ] && echo "--env-vars-file=$(ENV_VAR_YAML)" || echo ""
 
+GOOGLE_CLOUD_RUN_SERVICE_NAME=$(APP_CONTAINER_IMAGE_NAME)
+
 ifeq ($(GOOGLE_CLOUD_PROJECT),)
 .PHONY: deploy
 deploy:
@@ -67,21 +69,21 @@ deploy:
 else
 .PHONY: deploy
 deploy: push
-	$(GCLOUD) run deploy $(APP_CONTAINER_IMAGE_NAME) $(shell $(MAKE) deploy_options --no-print-directory)
+	$(GCLOUD) run deploy $(GOOGLE_CLOUD_RUN_SERVICE_NAME) $(shell $(MAKE) deploy_options --no-print-directory)
 endif
 
 .PHONY: update-traffic
 update-traffic:
-	$(GCLOUD) run services update-traffic $(APP_CONTAINER_IMAGE_NAME) \
+	$(GCLOUD) run services update-traffic $(GOOGLE_CLOUD_RUN_SERVICE_NAME) \
 		--to-latest \
 		--platform=managed \
 		--region=$(GCP_REGION)
 
 .PHONY: inspect_service
 inspect_service:
-	$(GCLOUD) run services describe $(APP_CONTAINER_IMAGE_NAME) --region=$(GCP_REGION)
+	$(GCLOUD) run services describe $(GOOGLE_CLOUD_RUN_SERVICE_NAME) --region=$(GCP_REGION)
 
-GCP_SERVICE_URL=$(shell $(GCLOUD) run services describe $(APP_CONTAINER_IMAGE_NAME) --region=$(GCP_REGION) --format='value(status.url)' )
+GCP_SERVICE_URL=$(shell $(GCLOUD) run services describe $(GOOGLE_CLOUD_RUN_SERVICE_NAME) --region=$(GCP_REGION) --format='value(status.url)' )
 .PHONY: service_url
 service_url:
 	@echo $(GCP_SERVICE_URL)

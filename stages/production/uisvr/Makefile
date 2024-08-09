@@ -43,6 +43,8 @@ include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
 env_vars_yaml_gen: $(TEXT_TEMPLATE_CLI)
 	APISVR_ORIGIN=$(APISVR_ORIGIN) $(TEXT_TEMPLATE_CLI) $(ENV_VAR_YAML).tmpl ./firebase-config.json > $(ENV_VAR_YAML)
 
+GOOGLE_CLOUD_RUN_SERVICE_NAME=$(APP_CONTAINER_IMAGE_NAME)
+
 ifeq ($(GOOGLE_CLOUD_PROJECT),)
 .PHONY: deploy
 deploy:
@@ -50,7 +52,7 @@ deploy:
 else
 .PHONY: deploy
 deploy: push $(ENV_VAR_YAML)
-	$(GCLOUD) run deploy $(APP_CONTAINER_IMAGE_NAME) \
+	$(GCLOUD) run deploy $(GOOGLE_CLOUD_RUN_SERVICE_NAME) \
 	--image=$(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) \
 	--allow-unauthenticated \
 	--env-vars-file=$(ENV_VAR_YAML) \
@@ -61,16 +63,16 @@ endif
 
 .PHONY: update-traffic
 update-traffic:
-	$(GCLOUD) run services update-traffic $(APP_CONTAINER_IMAGE_NAME) \
+	$(GCLOUD) run services update-traffic $(GOOGLE_CLOUD_RUN_SERVICE_NAME) \
 		--to-latest \
 		--platform=managed \
 		--region=$(GCP_REGION)
 
 .PHONY: inspect_service
 inspect_service:
-	$(GCLOUD) run services describe $(APP_CONTAINER_IMAGE_NAME) --region=$(GCP_REGION)
+	$(GCLOUD) run services describe $(GOOGLE_CLOUD_RUN_SERVICE_NAME) --region=$(GCP_REGION)
 
-GCP_SERVICE_URL=$(shell $(GCLOUD) run services describe $(APP_CONTAINER_IMAGE_NAME) --region=$(GCP_REGION) --format='value(status.url)' )
+GCP_SERVICE_URL=$(shell $(GCLOUD) run services describe $(GOOGLE_CLOUD_RUN_SERVICE_NAME) --region=$(GCP_REGION) --format='value(status.url)' )
 .PHONY: service_url
 service_url:
 	@echo $(GCP_SERVICE_URL)
