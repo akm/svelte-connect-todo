@@ -49,4 +49,4 @@ generate: connect-web-generate
 
 DOCKER_IMAGE_NAME=$(APP_BASE_NAME)-uisvr
 DOCKER_IMAGE_TAG?=$(DOCKER_IMAGE_NAME):$(APP_STAGE_TYPE)
-include $(PATH_TO_SHAPEAPPMK)/docker/container-image.mk
+include $(PATH_TO_SHAPEAPPMK)/docker/image.mk

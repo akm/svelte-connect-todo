@@ -16,7 +16,7 @@ DOCKER_IMAGE_BUILD_OPTS=\
 	--platform linux/amd64 \
 	--build-arg APP_BIN_PATH=$(shell $(MAKE) golang-binary-path-for-stage-production --no-print-directory) \
 	-f Dockerfile
-include $(PATH_TO_SHAPEAPPMK)/docker/container-image.mk
+include $(PATH_TO_SHAPEAPPMK)/docker/image.mk
 
 .PHONY: build
 build:

@@ -14,7 +14,7 @@ DOCKER_IMAGE_TAG?=$(DOCKER_IMAGE_NAME):$(APP_STAGE_TYPE)
 DOCKER_IMAGE_BUILD_OPTS=\
 	--platform linux/amd64 \
 	-f Dockerfile
-include $(PATH_TO_SHAPEAPPMK)/docker/container-image.mk
+include $(PATH_TO_SHAPEAPPMK)/docker/image.mk
 
 .PHONY: build
 build:
