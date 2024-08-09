@@ -11,19 +11,15 @@ include $(PATH_TO_SHAPEAPPMK)/git/current.mk
 DOCKER_CONTAINER_IMAGE_NAME=$(shell $(MAKE) -C $(PATH_TO_UISVR) --no-print-directory docker-container-image-name)
 DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH=$(DOCKER_CONTAINER_IMAGE_NAME):$(GIT_CURRENT_COMMIT_HASH_SHORT)
 DOCKER_CONTAINER_IMAGE_TAG?=$(DOCKER_CONTAINER_IMAGE_NAME):$(APP_STAGE_TYPE)
-
-.PHONY: docker-container-image-name
-docker-container-image-name:
-	@echo $(DOCKER_CONTAINER_IMAGE_NAME)
+DOCKER_CONTAINER_IMAGE_BUILD_OPTS=\
+	--platform linux/amd64 \
+	-f Dockerfile
+include $(PATH_TO_SHAPEAPPMK)/docker/container-image.mk
 
 .PHONY: build
 build:
 	cd $(PATH_TO_UISVR) && \
-	docker build \
-		--platform linux/amd64 \
-		-t $(DOCKER_CONTAINER_IMAGE_TAG) \
-		-f Dockerfile \
-		.
+	$(MAKE) docker-container-image-build
 
 .PHONY: push
 push: build
