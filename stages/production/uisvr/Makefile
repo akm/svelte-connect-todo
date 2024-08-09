@@ -9,7 +9,7 @@ include $(PATH_TO_STAGE_DIR)/.config.mk
 
 include $(PATH_TO_SHAPEAPPMK)/git/current.mk
 DOCKER_CONTAINER_IMAGE_NAME=$(shell $(MAKE) -C $(PATH_TO_UISVR) --no-print-directory docker-container-image-name)
-APP_CONTAINER_IMAGE_PRODUCTION=$(DOCKER_CONTAINER_IMAGE_NAME):$(GIT_CURRENT_COMMIT_HASH_SHORT)
+DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH=$(DOCKER_CONTAINER_IMAGE_NAME):$(GIT_CURRENT_COMMIT_HASH_SHORT)
 
 .PHONY: docker-container-image-name
 docker-container-image-name:
@@ -20,14 +20,14 @@ build:
 	cd $(PATH_TO_UISVR) && \
 	docker build \
 		--platform linux/amd64 \
-		-t $(APP_CONTAINER_IMAGE_PRODUCTION) \
+		-t $(DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH) \
 		-f Dockerfile \
 		.
 
 .PHONY: push
 push: build
-	docker tag $(APP_CONTAINER_IMAGE_PRODUCTION) $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) && \
-	docker push $(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION)
+	docker tag $(DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH) $(APP_CONTAINER_REPOSITORY)/$(DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH) && \
+	docker push $(APP_CONTAINER_REPOSITORY)/$(DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH)
 
 APISVR_ORIGIN=$(shell $(MAKE) -C ../apisvr --no-print-directory service_url)
 .PHONY: apisvr_origin
@@ -54,7 +54,7 @@ else
 .PHONY: deploy
 deploy: push $(ENV_VAR_YAML)
 	$(GCLOUD) run deploy $(GOOGLE_CLOUD_RUN_SERVICE_NAME) \
-	--image=$(APP_CONTAINER_REPOSITORY)/$(APP_CONTAINER_IMAGE_PRODUCTION) \
+	--image=$(APP_CONTAINER_REPOSITORY)/$(DOCKER_CONTAINER_IMAGE_TAG_COMMIT_HASH) \
 	--allow-unauthenticated \
 	--env-vars-file=$(ENV_VAR_YAML) \
 	--port=$(APP_PORT_UISVR_e2e_test) \
