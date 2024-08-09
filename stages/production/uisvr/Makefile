@@ -7,12 +7,12 @@ include $(PATH_TO_ROOT)/.shapeapp.mk
 PATH_TO_STAGE_DIR=..
 include $(PATH_TO_STAGE_DIR)/.config.mk
 
-APP_CONTAINER_IMAGE_NAME=$(shell $(MAKE) -C $(PATH_TO_UISVR) --no-print-directory docker-container-image-name)
-APP_CONTAINER_IMAGE_PRODUCTION=$(APP_CONTAINER_IMAGE_NAME):$(APP_CONTAINER_IMAGE_TAG)
+DOCKER_CONTAINER_IMAGE_NAME=$(shell $(MAKE) -C $(PATH_TO_UISVR) --no-print-directory docker-container-image-name)
+APP_CONTAINER_IMAGE_PRODUCTION=$(DOCKER_CONTAINER_IMAGE_NAME):$(APP_CONTAINER_IMAGE_TAG)
 
 .PHONY: docker-container-image-name
 docker-container-image-name:
-	@echo $(APP_CONTAINER_IMAGE_NAME)
+	@echo $(DOCKER_CONTAINER_IMAGE_NAME)
 
 .PHONY: build
 build:
@@ -43,7 +43,7 @@ include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
 env_vars_yaml_gen: $(TEXT_TEMPLATE_CLI)
 	APISVR_ORIGIN=$(APISVR_ORIGIN) $(TEXT_TEMPLATE_CLI) $(ENV_VAR_YAML).tmpl ./firebase-config.json > $(ENV_VAR_YAML)
 
-GOOGLE_CLOUD_RUN_SERVICE_NAME=$(APP_CONTAINER_IMAGE_NAME)
+GOOGLE_CLOUD_RUN_SERVICE_NAME=$(DOCKER_CONTAINER_IMAGE_NAME)
 
 ifeq ($(GOOGLE_CLOUD_PROJECT),)
 .PHONY: deploy

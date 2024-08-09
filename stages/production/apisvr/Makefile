@@ -7,12 +7,12 @@ include $(PATH_TO_ROOT)/.shapeapp.mk
 PATH_TO_STAGE_DIR=..
 include $(PATH_TO_STAGE_DIR)/.config.mk
 
-APP_CONTAINER_IMAGE_NAME=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory docker-container-image-name)
-APP_CONTAINER_IMAGE_PRODUCTION=$(APP_CONTAINER_IMAGE_NAME):$(APP_CONTAINER_IMAGE_TAG)
+DOCKER_CONTAINER_IMAGE_NAME=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory docker-container-image-name)
+APP_CONTAINER_IMAGE_PRODUCTION=$(DOCKER_CONTAINER_IMAGE_NAME):$(APP_CONTAINER_IMAGE_TAG)
 
 .PHONY: docker-container-image-name
 docker-container-image-name:
-	@echo $(APP_CONTAINER_IMAGE_NAME)
+	@echo $(DOCKER_CONTAINER_IMAGE_NAME)
 
 .PHONY: build
 build:
@@ -60,7 +60,7 @@ deploy_options:
 	echo $(DEPLOY_OPTIONS_BASE) && \
 	[ -n "$(ENV_VARS_CONTENT)" ] && echo "--env-vars-file=$(ENV_VAR_YAML)" || echo ""
 
-GOOGLE_CLOUD_RUN_SERVICE_NAME=$(APP_CONTAINER_IMAGE_NAME)
+GOOGLE_CLOUD_RUN_SERVICE_NAME=$(DOCKER_CONTAINER_IMAGE_NAME)
 
 ifeq ($(GOOGLE_CLOUD_PROJECT),)
 .PHONY: deploy

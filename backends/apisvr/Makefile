@@ -51,12 +51,12 @@ include $(PATH_TO_SHAPEAPPMK)/golang/binary.mk
 BINARY_FILE=$(GOLANG_BINARY_PATH_FOR_STAGE_$(APP_STAGE_TYPE))
 
 include $(PATH_TO_SHAPEAPPMK)/golang/module.mk
-APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GOLANG_MODULE_NAME)
-APP_CONTAINER_IMAGE_dev=$(APP_CONTAINER_IMAGE_NAME):dev
+DOCKER_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-$(GOLANG_MODULE_NAME)
+APP_CONTAINER_IMAGE_dev=$(DOCKER_CONTAINER_IMAGE_NAME):dev
 
 .PHONY: docker-container-image-name
 docker-container-image-name:
-	@echo $(APP_CONTAINER_IMAGE_NAME)
+	@echo $(DOCKER_CONTAINER_IMAGE_NAME)
 
 .PHONY: docker-container-image-build
 docker-container-image-build: $(BINARY_FILE)
@@ -69,7 +69,7 @@ docker-container-image-build: $(BINARY_FILE)
 include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
 
 .PHONY: test-connections
-test-connections: 
+test-connections:
 	$(MAKE) -C proto test-connections
 
 PATH_TO_TEST_CONTAINERS=$(PATH_TO_BACKENDS)/test/containers

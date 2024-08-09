@@ -47,12 +47,12 @@ include $(PATH_TO_SHAPEAPPMK)/connect-web/generate.mk
 .PHONY: generate
 generate: connect-web-generate
 
-APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-uisvr
-APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local
+DOCKER_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-uisvr
+APP_CONTAINER_IMAGE_LOCAL=$(DOCKER_CONTAINER_IMAGE_NAME):local
 
 .PHONY: docker-container-image-name
 docker-container-image-name:
-	@echo $(APP_CONTAINER_IMAGE_NAME)
+	@echo $(DOCKER_CONTAINER_IMAGE_NAME)
 
 .PHONY: docker-container-image-build
 docker-container-image-build:
