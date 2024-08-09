@@ -15,5 +15,10 @@ var DemoData = goosecond.NewCondition(func() bool {
 	if os.Getenv("DEMO_DATA") != "" {
 		return os.Getenv("DEMO_DATA") == "true"
 	}
-	return os.Getenv("APP_STAGE_TYPE") == "local"
+	switch os.Getenv("APP_STAGE_TYPE") {
+	case "dev", "local":
+		return true
+	default:
+		return false
+	}
 })
