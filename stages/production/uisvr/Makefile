@@ -23,8 +23,8 @@ build:
 
 .PHONY: push
 push: build
-	docker tag $(DOCKER_IMAGE_NAME) $(APP_CONTAINER_REPOSITORY)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) && \
-	docker push $(APP_CONTAINER_REPOSITORY)/$(DOCKER_IMAGE_NAME_COMMIT_HASH)
+	docker tag $(DOCKER_IMAGE_NAME) $(DOCKER_IMAGE_REGISTRY_USER)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) && \
+	docker push $(DOCKER_IMAGE_REGISTRY_USER)/$(DOCKER_IMAGE_NAME_COMMIT_HASH)
 
 APISVR_ORIGIN=$(shell $(MAKE) -C ../apisvr --no-print-directory service_url)
 .PHONY: apisvr_origin
@@ -51,7 +51,7 @@ else
 .PHONY: deploy
 deploy: push $(ENV_VAR_YAML)
 	$(GCLOUD) run deploy $(GOOGLE_CLOUD_RUN_SERVICE_NAME) \
-	--image=$(APP_CONTAINER_REPOSITORY)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) \
+	--image=$(DOCKER_IMAGE_REGISTRY_USER)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) \
 	--allow-unauthenticated \
 	--env-vars-file=$(ENV_VAR_YAML) \
 	--port=$(APP_PORT_UISVR_e2e_test) \

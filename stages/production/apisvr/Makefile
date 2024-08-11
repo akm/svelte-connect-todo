@@ -26,8 +26,8 @@ build:
 
 .PHONY: push
 push: build
-	docker tag $(DOCKER_IMAGE_NAME) $(APP_CONTAINER_REPOSITORY)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) && \
-	docker push $(APP_CONTAINER_REPOSITORY)/$(DOCKER_IMAGE_NAME_COMMIT_HASH)
+	docker tag $(DOCKER_IMAGE_NAME) $(DOCKER_IMAGE_REGISTRY_USER)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) && \
+	docker push $(DOCKER_IMAGE_REGISTRY_USER)/$(DOCKER_IMAGE_NAME_COMMIT_HASH)
 
 UISVR_ORIGIN=$(shell $(MAKE) -C ../uisvr --no-print-directory service_url 2>/dev/null || echo "")
 .PHONY: uisvr_origin
@@ -45,7 +45,7 @@ env_vars_yaml_gen: $(TEXT_TEMPLATE_CLI)
 	UISVR_ORIGIN=$(UISVR_ORIGIN) $(TEXT_TEMPLATE_CLI) $(ENV_VAR_YAML).tmpl > $(ENV_VAR_YAML)
 
 DEPLOY_OPTIONS_BASE=\
-	--image=$(APP_CONTAINER_REPOSITORY)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) \
+	--image=$(DOCKER_IMAGE_REGISTRY_USER)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) \
 	--allow-unauthenticated \
 	--port=$(APP_PORT_APISVR_dev) \
 	--memory=128Mi \
