@@ -72,12 +72,12 @@ update-traffic:
 inspect_service:
 	$(GCLOUD) run services describe $(GOOGLE_CLOUD_RUN_SERVICE_NAME) --region=$(GCP_REGION)
 
-GCP_SERVICE_URL=$(shell $(GCLOUD) run services describe $(GOOGLE_CLOUD_RUN_SERVICE_NAME) --region=$(GCP_REGION) --format='value(status.url)' )
+GOOGLE_CLOUD_RUN_SERVICE_URL=$(shell $(GCLOUD) run services describe $(GOOGLE_CLOUD_RUN_SERVICE_NAME) --region=$(GCP_REGION) --format='value(status.url)' )
 .PHONY: service_url
 service_url:
-	@echo $(GCP_SERVICE_URL)
+	@echo $(GOOGLE_CLOUD_RUN_SERVICE_URL)
 
-GCP_SERVICE_DOMAIN=$(shell echo $(GCP_SERVICE_URL) | sed -e 's/https:\/\///' | sed -e 's/\/.*//')
+GCP_SERVICE_DOMAIN=$(shell echo $(GOOGLE_CLOUD_RUN_SERVICE_URL) | sed -e 's/https:\/\///' | sed -e 's/\/.*//')
 .PHONY: service_domain
 service_domain:
 	@echo $(GCP_SERVICE_DOMAIN)
