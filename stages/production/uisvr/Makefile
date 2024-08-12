@@ -68,7 +68,3 @@ GCP_SERVICE_DOMAIN=$(shell echo $(GOOGLE_CLOUD_RUN_SERVICE_URL) | sed -e 's/http
 .PHONY: service_domain
 service_domain:
 	@echo $(GCP_SERVICE_DOMAIN)
-
-.PHONY: test-connections
-test-connections:
-	GCP_SERVICE_DOMAIN=$(GCP_SERVICE_DOMAIN) ./test-connections.sh
