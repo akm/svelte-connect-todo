@@ -18,8 +18,7 @@ include $(PATH_TO_SHAPEAPPMK)/docker/image.mk
 
 .PHONY: build
 build:
-	cd $(PATH_TO_UISVR) && \
-	$(MAKE) docker-image-build
+	$(MAKE) -C $(PATH_TO_UISVR) docker-image-build
 
 .PHONY: push
 push: build

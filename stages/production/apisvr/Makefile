@@ -20,9 +20,8 @@ include $(PATH_TO_SHAPEAPPMK)/docker/image.mk
 
 .PHONY: build
 build:
-	cd $(PATH_TO_APISVR) && \
-	$(MAKE) golang-binary-build-for-stage-production && \
-	$(MAKE) docker-image-build
+	$(MAKE) -C $(PATH_TO_APISVR) golang-binary-build-for-stage-production && \
+	$(MAKE) -C $(PATH_TO_APISVR) docker-image-build
 
 .PHONY: push
 push: build
