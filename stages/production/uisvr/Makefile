@@ -20,10 +20,9 @@ include $(PATH_TO_SHAPEAPPMK)/docker/image.mk
 build:
 	$(MAKE) -C $(PATH_TO_UISVR) docker-image-build
 
+include $(PATH_TO_SHAPEAPPMK)/docker/image-push.mk
 .PHONY: push
-push: build
-	docker tag $(DOCKER_IMAGE_NAME) $(DOCKER_IMAGE_REGISTRY_USER)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) && \
-	docker push $(DOCKER_IMAGE_REGISTRY_USER)/$(DOCKER_IMAGE_NAME_COMMIT_HASH)
+push: build docker-image-push
 
 APISVR_ORIGIN=$(shell $(MAKE) -C ../apisvr --no-print-directory service_url)
 .PHONY: apisvr_origin

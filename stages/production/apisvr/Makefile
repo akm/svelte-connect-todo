@@ -23,10 +23,9 @@ build:
 	$(MAKE) -C $(PATH_TO_APISVR) golang-binary-build-for-stage-production && \
 	$(MAKE) -C $(PATH_TO_APISVR) docker-image-build
 
+include $(PATH_TO_SHAPEAPPMK)/docker/image-push.mk
 .PHONY: push
-push: build
-	docker tag $(DOCKER_IMAGE_NAME) $(DOCKER_IMAGE_REGISTRY_USER)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) && \
-	docker push $(DOCKER_IMAGE_REGISTRY_USER)/$(DOCKER_IMAGE_NAME_COMMIT_HASH)
+push: build docker-image-push
 
 UISVR_ORIGIN=$(shell $(MAKE) -C ../uisvr --no-print-directory service_url 2>/dev/null || echo "")
 .PHONY: uisvr_origin
