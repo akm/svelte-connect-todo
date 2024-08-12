@@ -7,6 +7,10 @@ include $(PATH_TO_ROOT)/.shapeapp.mk
 PATH_TO_STAGE_DIR=..
 include $(PATH_TO_STAGE_DIR)/.config.mk
 
+.PHONY: build
+build:
+	$(MAKE) -C $(PATH_TO_UISVR) docker-image-build
+
 include $(PATH_TO_SHAPEAPPMK)/git/current.mk
 DOCKER_IMAGE_REPOSITORY=$(shell $(MAKE) -C $(PATH_TO_UISVR) --no-print-directory docker-image-name)
 DOCKER_IMAGE_NAME_COMMIT_HASH=$(DOCKER_IMAGE_REPOSITORY):$(GIT_CURRENT_COMMIT_HASH_SHORT)
@@ -15,11 +19,6 @@ DOCKER_IMAGE_BUILD_OPTS=\
 	--platform linux/amd64 \
 	-f Dockerfile
 include $(PATH_TO_SHAPEAPPMK)/docker/image.mk
-
-.PHONY: build
-build:
-	$(MAKE) -C $(PATH_TO_UISVR) docker-image-build
-
 include $(PATH_TO_SHAPEAPPMK)/docker/image-push.mk
 .PHONY: push
 push: build docker-image-push

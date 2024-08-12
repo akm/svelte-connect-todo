@@ -7,6 +7,11 @@ include $(PATH_TO_ROOT)/.shapeapp.mk
 PATH_TO_STAGE_DIR=..
 include $(PATH_TO_STAGE_DIR)/.config.mk
 
+.PHONY: build
+build:
+	$(MAKE) -C $(PATH_TO_APISVR) golang-binary-build-for-stage-production && \
+	$(MAKE) -C $(PATH_TO_APISVR) docker-image-build
+
 include $(PATH_TO_SHAPEAPPMK)/git/current.mk
 
 DOCKER_IMAGE_REPOSITORY=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory docker-image-name)
@@ -17,12 +22,6 @@ DOCKER_IMAGE_BUILD_OPTS=\
 	--build-arg APP_BIN_PATH=$(shell $(MAKE) golang-binary-path-for-stage-production --no-print-directory) \
 	-f Dockerfile
 include $(PATH_TO_SHAPEAPPMK)/docker/image.mk
-
-.PHONY: build
-build:
-	$(MAKE) -C $(PATH_TO_APISVR) golang-binary-build-for-stage-production && \
-	$(MAKE) -C $(PATH_TO_APISVR) docker-image-build
-
 include $(PATH_TO_SHAPEAPPMK)/docker/image-push.mk
 .PHONY: push
 push: build docker-image-push
