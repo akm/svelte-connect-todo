@@ -50,6 +50,7 @@ deploy_options:
 	[ -n "$(ENV_VARS_CONTENT)" ] && echo "--env-vars-file=$(ENV_VAR_YAML)" || echo ""
 
 GOOGLE_CLOUD_RUN_SERVICE_NAME=$(DOCKER_IMAGE_REPOSITORY)
+GOOGLE_CLOUD_RUN_DEPLOY_OPTS=$(shell $(MAKE) deploy_options --no-print-directory)
 
 ifeq ($(GOOGLE_CLOUD_PROJECT),)
 .PHONY: deploy
@@ -58,7 +59,7 @@ deploy:
 else
 .PHONY: deploy
 deploy: push
-	$(GCLOUD) run deploy $(GOOGLE_CLOUD_RUN_SERVICE_NAME) $(shell $(MAKE) deploy_options --no-print-directory)
+	$(GCLOUD) run deploy $(GOOGLE_CLOUD_RUN_SERVICE_NAME) $(GOOGLE_CLOUD_RUN_DEPLOY_OPTS)
 endif
 
 .PHONY: update-traffic

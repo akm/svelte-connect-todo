@@ -31,6 +31,14 @@ env_vars_yaml_gen: $(TEXT_TEMPLATE_CLI)
 	APISVR_ORIGIN=$(APISVR_ORIGIN) $(TEXT_TEMPLATE_CLI) $(ENV_VAR_YAML).tmpl ./firebase-config.json > $(ENV_VAR_YAML)
 
 GOOGLE_CLOUD_RUN_SERVICE_NAME=$(DOCKER_IMAGE_REPOSITORY)
+GOOGLE_CLOUD_RUN_DEPLOY_OPTS=\
+	--image=$(DOCKER_IMAGE_REGISTRY_USER)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) \
+	--allow-unauthenticated \
+	--env-vars-file=$(ENV_VAR_YAML) \
+	--port=$(APP_PORT_UISVR_e2e_test) \
+	--memory=128Mi \
+	--region=$(GCP_REGION)
+
 
 ifeq ($(GOOGLE_CLOUD_PROJECT),)
 .PHONY: deploy
@@ -39,13 +47,7 @@ deploy:
 else
 .PHONY: deploy
 deploy: push $(ENV_VAR_YAML)
-	$(GCLOUD) run deploy $(GOOGLE_CLOUD_RUN_SERVICE_NAME) \
-	--image=$(DOCKER_IMAGE_REGISTRY_USER)/$(DOCKER_IMAGE_NAME_COMMIT_HASH) \
-	--allow-unauthenticated \
-	--env-vars-file=$(ENV_VAR_YAML) \
-	--port=$(APP_PORT_UISVR_e2e_test) \
-	--memory=128Mi \
-	--region=$(GCP_REGION)
+	$(GCLOUD) run deploy $(GOOGLE_CLOUD_RUN_SERVICE_NAME) $(GOOGLE_CLOUD_RUN_DEPLOY_OPTS)
 endif
 
 .PHONY: update-traffic
