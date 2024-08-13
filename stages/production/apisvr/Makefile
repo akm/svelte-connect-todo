@@ -77,11 +77,11 @@ GOOGLE_CLOUD_RUN_SERVICE_URL=$(shell $(GCLOUD) run services describe $(GOOGLE_CL
 service_url:
 	@echo $(GOOGLE_CLOUD_RUN_SERVICE_URL)
 
-GCP_SERVICE_DOMAIN=$(shell echo $(GOOGLE_CLOUD_RUN_SERVICE_URL) | sed -e 's/https:\/\///' | sed -e 's/\/.*//')
+GOOGLE_CLOUD_RUN_SERVICE_DOMAIN=$(shell echo $(GOOGLE_CLOUD_RUN_SERVICE_URL) | sed -e 's/https:\/\///' | sed -e 's/\/.*//')
 .PHONY: service_domain
 service_domain:
-	@echo $(GCP_SERVICE_DOMAIN)
+	@echo $(GOOGLE_CLOUD_RUN_SERVICE_DOMAIN)
 
 .PHONY: test-connections
 test-connections:
-	SERVER_DOMAIN=$(GCP_SERVICE_DOMAIN) $(MAKE) -C $(PATH_TO_APISVR) test-connections
+	SERVER_DOMAIN=$(GOOGLE_CLOUD_RUN_SERVICE_DOMAIN) $(MAKE) -C $(PATH_TO_APISVR) test-connections
