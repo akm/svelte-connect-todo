@@ -52,6 +52,10 @@ deploy_options:
 GOOGLE_CLOUD_RUN_SERVICE_NAME=$(DOCKER_IMAGE_REPOSITORY)
 GOOGLE_CLOUD_RUN_DEPLOY_OPTS=$(shell $(MAKE) deploy_options --no-print-directory)
 GOOGLE_CLOUD_RUN_DEPLOY_DEPS=push
+GOOGLE_CLOUD_RUN_UPDATE_TRAFFIC_OPTS=\
+		--to-latest \
+		--platform=managed \
+		--region=$(GCP_REGION)
 
 ifeq ($(GOOGLE_CLOUD_PROJECT),)
 .PHONY: deploy
@@ -66,9 +70,7 @@ endif
 .PHONY: update-traffic
 update-traffic:
 	$(GCLOUD) run services update-traffic $(GOOGLE_CLOUD_RUN_SERVICE_NAME) \
-		--to-latest \
-		--platform=managed \
-		--region=$(GCP_REGION)
+		$(GOOGLE_CLOUD_RUN_UPDATE_TRAFFIC_OPTS)
 
 .PHONY: inspect_service
 inspect_service:
