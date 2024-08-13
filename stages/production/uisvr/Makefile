@@ -38,7 +38,7 @@ GOOGLE_CLOUD_RUN_DEPLOY_OPTS=\
 	--port=$(APP_PORT_UISVR_e2e_test) \
 	--memory=128Mi \
 	--region=$(GCP_REGION)
-
+GOOGLE_CLOUD_RUN_DEPLOY_DEPS=push $(ENV_VAR_YAML)
 
 ifeq ($(GOOGLE_CLOUD_PROJECT),)
 .PHONY: deploy
@@ -46,7 +46,7 @@ deploy:
 	@echo "GOOGLE_CLOUD_PROJECT is not set. Please set GOOGLE_CLOUD_PROJECT to deploy to GCP."
 else
 .PHONY: deploy
-deploy: push $(ENV_VAR_YAML)
+deploy: $(GOOGLE_CLOUD_RUN_DEPLOY_DEPS)
 	$(GCLOUD) run deploy $(GOOGLE_CLOUD_RUN_SERVICE_NAME) $(GOOGLE_CLOUD_RUN_DEPLOY_OPTS)
 endif
 

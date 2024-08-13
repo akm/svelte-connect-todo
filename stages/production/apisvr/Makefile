@@ -51,6 +51,7 @@ deploy_options:
 
 GOOGLE_CLOUD_RUN_SERVICE_NAME=$(DOCKER_IMAGE_REPOSITORY)
 GOOGLE_CLOUD_RUN_DEPLOY_OPTS=$(shell $(MAKE) deploy_options --no-print-directory)
+GOOGLE_CLOUD_RUN_DEPLOY_DEPS=push
 
 ifeq ($(GOOGLE_CLOUD_PROJECT),)
 .PHONY: deploy
@@ -58,7 +59,7 @@ deploy:
 	@echo "GOOGLE_CLOUD_PROJECT is not set. Please set GOOGLE_CLOUD_PROJECT to deploy to GCP."
 else
 .PHONY: deploy
-deploy: push
+deploy: $(GOOGLE_CLOUD_RUN_DEPLOY_DEPS)
 	$(GCLOUD) run deploy $(GOOGLE_CLOUD_RUN_SERVICE_NAME) $(GOOGLE_CLOUD_RUN_DEPLOY_OPTS)
 endif
 
