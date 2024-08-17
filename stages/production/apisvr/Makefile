@@ -24,14 +24,9 @@ UISVR_ORIGIN=$(shell $(MAKE) -C ../uisvr --no-print-directory service_url 2>/dev
 uisvr_origin:
 	@echo $(UISVR_ORIGIN)
 
-ENV_VAR_YAML=./env-vars.yaml
-$(ENV_VAR_YAML):
-	$(MAKE) env_vars_yaml_gen
-
 include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
-
-.PHONY: env_vars_yaml_gen
-env_vars_yaml_gen: $(TEXT_TEMPLATE_CLI)
+ENV_VAR_YAML=./env-vars.yaml
+$(ENV_VAR_YAML): $(TEXT_TEMPLATE_CLI)
 	UISVR_ORIGIN=$(UISVR_ORIGIN) $(TEXT_TEMPLATE_CLI) $(ENV_VAR_YAML).tmpl > $(ENV_VAR_YAML)
 
 DEPLOY_OPTIONS_BASE=\

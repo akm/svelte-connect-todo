@@ -20,14 +20,9 @@ APISVR_ORIGIN=$(shell $(MAKE) -C ../apisvr --no-print-directory service_url)
 apisvr_origin:
 	@echo $(APISVR_ORIGIN)
 
-ENV_VAR_YAML=./env-vars.yaml
-$(ENV_VAR_YAML):
-	$(MAKE) env_vars_yaml_gen
-
 include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
-
-.PHONY: env_vars_yaml_gen
-env_vars_yaml_gen: $(TEXT_TEMPLATE_CLI)
+ENV_VAR_YAML=./env-vars.yaml
+$(ENV_VAR_YAML): $(TEXT_TEMPLATE_CLI)
 	APISVR_ORIGIN=$(APISVR_ORIGIN) $(TEXT_TEMPLATE_CLI) $(ENV_VAR_YAML).tmpl ./firebase-config.json > $(ENV_VAR_YAML)
 
 GOOGLE_CLOUD_RUN_SERVICE_NAME=$(DOCKER_IMAGE_REPOSITORY)
