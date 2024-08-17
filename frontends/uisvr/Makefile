@@ -21,21 +21,21 @@ dot_env_gen: $(TEXT_TEMPLATE_CLI)
 	$(DEFAULT_PORT_ENVS) \
 	$(TEXT_TEMPLATE_CLI) .env-template > .env
 
-PATH_TO_LOCAL=$(PATH_TO_ROOT)/stages/local
-.PHONY: dev_container_up
-dev_container_up:
-	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_LOCAL) up
+PATH_TO_DEV_CONTAINERS=$(PATH_TO_ROOT)/stages/local
+.PHONY: dev-containers-up
+dev-containers-up:
+	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_DEV_CONTAINERS) up
 
-.PHONY: dev_container_down
-dev_container_down:
-	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_LOCAL) down
+.PHONY: dev-containers-down
+dev-containers-down:
+	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_DEV_CONTAINERS) down
 
 .PHONY: dev_run
 dev_run: setup .env
 	npm run dev
 
 .PHONY: dev
-dev: dev_container_up dev_run
+dev: dev-containers-up dev_run
 
 include $(PATH_TO_SHAPEAPPMK)/sveltekit/npm.mk
 include $(PATH_TO_SHAPEAPPMK)/sveltekit/app.mk
@@ -47,16 +47,6 @@ include $(PATH_TO_SHAPEAPPMK)/connect-web/generate.mk
 .PHONY: generate
 generate: connect-web-generate
 
-APP_CONTAINER_IMAGE_NAME=$(APP_BASE_NAME)-uisvr
-APP_CONTAINER_IMAGE_LOCAL=$(APP_CONTAINER_IMAGE_NAME):local
-
-.PHONY: container_image_name
-container_image_name:
-	@echo $(APP_CONTAINER_IMAGE_NAME)
-
-.PHONY: container_build
-container_build:
-	docker build \
-		-t $(APP_CONTAINER_IMAGE_LOCAL) \
-		-f Dockerfile \
-		.
+DOCKER_IMAGE_REPOSITORY=$(APP_BASE_NAME)-uisvr
+DOCKER_IMAGE_NAME?=$(DOCKER_IMAGE_REPOSITORY):$(APP_STAGE_TYPE)
+include $(PATH_TO_SHAPEAPPMK)/docker/image.mk

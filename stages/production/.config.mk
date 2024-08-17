@@ -5,7 +5,6 @@ GCP_PROJECT_ID=$(GOOGLE_CLOUD_PROJECT)
 
 GCLOUD=gcloud --project $(GOOGLE_CLOUD_PROJECT)
 
-APP_CONTAINER_REPOSITORY?=akima
-APP_CONTAINER_IMAGE_TAG=$(shell git show --format='%h' --no-patch)
+DOCKER_IMAGE_REGISTRY_USER?=akima
 
 APP_STAGE_TYPE=production
