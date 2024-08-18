@@ -47,19 +47,12 @@ dev: dev-containers-up run
 
 GOLANG_BINARY_TARGET=./cmd/server
 GOLANG_BINARY_OUTPUT_BASE=./bin/server
-include $(PATH_TO_SHAPEAPPMK)/golang/binary.mk
 
-BINARY_FILE=$(GOLANG_BINARY_PATH_FOR_STAGE_$(APP_STAGE_TYPE))
-
-include $(PATH_TO_SHAPEAPPMK)/golang/module.mk
-
-DOCKER_IMAGE_REPOSITORY=$(APP_BASE_NAME)-$(GOLANG_MODULE_NAME)
-DOCKER_IMAGE_NAME?=$(DOCKER_IMAGE_REPOSITORY):$(APP_STAGE_TYPE)
 DOCKER_IMAGE_BUILD_DEPS=$(BINARY_FILE)
 DOCKER_IMAGE_BUILD_OPTS=\
 	--build-arg APP_BIN_PATH=$(BINARY_FILE) \
 	-f Dockerfile
-include $(PATH_TO_SHAPEAPPMK)/docker/image.mk
+include $(PATH_TO_SHAPEAPPMK)/golang/docker-image.mk
 
 include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
 
