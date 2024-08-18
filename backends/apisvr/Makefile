@@ -37,7 +37,7 @@ DEV_VARS=$(ENV_VARS)
 DEV_ENVS=$(ENVS_BASE) \
 	$(foreach var,$(DEV_VARS),$(var)=$($(var)))
 
-PATH_TO_DEV_RUN_PACKAGE=./cmd/server
+APISVR_DEV_TARGET_PACKAGE=./cmd/server
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/dev.mk
 
 .PHONY: run
