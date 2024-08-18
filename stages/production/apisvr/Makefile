@@ -7,10 +7,15 @@ include $(PATH_TO_ROOT)/.shapeapp.mk
 PATH_TO_STAGE_DIR=..
 include $(PATH_TO_STAGE_DIR)/.config.mk
 
+# apisvr-golang-binary-build-for-stage-production
+# apisvr-docker-image-build
+apisvr-%:
+	$(MAKE) -C $(PATH_TO_APISVR) $*
+
 .PHONY: build
-build:
-	$(MAKE) -C $(PATH_TO_APISVR) golang-binary-build-for-stage-production && \
-	$(MAKE) -C $(PATH_TO_APISVR) docker-image-build
+build: \
+	apisvr-golang-binary-build-for-stage-production \
+	apisvr-docker-image-build
 
 DOCKER_IMAGE_REPOSITORY=$(shell $(MAKE) -C $(PATH_TO_APISVR) --no-print-directory docker-image-name)
 DOCKER_IMAGE_BUILD_OPTS=\
