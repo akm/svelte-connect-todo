@@ -20,7 +20,6 @@ APISVR_ORIGIN=$(shell $(MAKE) -C ../apisvr --no-print-directory service_url)
 apisvr_origin:
 	@echo $(APISVR_ORIGIN)
 
-include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
 ENV_VAR_YAML=./env-vars.yaml
 $(ENV_VAR_YAML): $(TEXT_TEMPLATE_CLI)
 	APISVR_ORIGIN=$(APISVR_ORIGIN) $(TEXT_TEMPLATE_CLI) $(ENV_VAR_YAML).tmpl ./firebase-config.json > $(ENV_VAR_YAML)

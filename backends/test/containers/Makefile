@@ -1,7 +1,6 @@
 PATH_TO_ROOT=../../..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 
-include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
 include $(PATH_TO_SHAPEAPPMK)/docker-compose/base.mk
 
 TEST_MYSQL_DB_NAME=$(APP_MYSQL_DB_NAME)-test

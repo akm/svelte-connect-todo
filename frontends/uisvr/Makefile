@@ -10,8 +10,6 @@ install: npm-install connect-web-install
 .PHONY: setup
 setup: npm-ci
 
-include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
-
 .env: $(TEXT_TEMPLATE_CLI)
 	$(CONFIG_ENVS) $(DEFAULT_PORT_ENVS) $(TEXT_TEMPLATE_CLI) .env-template > .env
 
