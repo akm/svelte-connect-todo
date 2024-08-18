@@ -18,7 +18,9 @@ include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
 .PHONY: generate
 generate: buf-generate
 
-PATH_TO_DEV_CONTAINERS=$(PATH_TO_ROOT)/stages/local
+# DEV_CONTAINERS-mysql-dsn
+$(call shell-dir-target-vars,DEV_CONTAINERS-,$(PATH_TO_ROOT)/stages/local,mysql-dsn)
+
 APP_CORS_ALLOW_ORIGINS=http://localhost:$(APP_PORT_UISVR_dev),http://localhost:$(APP_PORT_UISVR_e2e_test)
 FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)"
 
@@ -32,7 +34,7 @@ ENV_VARS=\
 
 DEV_VARS=$(ENV_VARS)
 DEV_ENVS=$(ENVS_BASE) \
-	DB_DSN='$(shell DEV_TARGET=apisvr $(MAKE) -C $(PATH_TO_DEV_CONTAINERS) mysql-dsn)' \
+	DB_DSN='$(DEV_CONTAINERS-mysql-dsn)' \
 	$(foreach var,$(DEV_VARS),$(var)=$($(var)))
 
 PATH_TO_DEV_RUN_PACKAGE=./cmd/server
@@ -66,7 +68,8 @@ include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
 test-connections:
 	$(MAKE) -C proto test-connections
 
-PATH_TO_TEST_CONTAINERS=$(PATH_TO_BACKENDS)/test/containers
+# TEST_CONTAINERS-mysql-dsn
+$(call shell-dir-target-vars,TEST_CONTAINERS-,$(PATH_TO_BACKENDS)/test/containers,mysql-dsn)
 
 # テストに渡される TEST_FIXTURE_DIR は絶対パス。テストはそれぞれの_test.goファイルのディレクトリで実行されるため。
 TEST_FIXTURE_DIR=$(abspath $(PATH_TO_BIZ)/test/fixtures)
@@ -74,7 +77,7 @@ TEST_FIXTURE_DIR=$(abspath $(PATH_TO_BIZ)/test/fixtures)
 TEST_VARS=$(ENV_VARS) \
 	TEST_FIXTURE_DIR
 TEST_ENVS=$(ENVS_BASE) \
-	TEST_DB_DSN='$(shell $(MAKE) -C $(PATH_TO_TEST_CONTAINERS) mysql-dsn)' \
+	TEST_DB_DSN='$(TEST_CONTAINERS-mysql-dsn)' \
 	$(foreach var,$(TEST_VARS),$(var)=$($(var)))
 
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/test.mk
