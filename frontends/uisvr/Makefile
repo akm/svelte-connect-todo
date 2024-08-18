@@ -12,14 +12,8 @@ setup: npm-ci
 
 include $(PATH_TO_SHAPEAPPMK)/text-template-cli/base.mk
 
-.env:
-	$(MAKE) dot_env_gen
-
-.PHONY: dot_env_gen
-dot_env_gen: $(TEXT_TEMPLATE_CLI)
-	$(CONFIG_ENVS) \
-	$(DEFAULT_PORT_ENVS) \
-	$(TEXT_TEMPLATE_CLI) .env-template > .env
+.env: $(TEXT_TEMPLATE_CLI)
+	$(CONFIG_ENVS) $(DEFAULT_PORT_ENVS) $(TEXT_TEMPLATE_CLI) .env-template > .env
 
 # dev-containers-up
 # dev-containers-down
