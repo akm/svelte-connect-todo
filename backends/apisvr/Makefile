@@ -10,7 +10,6 @@ build: golang-build-all
 include $(PATH_TO_SHAPEAPPMK)/golangci-lint/lint.mk
 lint: golangci-lint-lint
 
-PATH_TO_PROTO=./proto
 include $(PATH_TO_SHAPEAPPMK)/buf/buf.mk
 include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
 
