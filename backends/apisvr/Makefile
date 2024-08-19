@@ -45,13 +45,13 @@ test-connections:
 $(call shell-dir-target-vars,TEST_CONTAINERS-,$(PATH_TO_BACKENDS)/test/containers,mysql-dsn)
 
 
-# テストに渡される TEST_FIXTURE_DIR は絶対パス。テストはそれぞれの_test.goファイルのディレクトリで実行されるため。
-APISVR_TEST_FIXTURE_DIR=$(abspath $(PATH_TO_BIZ)/test/fixtures)
+# テストに渡される TEST_PATH_TO_FIXTURES は絶対パス。テストはそれぞれの_test.goファイルのディレクトリで実行されるため。
+APISVR_TEST_PATH_TO_FIXTURES=$(abspath $(PATH_TO_BIZ)/test/fixtures)
 
 APISVR_TEST_VARS=$(APISVR_ENV_VARS)
 APISVR_TEST_ENVS=$(APISVR_ENVS_BASE) \
 	DB_DSN='$(TEST_CONTAINERS-mysql-dsn)' \
-	TEST_FIXTURE_DIR=$(APISVR_TEST_FIXTURE_DIR) \
+	TEST_PATH_TO_FIXTURES=$(APISVR_TEST_PATH_TO_FIXTURES) \
 	$(foreach var,$(APISVR_TEST_VARS),$(var)=$($(var)))
 
 APISVR_TEST_PATH_TO_CONTAINERS=$(PATH_TO_BACKENDS)/test/containers

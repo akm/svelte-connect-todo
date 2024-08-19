@@ -34,8 +34,8 @@ func TestMain(m *testing.M) {
 		log.Fatalf("unable to open database: %v", err)
 	}
 
-	fixtureDir := os.Getenv("TEST_FIXTURE_DIR")
-	log.Printf("TEST_FIXTURE_DIR: %s", fixtureDir)
+	fixtureDir := os.Getenv("TEST_PATH_TO_FIXTURES")
+	log.Printf("TEST_PATH_TO_FIXTURES: %s", fixtureDir)
 	fixtures, err = testfixtures.New(
 		testfixtures.Database(pool),        // You database connection
 		testfixtures.Dialect("mysql"),      // Available: "postgresql", "timescaledb", "mysql", "mariadb", "sqlite" and "sqlserver"
