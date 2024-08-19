@@ -17,28 +17,14 @@ include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
 .PHONY: generate
 generate: buf-generate
 
-# DEV_CONTAINERS-mysql-dsn
-$(call shell-dir-target-vars,DEV_CONTAINERS-,$(PATH_TO_ROOT)/stages/local,mysql-dsn)
-
 APP_CORS_ALLOW_ORIGINS=http://localhost:$(APP_PORT_UISVR_dev),http://localhost:$(APP_PORT_UISVR_e2e_test)
 FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)"
 
+APISVR_DEV_TARGET_PACKAGE?=./cmd/server
+APISVR_DEV_PATH_TO_CONTAINERS?=$(PATH_TO_ROOT)/stages/local
+
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/env.mk
-
-APISVR_DEV_VARS=$(APISVR_ENV_VARS)
-APISVR_DEV_ENVS=$(APISVR_ENVS_BASE) \
-	DB_DSN='$(DEV_CONTAINERS-mysql-dsn)' \
-	$(foreach var,$(APISVR_DEV_VARS),$(var)=$($(var)))
-
-APISVR_DEV_TARGET_PACKAGE=./cmd/server
-APISVR_DEV_PATH_TO_CONTAINERS=$(PATH_TO_ROOT)/stages/local
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/dev.mk
-
-.PHONY: run
-run: dev-run
-
-.PHONY: dev
-dev: dev-containers-up run
 
 GOLANG_BINARY_TARGET=./cmd/server
 GOLANG_BINARY_OUTPUT_BASE=./bin/server
