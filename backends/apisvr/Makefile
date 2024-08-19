@@ -9,9 +9,7 @@ include $(PATH_TO_SHAPEAPPMK)/golangci-lint/lint.mk
 build: golang-build-all
 lint: golangci-lint-lint
 
-include $(PATH_TO_SHAPEAPPMK)/buf/buf.mk
-include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
-
+include $(PATH_TO_SHAPEAPPMK)/default/apisvr/buf.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/env.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/dev.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/test.mk
