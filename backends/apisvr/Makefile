@@ -5,9 +5,8 @@ PATH_TO_ROOT:=../..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 
 include $(PATH_TO_SHAPEAPPMK)/golang/build.mk
-build: golang-build-all
-
 include $(PATH_TO_SHAPEAPPMK)/golangci-lint/lint.mk
+build: golang-build-all
 lint: golangci-lint-lint
 
 include $(PATH_TO_SHAPEAPPMK)/buf/buf.mk
@@ -18,6 +17,7 @@ generate: buf-generate
 
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/env.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/dev.mk
+include $(PATH_TO_SHAPEAPPMK)/default/apisvr/test.mk
 
 DOCKER_IMAGE_BUILD_DEPS=$(BINARY_FILE)
 DOCKER_IMAGE_BUILD_OPTS=\
@@ -26,9 +26,6 @@ DOCKER_IMAGE_BUILD_OPTS=\
 include $(PATH_TO_SHAPEAPPMK)/golang/docker-image.mk
 
 include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
-
 .PHONY: test-connections
 test-connections:
 	$(MAKE) -C proto test-connections
-
-include $(PATH_TO_SHAPEAPPMK)/default/apisvr/test.mk
