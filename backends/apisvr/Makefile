@@ -17,12 +17,6 @@ include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
 .PHONY: generate
 generate: buf-generate
 
-APP_CORS_ALLOW_ORIGINS=http://localhost:$(APP_PORT_UISVR_dev),http://localhost:$(APP_PORT_UISVR_e2e_test)
-FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:$(APP_PORT_FIREBASE_AUTH_dev)"
-
-APISVR_DEV_TARGET_PACKAGE?=./cmd/server
-APISVR_DEV_PATH_TO_CONTAINERS?=$(PATH_TO_ROOT)/stages/local
-
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/env.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/dev.mk
 
