@@ -32,8 +32,4 @@ include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
 test-connections:
 	$(MAKE) -C proto test-connections
 
-# テストに渡される TEST_PATH_TO_FIXTURES は絶対パス。テストはそれぞれの_test.goファイルのディレクトリで実行されるため。
-APISVR_TEST_PATH_TO_FIXTURES=$(abspath $(PATH_TO_BIZ)/test/fixtures)
-APISVR_TEST_PATH_TO_CONTAINERS=$(PATH_TO_BACKENDS)/test/containers
-
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/test.mk
