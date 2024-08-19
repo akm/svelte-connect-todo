@@ -27,8 +27,8 @@ func TestMain(m *testing.M) {
 	// Open connection to the test database.
 	// Do NOT import fixtures in a production database!
 	// Existing data would be deleted.
-	dsn := os.Getenv("TEST_DB_DSN")
-	log.Printf("TEST_DB_DSN: %s", dsn)
+	dsn := os.Getenv("DB_DSN")
+	log.Printf("DB_DSN: %s", dsn)
 	pool, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatalf("unable to open database: %v", err)
