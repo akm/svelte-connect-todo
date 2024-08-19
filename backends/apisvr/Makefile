@@ -11,7 +11,6 @@ include $(PATH_TO_SHAPEAPPMK)/default/apisvr/dev.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/test.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/docker-image.mk
 
-include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
 .PHONY: test-connections
 test-connections:
 	$(MAKE) -C proto test-connections
