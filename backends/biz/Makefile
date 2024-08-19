@@ -4,12 +4,7 @@ default: build lint test
 PATH_TO_ROOT:=../..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 
-include $(PATH_TO_SHAPEAPPMK)/golang/build.mk
-build: golang-build-all
-
-include $(PATH_TO_SHAPEAPPMK)/golangci-lint/lint.mk
-lint: golangci-lint-lint
-
+include $(PATH_TO_SHAPEAPPMK)/golang/base.mk
 include $(PATH_TO_SHAPEAPPMK)/sqlc/base.mk
 
 SCHEMA_SQL=schema.sql
