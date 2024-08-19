@@ -26,8 +26,6 @@ APISVR_DEV_PATH_TO_CONTAINERS?=$(PATH_TO_ROOT)/stages/local
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/env.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/dev.mk
 
-GOLANG_BINARY_TARGET=./cmd/server
-
 DOCKER_IMAGE_BUILD_DEPS=$(BINARY_FILE)
 DOCKER_IMAGE_BUILD_OPTS=\
 	--build-arg APP_BIN_PATH=$(BINARY_FILE) \
