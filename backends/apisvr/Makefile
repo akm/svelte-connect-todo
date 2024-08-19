@@ -27,7 +27,6 @@ include $(PATH_TO_SHAPEAPPMK)/default/apisvr/env.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/dev.mk
 
 GOLANG_BINARY_TARGET=./cmd/server
-GOLANG_BINARY_OUTPUT_BASE=./bin/server
 
 DOCKER_IMAGE_BUILD_DEPS=$(BINARY_FILE)
 DOCKER_IMAGE_BUILD_OPTS=\
