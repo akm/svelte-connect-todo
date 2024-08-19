@@ -15,12 +15,7 @@ include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/env.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/dev.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/test.mk
-
-DOCKER_IMAGE_BUILD_DEPS=$(BINARY_FILE)
-DOCKER_IMAGE_BUILD_OPTS=\
-	--build-arg APP_BIN_PATH=$(BINARY_FILE) \
-	-f Dockerfile
-include $(PATH_TO_SHAPEAPPMK)/golang/docker-image.mk
+include $(PATH_TO_SHAPEAPPMK)/default/apisvr/docker-image.mk
 
 include $(PATH_TO_SHAPEAPPMK)/grpcurl/base.mk
 .PHONY: test-connections
