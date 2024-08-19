@@ -12,9 +12,6 @@ lint: golangci-lint-lint
 include $(PATH_TO_SHAPEAPPMK)/buf/buf.mk
 include $(PATH_TO_SHAPEAPPMK)/buf/app/gen.mk
 
-.PHONY: generate
-generate: buf-generate
-
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/env.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/dev.mk
 include $(PATH_TO_SHAPEAPPMK)/default/apisvr/test.mk
