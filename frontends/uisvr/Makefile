@@ -18,12 +18,12 @@ setup: npm-ci
 dev-containers-%:
 	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_ROOT)/stages/local $*
 
-.PHONY: dev_run
-dev_run: setup .env
+.PHONY: dev-run
+dev-run: setup .env
 	npm run dev
 
 .PHONY: dev
-dev: dev-containers-up dev_run
+dev: dev-containers-up dev-run
 
 include $(PATH_TO_SHAPEAPPMK)/sveltekit/npm.mk
 include $(PATH_TO_SHAPEAPPMK)/sveltekit/app.mk
