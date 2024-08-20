@@ -19,8 +19,7 @@ dev-containers-%:
 	DEV_TARGET=uisvr $(MAKE) -C $(PATH_TO_ROOT)/stages/local $*
 
 .PHONY: dev-run
-dev-run: setup .env
-	npm run dev
+dev-run: setup .env npm-run-dev
 
 .PHONY: dev
 dev: dev-containers-up dev-run
