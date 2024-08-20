@@ -31,9 +31,6 @@ DOCKER_COMPOSE_ENVS=\
 	APP_UISVR_DOT_ENV=$(APP_UISVR_DOT_ENV_PATH) \
 	APP_RPROXY_ENVOY_YAML=$(APP_RPROXY_ENVOY_YAML)
 
-.PHONY: setup_envs
-setup_envs: $(APP_UISVR_DOT_ENV_PATH) $(APP_RPROXY_ENVOY_YAML)
-
 TARGET_SERVICES_FOR_DEV_apisvr=firebase-emulators mysql
 TARGET_SERVICES_FOR_DEV_uisvr=$(TARGET_SERVICES_FOR_DEV_apisvr) apisvr
 TARGET_SERVICES_FOR_DEV_rproxy=$(TARGET_SERVICES_FOR_DEV_uisvr) uisvr
@@ -52,8 +49,14 @@ apisvr-%:
 uisvr-%:
 	$(MAKE) -C $(PATH_TO_UISVR) $*
 
+SETUP_DEPS_FOR_DEV_apisvr=
+SETUP_DEPS_FOR_DEV_uisvr=apisvr-golang-binary-build-for-stage-local
+SETUP_DEPS_FOR_DEV_rproxy=$(APP_UISVR_DOT_ENV_PATH) uisvr-setup
+SETUP_DEPS_FOR_DEV_all=$(APP_RPROXY_ENVOY_YAML)
+SETUP_DEPS=$(SETUP_DEPS_FOR_DEV_$(DEV_TARGET))
+
 .PHONY: setup
-setup: setup_envs apisvr-golang-binary-build-for-stage-local uisvr-setup
+setup: $(SETUP_DEPS)
 
 .PHONY: run
 run: setup docker-compose-run
