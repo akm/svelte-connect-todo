@@ -29,7 +29,7 @@ include $(PATH_TO_SHAPEAPPMK)/sveltekit/npm.mk
 include $(PATH_TO_SHAPEAPPMK)/sveltekit/app.mk
 
 include $(PATH_TO_SHAPEAPPMK)/connect-web/install.mk
-PATH_TO_PROTO=$(PATH_TO_APISVR)/proto
+CONNECT_WEB_PATH_TO_PROTO=$(PATH_TO_APISVR)/proto
 include $(PATH_TO_SHAPEAPPMK)/connect-web/generate.mk
 
 .PHONY: generate
