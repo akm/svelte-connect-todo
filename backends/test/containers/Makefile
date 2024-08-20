@@ -18,23 +18,14 @@ TARGET_SERVICES_WITH_firebase_emulators=firebase-emulators $(TARGET_SERVICES_WIT
 TARGET_SERVICES_WITH_ALL=$(TARGET_SERVICES_WITH_firebase_emulators)
 DOCKER_COMPOSE_TARGET_SERVICES?=$(TARGET_SERVICES_WITH_$(DOCKER_COMPOSE_SERVICE_REQUIRED))
 
-.PHONY: validate_services
-validate_services:
-	@if [ "$(sort $(TARGET_SERVICES_WITH_ALL))" = "$(sort $(DOCKER_COMPOSE_SERVICES_ALL))" ] ;\
-	then \
-		echo "services are valid"; \
-	else \
-		echo "services are invalid"; \
-		exit 1; \
-	fi
-
-.PHONY: setup
-setup: validate_services
+ifneq "$(sort $(TARGET_SERVICES_WITH_ALL))" "$(sort $(DOCKER_COMPOSE_SERVICES_ALL))"
+$(error "services are invalid")
+endif
 
 .PHONY: run
-run: setup docker-compose-run
+run: docker-compose-run
 .PHONY: up
-up: setup docker-compose-up mysql-wait dbmigration-up
+up: docker-compose-up mysql-wait dbmigration-up
 .PHONY: down
 down: docker-compose-down
 .PHONY: rmi

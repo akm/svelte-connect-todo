@@ -40,18 +40,12 @@ TARGET_SERVICES_FOR_DEV_rproxy=$(TARGET_SERVICES_FOR_DEV_uisvr) uisvr
 TARGET_SERVICES_FOR_DEV_all=$(TARGET_SERVICES_FOR_DEV_rproxy) rproxy
 DOCKER_COMPOSE_TARGET_SERVICES=$(TARGET_SERVICES_FOR_DEV_$(DEV_TARGET))
 
-.PHONY: validate_services
-validate_services:
-	if [ "$(sort $(TARGET_SERVICES_FOR_DEV_all))" = "$(sort $(DOCKER_COMPOSE_SERVICES_ALL))" ] ;\
-	then \
-		echo "services are valid"; \
-	else \
-		echo "services are invalid"; \
-		exit 1; \
-	fi
+ifneq "$(sort $(TARGET_SERVICES_FOR_DEV_all))" "$(sort $(DOCKER_COMPOSE_SERVICES_ALL))"
+$(error "services are invalid")
+endif
 
 .PHONY: setup
-setup: validate_services setup_envs build_apisvr_bin
+setup: setup_envs build_apisvr_bin
 	$(MAKE) -C $(PATH_TO_UISVR) setup
 
 .PHONY: build_apisvr_bin
