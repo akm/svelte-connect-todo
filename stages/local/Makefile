@@ -44,13 +44,16 @@ ifneq "$(sort $(TARGET_SERVICES_FOR_DEV_all))" "$(sort $(DOCKER_COMPOSE_SERVICES
 $(error "services are invalid")
 endif
 
-.PHONY: setup
-setup: setup_envs build_apisvr_bin
-	$(MAKE) -C $(PATH_TO_UISVR) setup
+# apisvr-golang-binary-build-for-stage-local
+apisvr-%:
+	$(MAKE) -C $(PATH_TO_APISVR) $*
 
-.PHONY: build_apisvr_bin
-build_apisvr_bin:
-	$(MAKE) -C $(PATH_TO_APISVR) golang-binary-build-for-stage-local
+# uisvr-setup
+uisvr-%:
+	$(MAKE) -C $(PATH_TO_UISVR) $*
+
+.PHONY: setup
+setup: setup_envs apisvr-golang-binary-build-for-stage-local uisvr-setup
 
 .PHONY: run
 run: setup docker-compose-run
