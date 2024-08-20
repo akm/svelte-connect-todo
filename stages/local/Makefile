@@ -31,10 +31,6 @@ DOCKER_COMPOSE_ENVS=\
 	APP_UISVR_DOT_ENV=$(APP_UISVR_DOT_ENV_PATH) \
 	APP_RPROXY_ENVOY_YAML=$(APP_RPROXY_ENVOY_YAML)
 
-.PHONY: docker_compose_envs
-docker_compose_envs:
-	@echo $(DOCKER_COMPOSE_ENVS)
-
 .PHONY: setup_envs
 setup_envs: $(APP_UISVR_DOT_ENV_PATH) $(APP_RPROXY_ENVOY_YAML)
 
