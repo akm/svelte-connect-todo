@@ -58,7 +58,7 @@ func main() {
 	rootMux.Handle("/", h2c.NewHandler(serviceMux, &http2.Server{}))
 
 	serviceMuxHandler := withCORS(rootMux)
-	serviceMuxHandler = withRequestDumping(serviceMuxHandler)
+	serviceMuxHandler = withRequestDumping(serviceMuxHandler, logger)
 
 	srv := &http.Server{
 		Addr:              serverHostAndPort,
