@@ -189,6 +189,10 @@ func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.TaskSe
 		return nil, s.ToConnectError(err)
 	}
 
+	if err := tx.Commit(); err != nil {
+		return nil, err
+	}
+
 	{
 		var st v1.TaskStatus
 		switch task.Status {
