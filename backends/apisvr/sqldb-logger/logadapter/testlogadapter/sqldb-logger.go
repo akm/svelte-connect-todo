@@ -40,5 +40,5 @@ func (a *slogAdapter) Log(ctx context.Context, sqldbLevel sqldblogger.Level, msg
 		level = slog.LevelDebug
 	}
 
-	a.t.Logf("sqldb-logger [%s] %s %v", level, msg, attrs)
+	a.t.Logf("[%s] %s %v", level, msg, attrs)
 }
