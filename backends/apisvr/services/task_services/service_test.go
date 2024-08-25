@@ -27,15 +27,15 @@ func TestMain(m *testing.M) {
 	// Open connection to the test database.
 	// Do NOT import fixtures in a production database!
 	// Existing data would be deleted.
-	dsn := os.Getenv("TEST_DB_DSN")
-	log.Printf("TEST_DB_DSN: %s", dsn)
+	dsn := os.Getenv("DB_DSN")
+	log.Printf("DB_DSN: %s", dsn)
 	pool, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatalf("unable to open database: %v", err)
 	}
 
-	fixtureDir := os.Getenv("TEST_FIXTURE_DIR")
-	log.Printf("TEST_FIXTURE_DIR: %s", fixtureDir)
+	fixtureDir := os.Getenv("TEST_PATH_TO_FIXTURES")
+	log.Printf("TEST_PATH_TO_FIXTURES: %s", fixtureDir)
 	fixtures, err = testfixtures.New(
 		testfixtures.Database(pool),        // You database connection
 		testfixtures.Dialect("mysql"),      // Available: "postgresql", "timescaledb", "mysql", "mariadb", "sqlite" and "sqlserver"

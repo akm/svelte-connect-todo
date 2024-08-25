@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.33, for macos13 (arm64)
 --
--- Host: 127.0.0.1    Database: svelte-connect-todo-db1
+-- Host: 127.0.0.1    Database: svelte-connect-todo-db1-test
 -- ------------------------------------------------------
 -- Server version	8.0.38
 
