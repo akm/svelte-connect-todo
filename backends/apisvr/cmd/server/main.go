@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"log"
-	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -22,9 +21,14 @@ import (
 )
 
 func main() {
-	pool, err := connectDB(slog.Default())
+	logger, err := newLogger()
 	if err != nil {
-		log.Fatalf("DB connection error: %v", err) //nolint:gocritic
+		log.Fatalf("Logger error: %+v", err) //nolint:gocritic
+	}
+
+	pool, err := connectDB(logger)
+	if err != nil {
+		log.Fatalf("DB connection error: %+v", err) //nolint:gocritic
 	}
 	defer pool.Close()
 
