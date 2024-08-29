@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	taskv1 "apisvr/gen/task/v1"
-	"apisvr/sqldb-logger/logadapter/testlogadapter"
+	"apisvr/sqldb-logger/logadapter/testslogadapter"
 
 	"connectrpc.com/connect"
 	_ "github.com/go-sql-driver/mysql"
@@ -60,7 +60,7 @@ func prepareTestDatabase(t *testing.T) {
 func TestTaskServiceList(t *testing.T) {
 	prepareTestDatabase(t)
 
-	adapter := testlogadapter.New(t)
+	adapter := testslogadapter.New(t)
 	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
 
 	ctx := context.Background()
@@ -81,7 +81,7 @@ func TestTaskServiceList(t *testing.T) {
 func TestTaskServiceShow(t *testing.T) {
 	prepareTestDatabase(t)
 
-	adapter := testlogadapter.New(t)
+	adapter := testslogadapter.New(t)
 	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
 
 	srv := NewTaskService(pool)
@@ -110,7 +110,7 @@ func TestTaskServiceShow(t *testing.T) {
 func TestTaskServiceCreate(t *testing.T) {
 	prepareTestDatabase(t)
 
-	adapter := testlogadapter.New(t)
+	adapter := testslogadapter.New(t)
 	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
 
 	srv := NewTaskService(pool)
@@ -171,7 +171,7 @@ func TestTaskServiceCreate(t *testing.T) {
 func TestTaskServiceUpdate(t *testing.T) {
 	prepareTestDatabase(t)
 
-	adapter := testlogadapter.New(t)
+	adapter := testslogadapter.New(t)
 	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
 
 	srv := NewTaskService(pool)
@@ -251,7 +251,7 @@ func TestTaskServiceUpdate(t *testing.T) {
 func TestTaskServiceDelete(t *testing.T) {
 	prepareTestDatabase(t)
 
-	adapter := testlogadapter.New(t)
+	adapter := testslogadapter.New(t)
 	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
 
 	srv := NewTaskService(pool)

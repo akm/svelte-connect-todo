@@ -1,4 +1,4 @@
-package testlogadapter
+package testslogadapter
 
 import (
 	"testing"
