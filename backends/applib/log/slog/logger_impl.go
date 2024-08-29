@@ -15,3 +15,7 @@ func (x *loggerImpl) WithGroup(name string) Logger {
 	resultImpl := x.origLogger.WithGroup(name)
 	return &loggerImpl{origLogger: resultImpl}
 }
+
+func (x *loggerImpl) SlogLogger() *origLogger {
+	return x.origLogger
+}
