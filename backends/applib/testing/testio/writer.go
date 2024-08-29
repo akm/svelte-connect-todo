@@ -11,7 +11,7 @@ type Writer struct {
 
 var _ io.Writer = (*Writer)(nil)
 
-func New(t *testing.T) *Writer {
+func NewWriter(t *testing.T) *Writer {
 	return &Writer{t: t}
 }
 

@@ -14,6 +14,6 @@ import (
 // New creates a log adapter from sqldblogger.Logger to an slog.Logger one.
 func New(t *testing.T) sqldblogger.Logger {
 	return slogadapter.New(
-		slog.NewLogger(testio.New(t), slog.LevelDebug, slog.NewTextHandler),
+		slog.NewLogger(testio.NewWriter(t), slog.LevelDebug, slog.NewTextHandler),
 	)
 }
