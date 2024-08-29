@@ -1,13 +1,16 @@
 package slog
 
 import (
+	"io"
 	orig "log/slog"
 )
 
 type (
-	Attr    = orig.Attr
-	Handler = orig.Handler
-	Level   = orig.Level
+	Level = orig.Level
+	Attr  = orig.Attr
+
+	Handler        = orig.Handler
+	HandlerOptions = orig.HandlerOptions
 
 	origLogger = orig.Logger
 )
@@ -23,6 +26,12 @@ var (
 	Duration = orig.Duration
 	Group    = orig.Group
 	Any      = orig.Any
+
+	NewJSONHandlerOrig = orig.NewJSONHandler
+	NewTextHandlerOrig = orig.NewTextHandler
+
+	NewJSONHandler = func(w io.Writer, opts *HandlerOptions) Handler { return NewJSONHandlerOrig(w, opts) }
+	NewTextHandler = func(w io.Writer, opts *HandlerOptions) Handler { return NewTextHandlerOrig(w, opts) }
 )
 
 const (
