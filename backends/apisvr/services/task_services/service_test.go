@@ -8,10 +8,12 @@ import (
 	"testing"
 
 	taskv1 "apisvr/gen/task/v1"
+	"apisvr/sqldb-logger/logadapter/testlogadapter"
 
 	"connectrpc.com/connect"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-testfixtures/testfixtures/v3"
+	sqldblogger "github.com/simukti/sqldb-logger"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
@@ -21,13 +23,14 @@ var (
 	fixtures *testfixtures.Loader
 )
 
+var dsn = os.Getenv("DB_DSN")
+
 func TestMain(m *testing.M) {
 	var err error
 
 	// Open connection to the test database.
 	// Do NOT import fixtures in a production database!
 	// Existing data would be deleted.
-	dsn := os.Getenv("DB_DSN")
 	log.Printf("DB_DSN: %s", dsn)
 	pool, err = sql.Open("mysql", dsn)
 	if err != nil {
@@ -57,6 +60,9 @@ func prepareTestDatabase(t *testing.T) {
 func TestTaskServiceList(t *testing.T) {
 	prepareTestDatabase(t)
 
+	adapter := testlogadapter.New(t)
+	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
+
 	ctx := context.Background()
 
 	srv := NewTaskService(pool)
@@ -74,6 +80,9 @@ func TestTaskServiceList(t *testing.T) {
 
 func TestTaskServiceShow(t *testing.T) {
 	prepareTestDatabase(t)
+
+	adapter := testlogadapter.New(t)
+	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
 
 	srv := NewTaskService(pool)
 
@@ -100,6 +109,9 @@ func TestTaskServiceShow(t *testing.T) {
 
 func TestTaskServiceCreate(t *testing.T) {
 	prepareTestDatabase(t)
+
+	adapter := testlogadapter.New(t)
+	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
 
 	srv := NewTaskService(pool)
 
@@ -158,6 +170,9 @@ func TestTaskServiceCreate(t *testing.T) {
 
 func TestTaskServiceUpdate(t *testing.T) {
 	prepareTestDatabase(t)
+
+	adapter := testlogadapter.New(t)
+	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
 
 	srv := NewTaskService(pool)
 
@@ -235,6 +250,10 @@ func TestTaskServiceUpdate(t *testing.T) {
 
 func TestTaskServiceDelete(t *testing.T) {
 	prepareTestDatabase(t)
+
+	adapter := testlogadapter.New(t)
+	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
+
 	srv := NewTaskService(pool)
 
 	t.Run("valid task", func(t *testing.T) {

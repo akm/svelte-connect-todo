@@ -21,9 +21,14 @@ import (
 )
 
 func main() {
-	pool, err := connectDB()
+	logger, err := newLogger()
 	if err != nil {
-		log.Fatalf("DB connection error: %v", err) //nolint:gocritic
+		log.Fatalf("Logger error: %+v", err) //nolint:gocritic
+	}
+
+	pool, err := connectDB(logger)
+	if err != nil {
+		log.Fatalf("DB connection error: %+v", err) //nolint:gocritic
 	}
 	defer pool.Close()
 
@@ -53,7 +58,7 @@ func main() {
 	rootMux.Handle("/", h2c.NewHandler(serviceMux, &http2.Server{}))
 
 	serviceMuxHandler := withCORS(rootMux)
-	serviceMuxHandler = withRequestDumping(serviceMuxHandler)
+	serviceMuxHandler = withRequestDumping(serviceMuxHandler, logger)
 
 	srv := &http.Server{
 		Addr:              serverHostAndPort,
