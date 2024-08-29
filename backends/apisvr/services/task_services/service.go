@@ -1,6 +1,7 @@
 package taskservices
 
 import (
+	"applib/log/slog"
 	"context"
 	"database/sql"
 	"fmt"
@@ -18,8 +19,8 @@ type TaskService struct {
 	base.ServiceBase
 }
 
-func NewTaskService(pool *sql.DB) *TaskService {
-	return &TaskService{ServiceBase: *base.NewServiceBase("TaskService", pool)}
+func NewTaskService(logger slog.Logger, pool *sql.DB) *TaskService {
+	return &TaskService{ServiceBase: *base.NewServiceBase("TaskService", logger, pool)}
 }
 
 var _ taskv1connect.TaskServiceHandler = (*TaskService)(nil)
@@ -28,11 +29,6 @@ type Task struct {
 	Id     uint64
 	Name   string
 	Status v1.TaskStatus
-}
-
-var taskStore = []*Task{
-	{Id: 1, Name: "task1", Status: v1.TaskStatus_DONE},
-	{Id: 2, Name: "task2", Status: v1.TaskStatus_TODO},
 }
 
 func (s *TaskService) List(ctx context.Context, req *connect.Request[v1.TaskServiceListRequest]) (*connect.Response[v1.TaskServiceListResponse], error) {
@@ -151,66 +147,59 @@ func (s *TaskService) Create(ctx context.Context, req *connect.Request[v1.TaskSe
 	}
 }
 
-func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.TaskServiceUpdateRequest]) (*connect.Response[v1.TaskResponse], error) {
+func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.TaskServiceUpdateRequest]) (res *connect.Response[v1.TaskResponse], rerr error) {
 	s.StartAction(ctx, "Update")
 
 	if err := s.ValidateMsg(ctx, req.Msg); err != nil {
 		return nil, err
 	}
 
-	// 参考 https://docs.sqlc.dev/en/stable/howto/transactions.html
-	tx, err := s.Pool.Begin()
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	qtx := models.New(s.Pool).WithTx(tx)
-	if _, err := qtx.GetTaskForUpdate(ctx, req.Msg.Id); err != nil {
-		return nil, s.ToConnectError(err)
-	}
-
-	var st models.TasksStatus
-	switch req.Msg.Status {
-	case v1.TaskStatus_TODO:
-		st = models.TasksStatusTodo
-	case v1.TaskStatus_DONE:
-		st = models.TasksStatusDone
-	default:
-		return nil, fmt.Errorf("unknown status: %v", req.Msg.Status)
-	}
-
-	task := models.UpdateTaskParams{
-		ID:     req.Msg.Id,
-		Name:   req.Msg.Name,
-		Status: st,
-	}
-	if err := qtx.UpdateTask(ctx, task); err != nil {
-		return nil, s.ToConnectError(err)
-	}
-
-	if err := tx.Commit(); err != nil {
-		return nil, err
-	}
-
-	{
-		var st v1.TaskStatus
-		switch task.Status {
-		case models.TasksStatusTodo:
-			st = v1.TaskStatus_TODO
-		case models.TasksStatusDone:
-			st = v1.TaskStatus_DONE
-		default:
-			st = v1.TaskStatus_UNKNOWN_UNSPECIFIED
+	rerr = s.Transaction(ctx, func(tx *sql.Tx) error {
+		qtx := models.New(s.Pool).WithTx(tx)
+		if _, err := qtx.GetTaskForUpdate(ctx, req.Msg.Id); err != nil {
+			return s.ToConnectError(err)
 		}
 
-		result := &v1.TaskResponse{
-			Id:     req.Msg.Id,
-			Name:   task.Name,
+		var st models.TasksStatus
+		switch req.Msg.Status {
+		case v1.TaskStatus_TODO:
+			st = models.TasksStatusTodo
+		case v1.TaskStatus_DONE:
+			st = models.TasksStatusDone
+		default:
+			return fmt.Errorf("unknown status: %v", req.Msg.Status)
+		}
+
+		task := models.UpdateTaskParams{
+			ID:     req.Msg.Id,
+			Name:   req.Msg.Name,
 			Status: st,
 		}
-		return &connect.Response[v1.TaskResponse]{Msg: result}, nil
-	}
+		if err := qtx.UpdateTask(ctx, task); err != nil {
+			return s.ToConnectError(err)
+		}
+
+		{
+			var st v1.TaskStatus
+			switch task.Status {
+			case models.TasksStatusTodo:
+				st = v1.TaskStatus_TODO
+			case models.TasksStatusDone:
+				st = v1.TaskStatus_DONE
+			default:
+				st = v1.TaskStatus_UNKNOWN_UNSPECIFIED
+			}
+
+			result := &v1.TaskResponse{
+				Id:     req.Msg.Id,
+				Name:   task.Name,
+				Status: st,
+			}
+			res = &connect.Response[v1.TaskResponse]{Msg: result}
+		}
+		return nil
+	})
+	return
 }
 
 func (s *TaskService) Delete(ctx context.Context, req *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.TaskResponse], error) {

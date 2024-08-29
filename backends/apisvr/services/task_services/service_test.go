@@ -3,13 +3,13 @@ package taskservices
 import (
 	"context"
 	"database/sql"
-	"log"
 	"os"
 	"testing"
 
 	taskv1 "apisvr/gen/task/v1"
 
 	"applib/database/sql/testsql"
+	"applib/log/slog/testslog"
 
 	"connectrpc.com/connect"
 	"github.com/go-testfixtures/testfixtures/v3"
@@ -20,7 +20,7 @@ import (
 func setupFixtures(t *testing.T, pool *sql.DB) {
 
 	fixtureDir := os.Getenv("TEST_PATH_TO_FIXTURES")
-	log.Printf("TEST_PATH_TO_FIXTURES: %s", fixtureDir)
+	t.Logf("TEST_PATH_TO_FIXTURES: %s", fixtureDir)
 	fixtures, err := testfixtures.New(
 		testfixtures.Database(pool),        // You database connection
 		testfixtures.Dialect("mysql"),      // Available: "postgresql", "timescaledb", "mysql", "mariadb", "sqlite" and "sqlserver"
@@ -36,12 +36,13 @@ func setupFixtures(t *testing.T, pool *sql.DB) {
 }
 
 func TestTaskServiceList(t *testing.T) {
-	pool := testsql.Open(t)
+	logger := testslog.New(t)
+	pool := testsql.Open(t, logger)
 	setupFixtures(t, pool)
 
 	ctx := context.Background()
 
-	srv := NewTaskService(pool)
+	srv := NewTaskService(logger, pool)
 	resp, err := srv.List(ctx, &connect.Request[taskv1.TaskServiceListRequest]{
 		Msg: &taskv1.TaskServiceListRequest{},
 	})
@@ -55,10 +56,11 @@ func TestTaskServiceList(t *testing.T) {
 }
 
 func TestTaskServiceShow(t *testing.T) {
-	pool := testsql.Open(t)
+	logger := testslog.New(t)
+	pool := testsql.Open(t, logger)
 	setupFixtures(t, pool)
 
-	srv := NewTaskService(pool)
+	srv := NewTaskService(logger, pool)
 
 	t.Run("valid id", func(t *testing.T) {
 		ctx := context.Background()
@@ -82,10 +84,11 @@ func TestTaskServiceShow(t *testing.T) {
 }
 
 func TestTaskServiceCreate(t *testing.T) {
-	pool := testsql.Open(t)
+	logger := testslog.New(t)
+	pool := testsql.Open(t, logger)
 	setupFixtures(t, pool)
 
-	srv := NewTaskService(pool)
+	srv := NewTaskService(logger, pool)
 
 	t.Run("valid task", func(t *testing.T) {
 		ctx := context.Background()
@@ -141,10 +144,11 @@ func TestTaskServiceCreate(t *testing.T) {
 }
 
 func TestTaskServiceUpdate(t *testing.T) {
-	pool := testsql.Open(t)
+	logger := testslog.New(t)
+	pool := testsql.Open(t, logger)
 	setupFixtures(t, pool)
 
-	srv := NewTaskService(pool)
+	srv := NewTaskService(logger, pool)
 
 	t.Run("valid task", func(t *testing.T) {
 		ctx := context.Background()
@@ -219,10 +223,11 @@ func TestTaskServiceUpdate(t *testing.T) {
 }
 
 func TestTaskServiceDelete(t *testing.T) {
-	pool := testsql.Open(t)
+	logger := testslog.New(t)
+	pool := testsql.Open(t, logger)
 	setupFixtures(t, pool)
 
-	srv := NewTaskService(pool)
+	srv := NewTaskService(logger, pool)
 
 	t.Run("valid task", func(t *testing.T) {
 		ctx := context.Background()

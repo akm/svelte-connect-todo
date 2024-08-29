@@ -1,40 +1,42 @@
 package auth
 
 import (
+	"applib/log/slog"
 	"context"
-	"log"
 	"net/http"
 
 	"connectrpc.com/authn"
 )
 
-func Authenticate(ctx context.Context, req authn.Request) (any, error) {
-	fbClient, err := NewFirebaseClient(ctx)
-	if err != nil {
-		log.Fatalf("error initializing app: %v\n", err)
-	}
-
-	var sessionCookie *http.Cookie
-	for _, cookie := range req.Cookies() {
-		if cookie.Name == cookieKey {
-			sessionCookie = cookie
-			break
+func Authenticate(logger slog.Logger) func(ctx context.Context, req authn.Request) (any, error) {
+	return func(ctx context.Context, req authn.Request) (any, error) {
+		fbClient, err := NewFirebaseClient(ctx)
+		if err != nil {
+			logger.Error("initializing firebase client", "cause", err)
 		}
+
+		var sessionCookie *http.Cookie
+		for _, cookie := range req.Cookies() {
+			if cookie.Name == cookieKey {
+				sessionCookie = cookie
+				break
+			}
+		}
+		if sessionCookie == nil {
+			logger.Debug("sessionCookie is nil")
+			return nil, nil
+		}
+
+		logger.Debug("sessionCookie", "value", sessionCookie.Value)
+
+		token, err := fbClient.VerifySessionCookie(ctx, sessionCookie.Value)
+		if err != nil {
+			logger.Error("verifying session cookie", "cause", err)
+			return nil, authn.Errorf("unauthenticated")
+		}
+
+		logger.Debug("verified token", "token", token)
+
+		return token, nil
 	}
-	if sessionCookie == nil {
-		log.Printf("sessionCookie is nil\n")
-		return nil, nil
-	}
-
-	log.Printf("sessionCookie.Value: %q\n", sessionCookie.Value)
-
-	token, err := fbClient.VerifySessionCookie(ctx, sessionCookie.Value)
-	if err != nil {
-		log.Printf("error verifying session cookie: %v\n", err)
-		return nil, authn.Errorf("unauthenticated")
-	}
-
-	log.Printf("token: %+v\n", *token)
-
-	return token, nil
 }

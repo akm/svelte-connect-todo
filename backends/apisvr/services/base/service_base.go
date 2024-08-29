@@ -5,7 +5,8 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
+
+	"applib/log/slog"
 
 	"connectrpc.com/connect"
 	"github.com/bufbuild/protovalidate-go"
@@ -14,16 +15,17 @@ import (
 )
 
 type ServiceBase struct {
-	Name string
-	Pool *sql.DB
+	Name   string
+	Logger slog.Logger
+	Pool   *sql.DB
 }
 
-func NewServiceBase(name string, pool *sql.DB) *ServiceBase {
-	return &ServiceBase{Name: name, Pool: pool}
+func NewServiceBase(name string, logger slog.Logger, pool *sql.DB) *ServiceBase {
+	return &ServiceBase{Name: name, Logger: logger, Pool: pool}
 }
 
 func (s *ServiceBase) StartAction(ctx context.Context, method string) {
-	log.Printf("%s.%s\n", s.Name, method)
+	s.Logger.Info("StartAction", "service", s.Name, "method", method)
 }
 
 func (s *ServiceBase) ValidateMsg(ctx context.Context, msg protoreflect.ProtoMessage) error {
@@ -69,4 +71,26 @@ func (s *ServiceBase) ToConnectError(err error) *connect.Error {
 	default:
 		return connect.NewError(connect.CodeInternal, err)
 	}
+}
+
+func (s *ServiceBase) Transaction(ctx context.Context, f func(*sql.Tx) error) error {
+	// 参考 https://docs.sqlc.dev/en/stable/howto/transactions.html
+	tx, err := s.Pool.Begin()
+	if err != nil {
+		return err
+	}
+
+	txErr := f(tx)
+	if txErr != nil {
+		if err := tx.Rollback(); err != nil {
+			s.Logger.Error("failed to rollback transaction", "cause", err)
+		}
+		return txErr
+	}
+
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+
+	return nil
 }
