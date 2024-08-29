@@ -20,7 +20,10 @@ func GetImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer reader.Close()
-	io.Copy(w, reader)
+	if _, err := io.Copy(w, reader); err != nil {
+		http.Error(w, "file not found", http.StatusNotFound)
+		return
+	}
 
 	w.Header().Set("Content-Type", "image/png")
 	w.Header().Set("Content-Disposition", "attachment; filename="+filepath.Base(filename))
