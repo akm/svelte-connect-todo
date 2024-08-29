@@ -1,12 +1,13 @@
 package main
 
 import (
-	"log/slog"
 	"net/http"
 	"net/http/httputil"
+
+	"applib/log/slog"
 )
 
-func withRequestDumping(next http.Handler, logger *slog.Logger) http.Handler {
+func withRequestDumping(next http.Handler, logger slog.Logger) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		dump, err := httputil.DumpRequest(r, true)
 		if err != nil {
