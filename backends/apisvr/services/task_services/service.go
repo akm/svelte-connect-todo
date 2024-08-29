@@ -30,11 +30,6 @@ type Task struct {
 	Status v1.TaskStatus
 }
 
-var taskStore = []*Task{
-	{Id: 1, Name: "task1", Status: v1.TaskStatus_DONE},
-	{Id: 2, Name: "task2", Status: v1.TaskStatus_TODO},
-}
-
 func (s *TaskService) List(ctx context.Context, req *connect.Request[v1.TaskServiceListRequest]) (*connect.Response[v1.TaskServiceListResponse], error) {
 	s.StartAction(ctx, "List")
 
