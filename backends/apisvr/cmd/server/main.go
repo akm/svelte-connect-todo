@@ -39,7 +39,7 @@ func main() {
 	serviceMux := http.NewServeMux()
 
 	// Instantiate the YOUR services and Mount them here.
-	authmw := authn.NewMiddleware(auth.Authenticate)
+	authmw := authn.NewMiddleware(auth.Authenticate(logger))
 
 	taskService := taskservices.NewTaskService(logger, pool)
 	path, handler := taskv1connect.NewTaskServiceHandler(taskService)
