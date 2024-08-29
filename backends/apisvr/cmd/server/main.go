@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"errors"
-	"log"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -25,12 +25,14 @@ import (
 func main() {
 	logger, err := slog.New(os.Stdout)
 	if err != nil {
-		log.Fatalf("Logger error: %+v", err) //nolint:gocritic
+		fmt.Printf("Logger error: %+v", err)
+		os.Exit(1)
+		return
 	}
 
 	pool, err := connectDB(logger)
 	if err != nil {
-		log.Fatalf("DB connection error: %+v", err) //nolint:gocritic
+		logger.Error("DB connection error", "cause", err)
 	}
 	defer pool.Close()
 
@@ -71,13 +73,13 @@ func main() {
 		MaxHeaderBytes:    8 * 1024, // 8KiB
 	}
 
-	log.Printf("Starting server on %s", serverHostAndPort)
+	logger.Info("Starting server", "host", serverHostAndPort)
 
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			log.Fatalf("HTTP listen and serve: %v", err)
+			logger.Error("HTTP listen and serve", "cause", err)
 		}
 	}()
 
@@ -85,6 +87,6 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatalf("HTTP shutdown: %v", err) //nolint:gocritic
+		logger.Error("HTTP shutdown", "cause", err)
 	}
 }
