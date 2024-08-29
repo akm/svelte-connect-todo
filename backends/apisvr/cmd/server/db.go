@@ -10,7 +10,7 @@ import (
 
 	"applib/log/slog"
 
-	"apisvr/sqldb-logger/logadapter/slogadapter"
+	"applib/sqldb-logger/logadapter/slogadapter"
 )
 
 func connectDB(logger slog.Logger) (*sql.DB, error) {

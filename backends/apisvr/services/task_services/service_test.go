@@ -8,7 +8,8 @@ import (
 	"testing"
 
 	taskv1 "apisvr/gen/task/v1"
-	"apisvr/sqldb-logger/logadapter/slogadapter/testslogadapter"
+
+	"applib/sqldb-logger/logadapter/slogadapter/testslogadapter"
 
 	"connectrpc.com/connect"
 	_ "github.com/go-sql-driver/mysql"
