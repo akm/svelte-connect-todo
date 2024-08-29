@@ -8,7 +8,7 @@ import (
 
 	sqldblogger "github.com/simukti/sqldb-logger"
 
-	slogadapter "apisvr/sqldb-logger/logadapter/slogadapter"
+	slogadapter "applib/sqldb-logger/logadapter/slogadapter"
 )
 
 // New creates a log adapter from sqldblogger.Logger to an slog.Logger one.
