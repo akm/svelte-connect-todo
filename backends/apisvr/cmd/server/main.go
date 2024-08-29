@@ -41,7 +41,7 @@ func main() {
 	// Instantiate the YOUR services and Mount them here.
 	authmw := authn.NewMiddleware(auth.Authenticate)
 
-	taskService := taskservices.NewTaskService(pool)
+	taskService := taskservices.NewTaskService(logger, pool)
 	path, handler := taskv1connect.NewTaskServiceHandler(taskService)
 	serviceMux.Handle(path, authmw.Wrap(handler))
 

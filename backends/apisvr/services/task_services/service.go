@@ -1,6 +1,7 @@
 package taskservices
 
 import (
+	"applib/log/slog"
 	"context"
 	"database/sql"
 	"fmt"
@@ -18,8 +19,8 @@ type TaskService struct {
 	base.ServiceBase
 }
 
-func NewTaskService(pool *sql.DB) *TaskService {
-	return &TaskService{ServiceBase: *base.NewServiceBase("TaskService", pool)}
+func NewTaskService(logger slog.Logger, pool *sql.DB) *TaskService {
+	return &TaskService{ServiceBase: *base.NewServiceBase("TaskService", logger, pool)}
 }
 
 var _ taskv1connect.TaskServiceHandler = (*TaskService)(nil)
