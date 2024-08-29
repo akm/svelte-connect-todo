@@ -24,3 +24,10 @@ var (
 	Group    = orig.Group
 	Any      = orig.Any
 )
+
+const (
+	LevelError = orig.LevelError
+	LevelWarn  = orig.LevelWarn
+	LevelInfo  = orig.LevelInfo
+	LevelDebug = orig.LevelDebug
+)
