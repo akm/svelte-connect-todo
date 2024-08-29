@@ -3,7 +3,6 @@ package taskservices
 import (
 	"context"
 	"database/sql"
-	"log"
 	"os"
 	"testing"
 
@@ -20,7 +19,7 @@ import (
 func setupFixtures(t *testing.T, pool *sql.DB) {
 
 	fixtureDir := os.Getenv("TEST_PATH_TO_FIXTURES")
-	log.Printf("TEST_PATH_TO_FIXTURES: %s", fixtureDir)
+	t.Logf("TEST_PATH_TO_FIXTURES: %s", fixtureDir)
 	fixtures, err := testfixtures.New(
 		testfixtures.Database(pool),        // You database connection
 		testfixtures.Dialect("mysql"),      // Available: "postgresql", "timescaledb", "mysql", "mariadb", "sqlite" and "sqlserver"
