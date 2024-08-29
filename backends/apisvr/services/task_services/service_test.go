@@ -12,7 +12,6 @@ import (
 	"applib/database/sql/testsql"
 
 	"connectrpc.com/connect"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-testfixtures/testfixtures/v3"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"

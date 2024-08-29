@@ -7,6 +7,7 @@ import (
 
 	"applib/sqldb-logger/logadapter/slogadapter/testslogadapter"
 
+	_ "github.com/go-sql-driver/mysql"
 	sqldblogger "github.com/simukti/sqldb-logger"
 )
 
