@@ -24,12 +24,7 @@ func connectDB(logger slog.Logger) (*sql.DB, error) {
 		return nil, err
 	}
 
-	origLogger, ok := slog.ToSlogLogger(logger)
-	if !ok {
-		return nil, fmt.Errorf("logger is not a slog.Logger")
-	}
-
-	loggerAdapter := slogadapter.New(origLogger)
+	loggerAdapter := slogadapter.New(logger)
 	pool = sqldblogger.OpenDriver(dbDSN, pool.Driver(), loggerAdapter)
 
 	return pool, nil
