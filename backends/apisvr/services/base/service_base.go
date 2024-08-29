@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"log/slog"
 
 	"connectrpc.com/connect"
 	"github.com/bufbuild/protovalidate-go"
@@ -69,4 +70,26 @@ func (s *ServiceBase) ToConnectError(err error) *connect.Error {
 	default:
 		return connect.NewError(connect.CodeInternal, err)
 	}
+}
+
+func (s *ServiceBase) Transaction(ctx context.Context, f func(*sql.Tx) error) error {
+	// 参考 https://docs.sqlc.dev/en/stable/howto/transactions.html
+	tx, err := s.Pool.Begin()
+	if err != nil {
+		return err
+	}
+
+	txErr := f(tx)
+	if txErr != nil {
+		if err := tx.Rollback(); err != nil {
+			slog.Error("failed to rollback transaction", "error", err)
+		}
+		return txErr
+	}
+
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+
+	return nil
 }
