@@ -8,60 +8,36 @@ import (
 	"testing"
 
 	taskv1 "apisvr/gen/task/v1"
-	"apisvr/sqldb-logger/logadapter/testlogadapter"
+
+	"applib/database/sql/testsql"
 
 	"connectrpc.com/connect"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-testfixtures/testfixtures/v3"
-	sqldblogger "github.com/simukti/sqldb-logger"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
-var (
-	pool     *sql.DB
-	fixtures *testfixtures.Loader
-)
-
-var dsn = os.Getenv("DB_DSN")
-
-func TestMain(m *testing.M) {
-	var err error
-
-	// Open connection to the test database.
-	// Do NOT import fixtures in a production database!
-	// Existing data would be deleted.
-	log.Printf("DB_DSN: %s", dsn)
-	pool, err = sql.Open("mysql", dsn)
-	if err != nil {
-		log.Fatalf("unable to open database: %v", err)
-	}
+func setupFixtures(t *testing.T, pool *sql.DB) {
 
 	fixtureDir := os.Getenv("TEST_PATH_TO_FIXTURES")
 	log.Printf("TEST_PATH_TO_FIXTURES: %s", fixtureDir)
-	fixtures, err = testfixtures.New(
+	fixtures, err := testfixtures.New(
 		testfixtures.Database(pool),        // You database connection
 		testfixtures.Dialect("mysql"),      // Available: "postgresql", "timescaledb", "mysql", "mariadb", "sqlite" and "sqlserver"
 		testfixtures.Directory(fixtureDir), // The directory containing the YAML files
 		testfixtures.SkipResetSequences(),  // Disable the execution of the SQL command that resets the sequences
 	)
 	if err != nil {
-		log.Fatalf("unable to load fixtures: %v", err)
+		t.Fatalf("unable to load fixtures: %v", err)
 	}
 
-	os.Exit(m.Run())
-}
-
-func prepareTestDatabase(t *testing.T) {
-	err := fixtures.Load()
+	err = fixtures.Load()
 	assert.NoError(t, err)
 }
 
 func TestTaskServiceList(t *testing.T) {
-	prepareTestDatabase(t)
-
-	adapter := testlogadapter.New(t)
-	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
+	pool := testsql.Open(t)
+	setupFixtures(t, pool)
 
 	ctx := context.Background()
 
@@ -79,10 +55,8 @@ func TestTaskServiceList(t *testing.T) {
 }
 
 func TestTaskServiceShow(t *testing.T) {
-	prepareTestDatabase(t)
-
-	adapter := testlogadapter.New(t)
-	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
+	pool := testsql.Open(t)
+	setupFixtures(t, pool)
 
 	srv := NewTaskService(pool)
 
@@ -108,10 +82,8 @@ func TestTaskServiceShow(t *testing.T) {
 }
 
 func TestTaskServiceCreate(t *testing.T) {
-	prepareTestDatabase(t)
-
-	adapter := testlogadapter.New(t)
-	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
+	pool := testsql.Open(t)
+	setupFixtures(t, pool)
 
 	srv := NewTaskService(pool)
 
@@ -169,10 +141,8 @@ func TestTaskServiceCreate(t *testing.T) {
 }
 
 func TestTaskServiceUpdate(t *testing.T) {
-	prepareTestDatabase(t)
-
-	adapter := testlogadapter.New(t)
-	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
+	pool := testsql.Open(t)
+	setupFixtures(t, pool)
 
 	srv := NewTaskService(pool)
 
@@ -249,10 +219,8 @@ func TestTaskServiceUpdate(t *testing.T) {
 }
 
 func TestTaskServiceDelete(t *testing.T) {
-	prepareTestDatabase(t)
-
-	adapter := testlogadapter.New(t)
-	pool := sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
+	pool := testsql.Open(t)
+	setupFixtures(t, pool)
 
 	srv := NewTaskService(pool)
 

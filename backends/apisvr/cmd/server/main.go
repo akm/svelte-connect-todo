@@ -14,6 +14,8 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
+	"applib/log/slog"
+
 	"apisvr/gen/task/v1/taskv1connect"
 	"apisvr/services/auth"
 	"apisvr/services/images"
@@ -21,7 +23,7 @@ import (
 )
 
 func main() {
-	logger, err := newLogger()
+	logger, err := slog.New(os.Stdout)
 	if err != nil {
 		log.Fatalf("Logger error: %+v", err) //nolint:gocritic
 	}

@@ -4,17 +4,18 @@ package slogadapter
 
 import (
 	"context"
-	"log/slog"
+
+	"applib/log/slog"
 
 	sqldblogger "github.com/simukti/sqldb-logger"
 )
 
 type slogAdapter struct {
-	logger *slog.Logger
+	logger slog.Logger
 }
 
 // New creates a log adapter from sqldblogger.Logger to an slog.Logger one.
-func New(logger *slog.Logger) sqldblogger.Logger {
+func New(logger slog.Logger) sqldblogger.Logger {
 	return &slogAdapter{logger: logger}
 }
 
