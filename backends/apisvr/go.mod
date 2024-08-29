@@ -79,3 +79,5 @@ require (
 )
 
 replace biz => ../biz
+
+replace applib => ../applib
