@@ -1,12 +1,13 @@
 package main
 
 import (
+	"io"
 	"log/slog"
 	"os"
 	"strings"
 )
 
-func newLogger() (*slog.Logger, error) {
+func newLogger(w io.Writer) (*slog.Logger, error) {
 	logLevelStr := os.Getenv("LOG_LEVEL")
 	if logLevelStr == "" {
 		logLevelStr = "INFO"
@@ -20,9 +21,9 @@ func newLogger() (*slog.Logger, error) {
 	var handler slog.Handler
 	switch strings.ToLower(os.Getenv("LOG_FORMAT")) {
 	case "text":
-		handler = slog.NewTextHandler(os.Stdout, opts)
+		handler = slog.NewTextHandler(w, opts)
 	default:
-		handler = slog.NewJSONHandler(os.Stdout, opts)
+		handler = slog.NewJSONHandler(w, opts)
 	}
 
 	return slog.New(handler), nil

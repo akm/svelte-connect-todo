@@ -21,7 +21,7 @@ import (
 )
 
 func main() {
-	logger, err := newLogger()
+	logger, err := newLogger(os.Stdout)
 	if err != nil {
 		log.Fatalf("Logger error: %+v", err) //nolint:gocritic
 	}
