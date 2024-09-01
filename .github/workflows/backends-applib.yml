@@ -15,6 +15,7 @@ on:
       - ".tool-versions"
       - "backends/applib/**"
       - "backends/test/**"
+      - "vendor/shapeappmk"
 
 jobs:
   test:

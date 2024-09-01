@@ -16,6 +16,7 @@ on:
       - "backends/applib/**"
       - "backends/biz/**"
       - "backends/test/**"
+      - "vendor/shapeappmk"
 
 jobs:
   test:
