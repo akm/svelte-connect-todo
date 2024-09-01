@@ -160,6 +160,8 @@ export class TaskResponse extends Message<TaskResponse> {
  */
 export class TaskServiceCreateRequest extends Message<TaskServiceCreateRequest> {
   /**
+   * タスク名は1文字以上である必要があります。
+   *
    * @generated from field: string name = 2;
    */
   name = "";
@@ -208,6 +210,8 @@ export class TaskServiceUpdateRequest extends Message<TaskServiceUpdateRequest> 
   id = protoInt64.zero;
 
   /**
+   * タスク名は1文字以上である必要があります。
+   *
    * @generated from field: string name = 2;
    */
   name = "";
