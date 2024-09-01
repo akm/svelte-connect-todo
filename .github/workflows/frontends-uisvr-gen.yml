@@ -36,6 +36,10 @@ jobs:
         run: make connect-web-install
         working-directory: ./frontends/uisvr
 
+      - name: buf-dep-update
+        run: make buf-dep-update
+        working-directory: ./backends/apisvr/proto
+
       - name: generate
         run: make generate
         working-directory: ./frontends/uisvr
