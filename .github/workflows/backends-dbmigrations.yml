@@ -16,6 +16,7 @@ on:
       - "backends/applib/**"
       - "backends/dbmigrations/**"
       - "backends/test/**"
+      - "vendor/shapeappmk"
 
 jobs:
   test:
