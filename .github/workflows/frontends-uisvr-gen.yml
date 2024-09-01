@@ -32,6 +32,10 @@ jobs:
         with:
           node-version-file: .tool-versions
 
+      - name: connect-web-install
+        run: make connect-web-install
+        working-directory: ./frontends/uisvr
+
       - name: generate
         run: make generate
         working-directory: ./frontends/uisvr
