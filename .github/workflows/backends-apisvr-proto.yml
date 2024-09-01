@@ -31,7 +31,7 @@ jobs:
       # https://github.com/actions/setup-go
       - uses: actions/setup-go@v4
         with:
-          go-version-file: "backends/biz/go.mod"
+          go-version-file: "backends/apisvr/go.mod"
 
       - name: Check golang version/env
         run: |
