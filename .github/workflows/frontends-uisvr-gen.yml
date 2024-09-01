@@ -32,8 +32,8 @@ jobs:
         with:
           node-version-file: .tool-versions
 
-      - name: connect-web-install
-        run: make connect-web-install
+      - name: npm-ci
+        run: make npm-ci
         working-directory: ./frontends/uisvr
 
       - name: generate
