@@ -13,3 +13,5 @@ include $(PATH_TO_SHAPEAPPMK)/default/biz/schema-sql.mk
 .PHONY: test
 test:
 	go test ./...
+
+SQLC_CLI_VERSION=v1.26.0
