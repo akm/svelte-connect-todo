@@ -55,5 +55,5 @@ jobs:
         working-directory: ./backends/dbmigrations
 
       - name: test
-        run: make test
+        run: make ci-test
         working-directory: ./backends/dbmigrations
