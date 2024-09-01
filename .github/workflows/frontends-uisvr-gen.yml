@@ -39,7 +39,6 @@ jobs:
       - name: generate
         run: make generate
         working-directory: ./frontends/uisvr
-        shell: bash
 
       - name: git-check
         run: make git-check
