@@ -1,0 +1,46 @@
+# See https://help.github.com/en/actions/automating-your-workflow-with-github-actions
+
+name: backends biz gen CI
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - ".github/workflows/backends-biz-gen.yml"
+      - ".gitignore"
+      - ".gitmodules"
+      - ".config.mk"
+      - ".shapeapp.mk"
+      - ".tool-versions"
+      - "backends/biz/**"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    # if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # https://github.com/actions/setup-go
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: "backends/biz/go.mod"
+
+      - name: Check golang version/env
+        run: |
+          set -x
+          go version
+          go env
+
+      - name: sqlc-generate
+        run: make sqlc-generate
+        working-directory: ./backends/biz
+
+      - name: git-check
+        run: make git-check
+        working-directory: ./backends/biz
