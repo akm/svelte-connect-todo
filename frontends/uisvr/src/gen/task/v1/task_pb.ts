@@ -3,333 +3,400 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
-import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
+import type {
+	BinaryReadOptions,
+	FieldList,
+	JsonReadOptions,
+	JsonValue,
+	PartialMessage,
+	PlainMessage
+} from '@bufbuild/protobuf';
+import { Message, proto3, protoInt64 } from '@bufbuild/protobuf';
 
 /**
  * @generated from enum task.v1.TaskStatus
  */
 export enum TaskStatus {
-  /**
-   * @generated from enum value: UNKNOWN_UNSPECIFIED = 0;
-   */
-  UNKNOWN_UNSPECIFIED = 0,
+	/**
+	 * @generated from enum value: UNKNOWN_UNSPECIFIED = 0;
+	 */
+	UNKNOWN_UNSPECIFIED = 0,
 
-  /**
-   * @generated from enum value: TODO = 1;
-   */
-  TODO = 1,
+	/**
+	 * @generated from enum value: TODO = 1;
+	 */
+	TODO = 1,
 
-  /**
-   * @generated from enum value: DONE = 2;
-   */
-  DONE = 2,
+	/**
+	 * @generated from enum value: DONE = 2;
+	 */
+	DONE = 2
 }
 // Retrieve enum metadata with: proto3.getEnumType(TaskStatus)
-proto3.util.setEnumType(TaskStatus, "task.v1.TaskStatus", [
-  { no: 0, name: "UNKNOWN_UNSPECIFIED" },
-  { no: 1, name: "TODO" },
-  { no: 2, name: "DONE" },
+proto3.util.setEnumType(TaskStatus, 'task.v1.TaskStatus', [
+	{ no: 0, name: 'UNKNOWN_UNSPECIFIED' },
+	{ no: 1, name: 'TODO' },
+	{ no: 2, name: 'DONE' }
 ]);
 
 /**
  * @generated from message task.v1.ShowRequest
  */
 export class ShowRequest extends Message<ShowRequest> {
-  /**
-   * @generated from field: uint64 id = 1;
-   */
-  id = protoInt64.zero;
+	/**
+	 * @generated from field: uint64 id = 1;
+	 */
+	id = protoInt64.zero;
 
-  constructor(data?: PartialMessage<ShowRequest>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
+	constructor(data?: PartialMessage<ShowRequest>) {
+		super();
+		proto3.util.initPartial(data, this);
+	}
 
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "task.v1.ShowRequest";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-  ]);
+	static readonly runtime: typeof proto3 = proto3;
+	static readonly typeName = 'task.v1.ShowRequest';
+	static readonly fields: FieldList = proto3.util.newFieldList(() => [
+		{ no: 1, name: 'id', kind: 'scalar', T: 4 /* ScalarType.UINT64 */ }
+	]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ShowRequest {
-    return new ShowRequest().fromBinary(bytes, options);
-  }
+	static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ShowRequest {
+		return new ShowRequest().fromBinary(bytes, options);
+	}
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ShowRequest {
-    return new ShowRequest().fromJson(jsonValue, options);
-  }
+	static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ShowRequest {
+		return new ShowRequest().fromJson(jsonValue, options);
+	}
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ShowRequest {
-    return new ShowRequest().fromJsonString(jsonString, options);
-  }
+	static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ShowRequest {
+		return new ShowRequest().fromJsonString(jsonString, options);
+	}
 
-  static equals(a: ShowRequest | PlainMessage<ShowRequest> | undefined, b: ShowRequest | PlainMessage<ShowRequest> | undefined): boolean {
-    return proto3.util.equals(ShowRequest, a, b);
-  }
+	static equals(
+		a: ShowRequest | PlainMessage<ShowRequest> | undefined,
+		b: ShowRequest | PlainMessage<ShowRequest> | undefined
+	): boolean {
+		return proto3.util.equals(ShowRequest, a, b);
+	}
 }
 
 /**
  * @generated from message task.v1.DeleteRequest
  */
 export class DeleteRequest extends Message<DeleteRequest> {
-  /**
-   * @generated from field: uint64 id = 1;
-   */
-  id = protoInt64.zero;
+	/**
+	 * @generated from field: uint64 id = 1;
+	 */
+	id = protoInt64.zero;
 
-  constructor(data?: PartialMessage<DeleteRequest>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
+	constructor(data?: PartialMessage<DeleteRequest>) {
+		super();
+		proto3.util.initPartial(data, this);
+	}
 
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "task.v1.DeleteRequest";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-  ]);
+	static readonly runtime: typeof proto3 = proto3;
+	static readonly typeName = 'task.v1.DeleteRequest';
+	static readonly fields: FieldList = proto3.util.newFieldList(() => [
+		{ no: 1, name: 'id', kind: 'scalar', T: 4 /* ScalarType.UINT64 */ }
+	]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteRequest {
-    return new DeleteRequest().fromBinary(bytes, options);
-  }
+	static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteRequest {
+		return new DeleteRequest().fromBinary(bytes, options);
+	}
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteRequest {
-    return new DeleteRequest().fromJson(jsonValue, options);
-  }
+	static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteRequest {
+		return new DeleteRequest().fromJson(jsonValue, options);
+	}
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteRequest {
-    return new DeleteRequest().fromJsonString(jsonString, options);
-  }
+	static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteRequest {
+		return new DeleteRequest().fromJsonString(jsonString, options);
+	}
 
-  static equals(a: DeleteRequest | PlainMessage<DeleteRequest> | undefined, b: DeleteRequest | PlainMessage<DeleteRequest> | undefined): boolean {
-    return proto3.util.equals(DeleteRequest, a, b);
-  }
+	static equals(
+		a: DeleteRequest | PlainMessage<DeleteRequest> | undefined,
+		b: DeleteRequest | PlainMessage<DeleteRequest> | undefined
+	): boolean {
+		return proto3.util.equals(DeleteRequest, a, b);
+	}
 }
 
 /**
  * @generated from message task.v1.TaskResponse
  */
 export class TaskResponse extends Message<TaskResponse> {
-  /**
-   * @generated from field: uint64 id = 1;
-   */
-  id = protoInt64.zero;
+	/**
+	 * @generated from field: uint64 id = 1;
+	 */
+	id = protoInt64.zero;
 
-  /**
-   * @generated from field: string name = 2;
-   */
-  name = "";
+	/**
+	 * @generated from field: string name = 2;
+	 */
+	name = '';
 
-  /**
-   * @generated from field: task.v1.TaskStatus status = 3;
-   */
-  status = TaskStatus.UNKNOWN_UNSPECIFIED;
+	/**
+	 * @generated from field: task.v1.TaskStatus status = 3;
+	 */
+	status = TaskStatus.UNKNOWN_UNSPECIFIED;
 
-  constructor(data?: PartialMessage<TaskResponse>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
+	constructor(data?: PartialMessage<TaskResponse>) {
+		super();
+		proto3.util.initPartial(data, this);
+	}
 
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "task.v1.TaskResponse";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "status", kind: "enum", T: proto3.getEnumType(TaskStatus) },
-  ]);
+	static readonly runtime: typeof proto3 = proto3;
+	static readonly typeName = 'task.v1.TaskResponse';
+	static readonly fields: FieldList = proto3.util.newFieldList(() => [
+		{ no: 1, name: 'id', kind: 'scalar', T: 4 /* ScalarType.UINT64 */ },
+		{ no: 2, name: 'name', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
+		{ no: 3, name: 'status', kind: 'enum', T: proto3.getEnumType(TaskStatus) }
+	]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TaskResponse {
-    return new TaskResponse().fromBinary(bytes, options);
-  }
+	static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TaskResponse {
+		return new TaskResponse().fromBinary(bytes, options);
+	}
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TaskResponse {
-    return new TaskResponse().fromJson(jsonValue, options);
-  }
+	static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TaskResponse {
+		return new TaskResponse().fromJson(jsonValue, options);
+	}
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TaskResponse {
-    return new TaskResponse().fromJsonString(jsonString, options);
-  }
+	static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TaskResponse {
+		return new TaskResponse().fromJsonString(jsonString, options);
+	}
 
-  static equals(a: TaskResponse | PlainMessage<TaskResponse> | undefined, b: TaskResponse | PlainMessage<TaskResponse> | undefined): boolean {
-    return proto3.util.equals(TaskResponse, a, b);
-  }
+	static equals(
+		a: TaskResponse | PlainMessage<TaskResponse> | undefined,
+		b: TaskResponse | PlainMessage<TaskResponse> | undefined
+	): boolean {
+		return proto3.util.equals(TaskResponse, a, b);
+	}
 }
 
 /**
  * @generated from message task.v1.TaskServiceCreateRequest
  */
 export class TaskServiceCreateRequest extends Message<TaskServiceCreateRequest> {
-  /**
-   * @generated from field: string name = 2;
-   */
-  name = "";
+	/**
+	 * タスク名は1文字以上である必要があります。
+	 *
+	 * @generated from field: string name = 2;
+	 */
+	name = '';
 
-  /**
-   * @generated from field: task.v1.TaskStatus status = 3;
-   */
-  status = TaskStatus.UNKNOWN_UNSPECIFIED;
+	/**
+	 * @generated from field: task.v1.TaskStatus status = 3;
+	 */
+	status = TaskStatus.UNKNOWN_UNSPECIFIED;
 
-  constructor(data?: PartialMessage<TaskServiceCreateRequest>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
+	constructor(data?: PartialMessage<TaskServiceCreateRequest>) {
+		super();
+		proto3.util.initPartial(data, this);
+	}
 
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "task.v1.TaskServiceCreateRequest";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "status", kind: "enum", T: proto3.getEnumType(TaskStatus) },
-  ]);
+	static readonly runtime: typeof proto3 = proto3;
+	static readonly typeName = 'task.v1.TaskServiceCreateRequest';
+	static readonly fields: FieldList = proto3.util.newFieldList(() => [
+		{ no: 2, name: 'name', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
+		{ no: 3, name: 'status', kind: 'enum', T: proto3.getEnumType(TaskStatus) }
+	]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TaskServiceCreateRequest {
-    return new TaskServiceCreateRequest().fromBinary(bytes, options);
-  }
+	static fromBinary(
+		bytes: Uint8Array,
+		options?: Partial<BinaryReadOptions>
+	): TaskServiceCreateRequest {
+		return new TaskServiceCreateRequest().fromBinary(bytes, options);
+	}
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TaskServiceCreateRequest {
-    return new TaskServiceCreateRequest().fromJson(jsonValue, options);
-  }
+	static fromJson(
+		jsonValue: JsonValue,
+		options?: Partial<JsonReadOptions>
+	): TaskServiceCreateRequest {
+		return new TaskServiceCreateRequest().fromJson(jsonValue, options);
+	}
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TaskServiceCreateRequest {
-    return new TaskServiceCreateRequest().fromJsonString(jsonString, options);
-  }
+	static fromJsonString(
+		jsonString: string,
+		options?: Partial<JsonReadOptions>
+	): TaskServiceCreateRequest {
+		return new TaskServiceCreateRequest().fromJsonString(jsonString, options);
+	}
 
-  static equals(a: TaskServiceCreateRequest | PlainMessage<TaskServiceCreateRequest> | undefined, b: TaskServiceCreateRequest | PlainMessage<TaskServiceCreateRequest> | undefined): boolean {
-    return proto3.util.equals(TaskServiceCreateRequest, a, b);
-  }
+	static equals(
+		a: TaskServiceCreateRequest | PlainMessage<TaskServiceCreateRequest> | undefined,
+		b: TaskServiceCreateRequest | PlainMessage<TaskServiceCreateRequest> | undefined
+	): boolean {
+		return proto3.util.equals(TaskServiceCreateRequest, a, b);
+	}
 }
 
 /**
  * @generated from message task.v1.TaskServiceUpdateRequest
  */
 export class TaskServiceUpdateRequest extends Message<TaskServiceUpdateRequest> {
-  /**
-   * @generated from field: uint64 id = 1;
-   */
-  id = protoInt64.zero;
+	/**
+	 * @generated from field: uint64 id = 1;
+	 */
+	id = protoInt64.zero;
 
-  /**
-   * @generated from field: string name = 2;
-   */
-  name = "";
+	/**
+	 * タスク名は1文字以上である必要があります。
+	 *
+	 * @generated from field: string name = 2;
+	 */
+	name = '';
 
-  /**
-   * @generated from field: task.v1.TaskStatus status = 3;
-   */
-  status = TaskStatus.UNKNOWN_UNSPECIFIED;
+	/**
+	 * @generated from field: task.v1.TaskStatus status = 3;
+	 */
+	status = TaskStatus.UNKNOWN_UNSPECIFIED;
 
-  constructor(data?: PartialMessage<TaskServiceUpdateRequest>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
+	constructor(data?: PartialMessage<TaskServiceUpdateRequest>) {
+		super();
+		proto3.util.initPartial(data, this);
+	}
 
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "task.v1.TaskServiceUpdateRequest";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "id", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "status", kind: "enum", T: proto3.getEnumType(TaskStatus) },
-  ]);
+	static readonly runtime: typeof proto3 = proto3;
+	static readonly typeName = 'task.v1.TaskServiceUpdateRequest';
+	static readonly fields: FieldList = proto3.util.newFieldList(() => [
+		{ no: 1, name: 'id', kind: 'scalar', T: 4 /* ScalarType.UINT64 */ },
+		{ no: 2, name: 'name', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
+		{ no: 3, name: 'status', kind: 'enum', T: proto3.getEnumType(TaskStatus) }
+	]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TaskServiceUpdateRequest {
-    return new TaskServiceUpdateRequest().fromBinary(bytes, options);
-  }
+	static fromBinary(
+		bytes: Uint8Array,
+		options?: Partial<BinaryReadOptions>
+	): TaskServiceUpdateRequest {
+		return new TaskServiceUpdateRequest().fromBinary(bytes, options);
+	}
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TaskServiceUpdateRequest {
-    return new TaskServiceUpdateRequest().fromJson(jsonValue, options);
-  }
+	static fromJson(
+		jsonValue: JsonValue,
+		options?: Partial<JsonReadOptions>
+	): TaskServiceUpdateRequest {
+		return new TaskServiceUpdateRequest().fromJson(jsonValue, options);
+	}
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TaskServiceUpdateRequest {
-    return new TaskServiceUpdateRequest().fromJsonString(jsonString, options);
-  }
+	static fromJsonString(
+		jsonString: string,
+		options?: Partial<JsonReadOptions>
+	): TaskServiceUpdateRequest {
+		return new TaskServiceUpdateRequest().fromJsonString(jsonString, options);
+	}
 
-  static equals(a: TaskServiceUpdateRequest | PlainMessage<TaskServiceUpdateRequest> | undefined, b: TaskServiceUpdateRequest | PlainMessage<TaskServiceUpdateRequest> | undefined): boolean {
-    return proto3.util.equals(TaskServiceUpdateRequest, a, b);
-  }
+	static equals(
+		a: TaskServiceUpdateRequest | PlainMessage<TaskServiceUpdateRequest> | undefined,
+		b: TaskServiceUpdateRequest | PlainMessage<TaskServiceUpdateRequest> | undefined
+	): boolean {
+		return proto3.util.equals(TaskServiceUpdateRequest, a, b);
+	}
 }
 
 /**
  * @generated from message task.v1.TaskServiceListRequest
  */
 export class TaskServiceListRequest extends Message<TaskServiceListRequest> {
-  /**
-   * @generated from field: uint64 offset = 1;
-   */
-  offset = protoInt64.zero;
+	/**
+	 * @generated from field: uint64 offset = 1;
+	 */
+	offset = protoInt64.zero;
 
-  /**
-   * @generated from field: uint64 limit = 2;
-   */
-  limit = protoInt64.zero;
+	/**
+	 * @generated from field: uint64 limit = 2;
+	 */
+	limit = protoInt64.zero;
 
-  constructor(data?: PartialMessage<TaskServiceListRequest>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
+	constructor(data?: PartialMessage<TaskServiceListRequest>) {
+		super();
+		proto3.util.initPartial(data, this);
+	}
 
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "task.v1.TaskServiceListRequest";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "offset", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 2, name: "limit", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-  ]);
+	static readonly runtime: typeof proto3 = proto3;
+	static readonly typeName = 'task.v1.TaskServiceListRequest';
+	static readonly fields: FieldList = proto3.util.newFieldList(() => [
+		{ no: 1, name: 'offset', kind: 'scalar', T: 4 /* ScalarType.UINT64 */ },
+		{ no: 2, name: 'limit', kind: 'scalar', T: 4 /* ScalarType.UINT64 */ }
+	]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TaskServiceListRequest {
-    return new TaskServiceListRequest().fromBinary(bytes, options);
-  }
+	static fromBinary(
+		bytes: Uint8Array,
+		options?: Partial<BinaryReadOptions>
+	): TaskServiceListRequest {
+		return new TaskServiceListRequest().fromBinary(bytes, options);
+	}
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TaskServiceListRequest {
-    return new TaskServiceListRequest().fromJson(jsonValue, options);
-  }
+	static fromJson(
+		jsonValue: JsonValue,
+		options?: Partial<JsonReadOptions>
+	): TaskServiceListRequest {
+		return new TaskServiceListRequest().fromJson(jsonValue, options);
+	}
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TaskServiceListRequest {
-    return new TaskServiceListRequest().fromJsonString(jsonString, options);
-  }
+	static fromJsonString(
+		jsonString: string,
+		options?: Partial<JsonReadOptions>
+	): TaskServiceListRequest {
+		return new TaskServiceListRequest().fromJsonString(jsonString, options);
+	}
 
-  static equals(a: TaskServiceListRequest | PlainMessage<TaskServiceListRequest> | undefined, b: TaskServiceListRequest | PlainMessage<TaskServiceListRequest> | undefined): boolean {
-    return proto3.util.equals(TaskServiceListRequest, a, b);
-  }
+	static equals(
+		a: TaskServiceListRequest | PlainMessage<TaskServiceListRequest> | undefined,
+		b: TaskServiceListRequest | PlainMessage<TaskServiceListRequest> | undefined
+	): boolean {
+		return proto3.util.equals(TaskServiceListRequest, a, b);
+	}
 }
 
 /**
  * @generated from message task.v1.TaskServiceListResponse
  */
 export class TaskServiceListResponse extends Message<TaskServiceListResponse> {
-  /**
-   * @generated from field: uint64 total = 1;
-   */
-  total = protoInt64.zero;
+	/**
+	 * @generated from field: uint64 total = 1;
+	 */
+	total = protoInt64.zero;
 
-  /**
-   * @generated from field: repeated task.v1.TaskResponse items = 2;
-   */
-  items: TaskResponse[] = [];
+	/**
+	 * @generated from field: repeated task.v1.TaskResponse items = 2;
+	 */
+	items: TaskResponse[] = [];
 
-  constructor(data?: PartialMessage<TaskServiceListResponse>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
+	constructor(data?: PartialMessage<TaskServiceListResponse>) {
+		super();
+		proto3.util.initPartial(data, this);
+	}
 
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "task.v1.TaskServiceListResponse";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "total", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 2, name: "items", kind: "message", T: TaskResponse, repeated: true },
-  ]);
+	static readonly runtime: typeof proto3 = proto3;
+	static readonly typeName = 'task.v1.TaskServiceListResponse';
+	static readonly fields: FieldList = proto3.util.newFieldList(() => [
+		{ no: 1, name: 'total', kind: 'scalar', T: 4 /* ScalarType.UINT64 */ },
+		{ no: 2, name: 'items', kind: 'message', T: TaskResponse, repeated: true }
+	]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TaskServiceListResponse {
-    return new TaskServiceListResponse().fromBinary(bytes, options);
-  }
+	static fromBinary(
+		bytes: Uint8Array,
+		options?: Partial<BinaryReadOptions>
+	): TaskServiceListResponse {
+		return new TaskServiceListResponse().fromBinary(bytes, options);
+	}
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TaskServiceListResponse {
-    return new TaskServiceListResponse().fromJson(jsonValue, options);
-  }
+	static fromJson(
+		jsonValue: JsonValue,
+		options?: Partial<JsonReadOptions>
+	): TaskServiceListResponse {
+		return new TaskServiceListResponse().fromJson(jsonValue, options);
+	}
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TaskServiceListResponse {
-    return new TaskServiceListResponse().fromJsonString(jsonString, options);
-  }
+	static fromJsonString(
+		jsonString: string,
+		options?: Partial<JsonReadOptions>
+	): TaskServiceListResponse {
+		return new TaskServiceListResponse().fromJsonString(jsonString, options);
+	}
 
-  static equals(a: TaskServiceListResponse | PlainMessage<TaskServiceListResponse> | undefined, b: TaskServiceListResponse | PlainMessage<TaskServiceListResponse> | undefined): boolean {
-    return proto3.util.equals(TaskServiceListResponse, a, b);
-  }
+	static equals(
+		a: TaskServiceListResponse | PlainMessage<TaskServiceListResponse> | undefined,
+		b: TaskServiceListResponse | PlainMessage<TaskServiceListResponse> | undefined
+	): boolean {
+		return proto3.util.equals(TaskServiceListResponse, a, b);
+	}
 }
-

@@ -2,10 +2,9 @@
 	import Icon from '@iconify/svelte';
 	import { page } from '$app/stores';
 
-	import {isFirebaseError} from '$lib/firebase';
-	import type {UserCredential} from '$lib/firebase/auth';
-	import { auth, signInWithEmailAndPassword } from "$lib/firebase/auth";
-
+	import { isFirebaseError } from '$lib/firebase';
+	import type { UserCredential } from '$lib/firebase/auth';
+	import { auth, signInWithEmailAndPassword } from '$lib/firebase/auth';
 
 	let email = '';
 	let password = '';
@@ -26,16 +25,16 @@
 		const idToken = await userCredential.user.getIdToken();
 		await fetch('/session', {
 			method: 'POST',
-			body: JSON.stringify({"id_token": idToken}),
-			headers: {'Content-Type': 'application/json'}
+			body: JSON.stringify({ id_token: idToken }),
+			headers: { 'Content-Type': 'application/json' }
 		});
 		window.location.href = $page.url.origin + '/';
 	};
 
 	const signinOnEnter = (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
-            signin();
-        }
+			signin();
+		}
 	};
 	const clearErrorMessage = () => {
 		errorMessage = '';

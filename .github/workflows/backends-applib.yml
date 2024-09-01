@@ -1,0 +1,59 @@
+# See https://help.github.com/en/actions/automating-your-workflow-with-github-actions
+
+name: backends applib CI
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - ".github/workflows/backends-applib.yml"
+      - ".gitignore"
+      - ".gitmodules"
+      - ".config.mk"
+      - ".shapeapp.mk"
+      - ".tool-versions"
+      - "backends/applib/**"
+      - "backends/test/**"
+      - "vendor/shapeappmk"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    # if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # https://github.com/actions/setup-go
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: "backends/applib/go.mod"
+
+      - name: Check docker version
+        run: |
+          set -x
+          docker -v
+          docker version
+          docker compose version
+
+      - name: Check golang version/env
+        run: |
+          set -x
+          go version
+          go env
+
+      - name: build
+        run: make build
+        working-directory: ./backends/applib
+
+      - name: lint
+        run: make lint
+        working-directory: ./backends/applib
+
+      - name: test
+        run: make test
+        working-directory: ./backends/applib

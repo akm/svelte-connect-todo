@@ -1,0 +1,45 @@
+# See https://help.github.com/en/actions/automating-your-workflow-with-github-actions
+
+name: frontends uisvr gen CI
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - ".github/workflows/frontends-uisvr-gen.yml"
+      - ".gitignore"
+      - ".config.mk"
+      - ".shapeapp.mk"
+      - ".tool-versions"
+      - "backends/apisvr/proto/**"
+      - "frontends/uisvr/**"
+      - "vendor/shapeappmk"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    # if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # https://github.com/actions/setup-node
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+
+      - name: npm-ci
+        run: make npm-ci
+        working-directory: ./frontends/uisvr
+
+      - name: generate
+        run: make generate
+        working-directory: ./frontends/uisvr
+
+      - name: git-check
+        run: make git-check
+        working-directory: ./frontends/uisvr

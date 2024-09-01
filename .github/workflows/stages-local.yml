@@ -1,0 +1,58 @@
+# See https://help.github.com/en/actions/automating-your-workflow-with-github-actions
+
+name: stages local CI
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - ".github/workflows/stages-local.yml"
+      - ".gitignore"
+      - ".gitmodules"
+      - ".config.mk"
+      - ".shapeapp.mk"
+      - ".tool-versions"
+      - "backends/**"
+      - "frontends/**"
+      - "middlewares/**"
+      - "stages/local/**"
+      - "vendor/shapeappmk"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    # if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # https://github.com/actions/setup-go
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: "backends/apisvr/go.mod"
+
+      # https://github.com/actions/setup-node
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+
+      - name: Check docker version
+        run: |
+          set -x
+          docker -v
+          docker version
+          docker compose version
+
+      - name: Check golang version/env
+        run: |
+          set -x
+          go version
+          go env
+
+      - name: build
+        run: make build
+        working-directory: ./stages/local

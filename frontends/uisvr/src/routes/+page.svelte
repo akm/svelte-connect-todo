@@ -56,7 +56,7 @@
 					<span>{task.name}</span>
 					<button
 						aria-label="Mark as complete"
-						on:click={async (e) => {
+						on:click={async () => {
 							await client.delete({ id: task.id });
 							data.tasks = data.tasks.filter((t) => t !== task);
 						}}><Icon icon="ph:trash-light" /></button
