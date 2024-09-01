@@ -32,13 +32,18 @@ jobs:
         with:
           node-version-file: .tool-versions
 
-      - name: connect-web-install
-        run: make connect-web-install
-        working-directory: ./frontends/uisvr
+      # https://github.com/actions/setup-go
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: "backends/apisvr/go.mod"
 
       - name: buf-dep-update
         run: make buf-dep-update
         working-directory: ./backends/apisvr/proto
+
+      - name: connect-web-install
+        run: make connect-web-install
+        working-directory: ./frontends/uisvr
 
       - name: generate
         run: make generate
