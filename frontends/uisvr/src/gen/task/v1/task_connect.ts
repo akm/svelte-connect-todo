@@ -3,60 +3,67 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { DeleteRequest, ShowRequest, TaskResponse, TaskServiceCreateRequest, TaskServiceListRequest, TaskServiceListResponse, TaskServiceUpdateRequest } from "./task_pb.js";
-import { MethodKind } from "@bufbuild/protobuf";
+import {
+	DeleteRequest,
+	ShowRequest,
+	TaskResponse,
+	TaskServiceCreateRequest,
+	TaskServiceListRequest,
+	TaskServiceListResponse,
+	TaskServiceUpdateRequest
+} from './task_pb.js';
+import { MethodKind } from '@bufbuild/protobuf';
 
 /**
  * @generated from service task.v1.TaskService
  */
 export const TaskService = {
-  typeName: "task.v1.TaskService",
-  methods: {
-    /**
-     * @generated from rpc task.v1.TaskService.List
-     */
-    list: {
-      name: "List",
-      I: TaskServiceListRequest,
-      O: TaskServiceListResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc task.v1.TaskService.Show
-     */
-    show: {
-      name: "Show",
-      I: ShowRequest,
-      O: TaskResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc task.v1.TaskService.Create
-     */
-    create: {
-      name: "Create",
-      I: TaskServiceCreateRequest,
-      O: TaskResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc task.v1.TaskService.Update
-     */
-    update: {
-      name: "Update",
-      I: TaskServiceUpdateRequest,
-      O: TaskResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc task.v1.TaskService.Delete
-     */
-    delete: {
-      name: "Delete",
-      I: DeleteRequest,
-      O: TaskResponse,
-      kind: MethodKind.Unary,
-    },
-  }
+	typeName: 'task.v1.TaskService',
+	methods: {
+		/**
+		 * @generated from rpc task.v1.TaskService.List
+		 */
+		list: {
+			name: 'List',
+			I: TaskServiceListRequest,
+			O: TaskServiceListResponse,
+			kind: MethodKind.Unary
+		},
+		/**
+		 * @generated from rpc task.v1.TaskService.Show
+		 */
+		show: {
+			name: 'Show',
+			I: ShowRequest,
+			O: TaskResponse,
+			kind: MethodKind.Unary
+		},
+		/**
+		 * @generated from rpc task.v1.TaskService.Create
+		 */
+		create: {
+			name: 'Create',
+			I: TaskServiceCreateRequest,
+			O: TaskResponse,
+			kind: MethodKind.Unary
+		},
+		/**
+		 * @generated from rpc task.v1.TaskService.Update
+		 */
+		update: {
+			name: 'Update',
+			I: TaskServiceUpdateRequest,
+			O: TaskResponse,
+			kind: MethodKind.Unary
+		},
+		/**
+		 * @generated from rpc task.v1.TaskService.Delete
+		 */
+		delete: {
+			name: 'Delete',
+			I: DeleteRequest,
+			O: TaskResponse,
+			kind: MethodKind.Unary
+		}
+	}
 } as const;
-

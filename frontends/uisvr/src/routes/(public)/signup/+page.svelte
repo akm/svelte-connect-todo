@@ -2,9 +2,9 @@
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 
-	import {isFirebaseError} from '$lib/firebase';
-	import type {UserCredential} from '$lib/firebase/auth';
-	import { auth, createUserWithEmailAndPassword, updateProfile } from "$lib/firebase/auth";
+	import { isFirebaseError } from '$lib/firebase';
+	import type { UserCredential } from '$lib/firebase/auth';
+	import { auth, createUserWithEmailAndPassword, updateProfile } from '$lib/firebase/auth';
 
 	let email = '';
 	let password = '';
@@ -14,13 +14,13 @@
 	const signup = async () => {
 		let credential: UserCredential;
 		try {
-			credential = await createUserWithEmailAndPassword(auth, email, password)
+			credential = await createUserWithEmailAndPassword(auth, email, password);
 		} catch (err) {
 			if (isFirebaseError(err)) {
 				errorMessage = `[${err.code}] ${err.message}`;
-				return
+				return;
 			} else {
-				throw err
+				throw err;
 			}
 		}
 		if (accountName != '') {
@@ -36,7 +36,7 @@
 			}
 		}
 
-		const idToken = await credential.user.getIdToken()
+		const idToken = await credential.user.getIdToken();
 		await fetch('/session', {
 			method: 'POST',
 			body: JSON.stringify({ id_token: idToken }),
