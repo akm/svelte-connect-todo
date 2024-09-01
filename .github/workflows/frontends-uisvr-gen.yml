@@ -37,6 +37,10 @@ jobs:
         with:
           go-version-file: "backends/apisvr/go.mod"
 
+      - name: buf-build
+        run: make buf-build
+        working-directory: ./backends/apisvr/proto
+
       - name: buf-dep-update
         run: make buf-dep-update
         working-directory: ./backends/apisvr/proto
