@@ -15,4 +15,4 @@ GOOGLE_CLOUD_RUN_DEPLOY_OPTS=\
 	--memory=128Mi \
 	--region=$(GCP_REGION)
 
-include $(PATH_TO_STAGE_DIR)/default/stages/production/uisvr.mk
+include $(PATH_TO_SHAPEAPPMK)/default/stages/production/uisvr.mk

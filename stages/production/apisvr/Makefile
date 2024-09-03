@@ -15,4 +15,4 @@ DEPLOY_OPTIONS_BASE=\
 	--use-http2 \
 	--region=$(GCP_REGION)
 
-include $(PATH_TO_STAGE_DIR)/default/stages/production/apisvr.mk
+include $(PATH_TO_SHAPEAPPMK)/default/stages/production/apisvr.mk

@@ -1,22 +1,20 @@
 # See https://help.github.com/en/actions/automating-your-workflow-with-github-actions
 
-name: stages local CI
+name: stages production apisvr CI
 
 on:
   push:
     branches:
       - "**"
     paths:
-      - ".github/workflows/stages-local.yml"
+      - ".github/workflows/stages-production-apisvr.yml"
       - ".gitignore"
       - ".gitmodules"
       - ".config.mk"
       - ".shapeapp.mk"
       - ".tool-versions"
       - "backends/**"
-      - "frontends/**"
-      - "middlewares/**"
-      - "stages/local/**"
+      - "stages/production/apisvr/**"
       - "vendor/shapeappmk"
 
 jobs:
@@ -35,11 +33,6 @@ jobs:
         with:
           go-version-file: "backends/apisvr/go.mod"
 
-      # https://github.com/actions/setup-node
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .tool-versions
-
       - name: Check docker version
         run: |
           set -x
@@ -55,4 +48,4 @@ jobs:
 
       - name: build
         run: make build
-        working-directory: ./stages/local
+        working-directory: ./stages/production/apisvr

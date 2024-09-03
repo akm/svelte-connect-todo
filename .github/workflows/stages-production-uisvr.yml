@@ -1,22 +1,20 @@
 # See https://help.github.com/en/actions/automating-your-workflow-with-github-actions
 
-name: stages local CI
+name: stages production uisvr CI
 
 on:
   push:
     branches:
       - "**"
     paths:
-      - ".github/workflows/stages-local.yml"
+      - ".github/workflows/stages-production-apisvr.yml"
       - ".gitignore"
       - ".gitmodules"
       - ".config.mk"
       - ".shapeapp.mk"
       - ".tool-versions"
-      - "backends/**"
-      - "frontends/**"
-      - "middlewares/**"
-      - "stages/local/**"
+      - "fontends/**"
+      - "stages/production/uisvr/**"
       - "vendor/shapeappmk"
 
 jobs:
@@ -30,11 +28,6 @@ jobs:
         with:
           submodules: recursive
 
-      # https://github.com/actions/setup-go
-      - uses: actions/setup-go@v4
-        with:
-          go-version-file: "backends/apisvr/go.mod"
-
       # https://github.com/actions/setup-node
       - uses: actions/setup-node@v4
         with:
@@ -47,12 +40,6 @@ jobs:
           docker version
           docker compose version
 
-      - name: Check golang version/env
-        run: |
-          set -x
-          go version
-          go env
-
       - name: build
         run: make build
-        working-directory: ./stages/local
+        working-directory: ./stages/production/uisvr
