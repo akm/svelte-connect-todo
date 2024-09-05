@@ -13,7 +13,7 @@ services:
       - "${APP_PORT_FIREBASE_EMULATOR_SUITE_e2e_test}:4000"
     networks:
       - network1
-    command: firebase emulators:start --import /srv/firebase-emulators/data/firebase --export-on-exit /srv/firebase-emulators/data/firebase
+    command: firebase emulators:start
 
   mysql:
     image: mysql:8.0.38
