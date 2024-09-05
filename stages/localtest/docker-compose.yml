@@ -10,6 +10,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "${APP_PORT_FIREBASE_AUTH_e2e_test}:9099"
+      - "${APP_PORT_FIREBASE_EMULATOR_SUITE_e2e_test}:4000"
     networks:
       - network1
     command: firebase emulators:start --import /srv/firebase-emulators/data/firebase --export-on-exit /srv/firebase-emulators/data/firebase
