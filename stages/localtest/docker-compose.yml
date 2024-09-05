@@ -1,0 +1,80 @@
+# Variable substitution
+# https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution
+# 環境変数は local/Makefile で設定されています。
+name: "svelte-connect-todo-localtest"
+services:
+  firebase-emulators:
+    hostname: firebase-emulators
+    build:
+      context: ../../middlewares/firebase-emulators/local
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_PORT_FIREBASE_AUTH_e2e_test}:9099"
+    networks:
+      - network1
+    command: firebase emulators:start --import /srv/firebase-emulators/data/firebase --export-on-exit /srv/firebase-emulators/data/firebase
+
+  mysql:
+    image: mysql:8.0.38
+    hostname: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${APP_MYSQL_DB_NAME}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "${APP_PORT_MYSQL_e2e_test}:3306"
+    volumes:
+      - ../../middlewares/mysql/local/conf.d:/etc/mysql/conf.d
+    networks:
+      - network1
+
+  apisvr:
+    hostname: apisvr
+    build:
+      context: ../../backends/apisvr
+      dockerfile: Dockerfile
+      args:
+        APP_BIN_PATH: "${APP_BINARY_PATH_IN_APISVR}"
+    ports:
+      - "${APP_PORT_APISVR_e2e_test}:${APP_PORT_APISVR_e2e_test}"
+    environment:
+      - APP_CORS_ALLOW_ORIGINS=http://localhost:${APP_PORT_UISVR_e2e_test},http://localhost:${APP_PORT_RPROXY_e2e_test}
+      - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
+      - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
+      - FIREBASE_AUTH_EMULATOR_HOST=firebase-emulators:${APP_PORT_FIREBASE_AUTH_e2e_test}
+      - DB_DSN=${APP_MYSQL_DSN}
+      - LOG_LEVEL=debug
+      - LOG_FORMAT=text
+    networks:
+      - network1
+
+  uisvr:
+    hostname: uisvr
+    build:
+      context: ../../frontends/uisvr
+      dockerfile: Dockerfile
+    environment:
+      - PORT=${APP_PORT_UISVR_e2e_test}
+      - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
+      - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
+    volumes:
+      - ${APP_UISVR_DOT_ENV}:/srv/uisvr/.env
+    ports:
+      - "${APP_PORT_UISVR_e2e_test}:${APP_PORT_UISVR_e2e_test}"
+    networks:
+      - network1
+
+  # https://www.envoyproxy.io/docs/envoy/latest/start/docker
+  rproxy:
+    image: envoyproxy/envoy:v1.30.1
+    volumes:
+      - ${APP_RPROXY_ENVOY_YAML}:/envoy.yaml
+    ports:
+      - ${APP_PORT_RPROXY_e2e_test}:${APP_PORT_RPROXY_e2e_test}
+    command: -c /envoy.yaml
+    networks:
+      - network1
+
+networks:
+  network1:
