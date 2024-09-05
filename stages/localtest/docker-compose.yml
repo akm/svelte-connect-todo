@@ -40,6 +40,7 @@ services:
     ports:
       - "${APP_PORT_APISVR_e2e_test}:${APP_PORT_APISVR_e2e_test}"
     environment:
+      - PORT=${APP_PORT_APISVR_e2e_test}
       - APP_CORS_ALLOW_ORIGINS=http://localhost:${APP_PORT_UISVR_e2e_test},http://localhost:${APP_PORT_RPROXY_e2e_test}
       - APP_FIREBASE_API_KEY=${APP_FIREBASE_API_KEY}
       - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
