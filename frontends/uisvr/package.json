@@ -11,8 +11,11 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"test:integration": "playwright test",
-		"test:unit": "vitest"
+		"test:integration": "npm run test:integration:down && npm run test:integration:run",
+		"test:integration:down": "make -C ../../stages/localtest down || true",
+		"test:integration:run": "playwright test",
+		"test:unit": "vitest run",
+		"test:watch": "vitest watch"
 	},
 	"devDependencies": {
 		"@bufbuild/buf": "^1.30.1",

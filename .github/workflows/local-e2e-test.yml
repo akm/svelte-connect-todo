@@ -1,24 +1,27 @@
 # See https://help.github.com/en/actions/automating-your-workflow-with-github-actions
 
-name: frontends uisvr CI
+name: Local E2E test
 
 on:
   push:
     branches:
       - "**"
     paths:
-      - ".github/workflows/frontends-uisvr.yml"
+      - ".github/workflows/local-e2e-test.yml"
       - ".gitignore"
+      - ".gitmodules"
       - ".config.mk"
       - ".shapeapp.mk"
       - ".tool-versions"
-      - "backends/apisvr/proto/**"
-      - "frontends/uisvr/**"
+      - "backends/**"
+      - "frontends/**"
+      - "middlewares/**"
+      - "stages/localtest/**"
       - "vendor/shapeappmk"
 
 jobs:
   test:
-    name: Test
+    name: Run Local E2E test
     runs-on: ubuntu-latest
     # if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
@@ -27,10 +30,23 @@ jobs:
         with:
           submodules: recursive
 
+      # https://github.com/actions/setup-go
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: "backends/apisvr/go.mod"
+
       # https://github.com/actions/setup-node
       - uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+
+      - name: npm ci
+        run: npm ci
+        working-directory: ./frontends/uisvr
+
+      - name: Install browsers for playwright
+        run: npx playwright install
+        working-directory: ./frontends/uisvr
 
       - name: Check docker version
         run: |
@@ -39,18 +55,14 @@ jobs:
           docker version
           docker compose version
 
-      - name: build
-        run: make build
-        working-directory: ./frontends/uisvr
+      - name: Check golang version/env
+        run: |
+          set -x
+          go version
+          go env
 
-      - name: lint
-        run: make lint
+      - name: npm-run-test-integration
+        run: make npm-run-test-integration
         working-directory: ./frontends/uisvr
-
-      - name: docker-image-build
-        run: make docker-image-build
-        working-directory: ./frontends/uisvr
-
-      - name: npm-run-test-unit
-        run: make npm-run-test-unit
-        working-directory: ./frontends/uisvr
+        env:
+          LOCAL_E2E_TEST: true
