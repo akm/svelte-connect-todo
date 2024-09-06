@@ -64,3 +64,5 @@ jobs:
       - name: npm-run-test-integration
         run: make npm-run-test-integration
         working-directory: ./frontends/uisvr
+        env:
+          LOCAL_E2E_TEST: true
