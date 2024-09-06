@@ -23,6 +23,9 @@ export default defineConfig({
 		port: 8001
 	},
 
+	// Github Actions で実行する場合は stages/localtest の セットアップも行うので 5 分くらいかかることもありえる
+	timeout: 300_000,
+
 	testDir: 'tests',
 	testMatch: /(.+\.)?(test|spec)\.[jt]s/,
 	workers: 1,
