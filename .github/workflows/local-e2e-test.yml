@@ -40,6 +40,9 @@ jobs:
         with:
           node-version-file: .tool-versions
 
+      - name: Install browsers for playwright
+        run: npx playwright install
+
       - name: Check docker version
         run: |
           set -x
