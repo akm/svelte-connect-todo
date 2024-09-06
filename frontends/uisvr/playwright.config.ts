@@ -20,11 +20,10 @@ export default defineConfig({
 	// https://playwright.dev/docs/api/class-testconfig#test-config-web-server
 	webServer: {
 		command: 'make -C ../../stages/localtest run',
-		port: 8001
+		port: 8001,
+		// Github Actions で実行する場合は stages/localtest の セットアップも行うので 5 分くらいかかることもありえる
+		timeout: 300_000
 	},
-
-	// Github Actions で実行する場合は stages/localtest の セットアップも行うので 5 分くらいかかることもありえる
-	timeout: 300_000,
 
 	testDir: 'tests',
 	testMatch: /(.+\.)?(test|spec)\.[jt]s/,
