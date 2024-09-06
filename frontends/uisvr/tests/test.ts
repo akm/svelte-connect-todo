@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('test', async ({ page }) => {
+	await page.waitForTimeout(5_000);
 	await page.goto('http://localhost:8001/signin');
 	await expect(page.getByRole('heading', { name: 'TODOs' })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Sign in' })).toBeVisible();
