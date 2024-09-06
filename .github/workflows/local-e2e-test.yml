@@ -40,8 +40,13 @@ jobs:
         with:
           node-version-file: .tool-versions
 
+      - name: npm ci
+        run: npm ci
+        working-directory: ./frontends/uisvr
+
       - name: Install browsers for playwright
         run: npx playwright install
+        working-directory: ./frontends/uisvr
 
       - name: Check docker version
         run: |
