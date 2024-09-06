@@ -51,7 +51,6 @@ jobs:
         run: make docker-image-build
         working-directory: ./frontends/uisvr
 
-      # TODO enable test after implement test
-      # - name: test
-      #   run: make test
-      #   working-directory: ./frontends/uisvr
+      - name: npm-run-test-unit
+        run: make npm-run-test-unit
+        working-directory: ./frontends/uisvr
