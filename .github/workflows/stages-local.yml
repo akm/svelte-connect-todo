@@ -16,7 +16,7 @@ on:
       - "backends/**"
       - "frontends/**"
       - "middlewares/**"
-      - "stages/local/**"
+      - "stages/localdev/**"
       - "vendor/shapeappmk"
 
 jobs:
@@ -55,4 +55,4 @@ jobs:
 
       - name: build
         run: make build
-        working-directory: ./stages/local
+        working-directory: ./stages/localdev
