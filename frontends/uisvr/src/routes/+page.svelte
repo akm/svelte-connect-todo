@@ -6,6 +6,7 @@
 	import { TaskStatus } from '../gen/task/v1/task_pb';
 	import { apisvrOrigin } from '$lib/apisvr';
 
+	import TaskForm from '$lib/components/forms/TaskForm.svelte';
 	import TaskList from '$lib/components/collections/TaskList.svelte';
 
 	export let data: { tasks: Task[] };
@@ -18,25 +19,13 @@
 </script>
 
 <div class="prose m-8 lg:prose-lg">
-	<label>
-		add a todo:
-		<input
-			type="text"
-			autocomplete="off"
-			on:keydown={async (e) => {
-				if (e.key === 'Enter') {
-					const input = e.currentTarget;
-					const name = input.value;
-
-					const response = await client.create({ name, status: TaskStatus.TODO });
-					const { id } = response;
-					data.tasks = [...data.tasks, { id, name, done: false }];
-
-					input.value = '';
-				}
-			}}
-		/>
-	</label>
+	<TaskForm
+		onEnter={async (name) => {
+			const response = await client.create({ name, status: TaskStatus.TODO });
+			const { id } = response;
+			data.tasks = [...data.tasks, { id, name, done: false }];
+		}}
+	/>
 
 	<TaskList
 		bind:tasks={data.tasks}
