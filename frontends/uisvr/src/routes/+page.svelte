@@ -5,7 +5,9 @@
 	import { createConnectTransport } from '@connectrpc/connect-web';
 	import { TaskStatus } from '../gen/task/v1/task_pb';
 	import { apisvrOrigin } from '$lib/apisvr';
-	import Icon from '@iconify/svelte';
+
+	import TaskForm from '$lib/components/forms/TaskForm.svelte';
+	import TaskList from '$lib/components/collections/TaskList.svelte';
 
 	export let data: { tasks: Task[] };
 
@@ -17,52 +19,26 @@
 </script>
 
 <div class="prose m-8 lg:prose-lg">
-	<label>
-		add a todo:
-		<input
-			type="text"
-			autocomplete="off"
-			on:keydown={async (e) => {
-				if (e.key === 'Enter') {
-					const input = e.currentTarget;
-					const name = input.value;
+	<TaskForm
+		onEnter={async (name) => {
+			const response = await client.create({ name, status: TaskStatus.TODO });
+			const { id } = response;
+			data.tasks = [...data.tasks, { id, name, done: false }];
+		}}
+	/>
 
-					const response = await client.create({ name, status: TaskStatus.TODO });
-					const { id } = response;
-					data.tasks = [...data.tasks, { id, name, done: false }];
-
-					input.value = '';
-				}
-			}}
-		/>
-	</label>
-
-	<ul class="todos">
-		{#each data.tasks as task (task.id)}
-			<li>
-				<label>
-					<input
-						type="checkbox"
-						checked={task.done}
-						on:change={async (e) => {
-							const done = e.currentTarget.checked;
-							await client.update({
-								id: task.id,
-								name: task.name,
-								status: done ? TaskStatus.DONE : TaskStatus.TODO
-							});
-						}}
-					/>
-					<span>{task.name}</span>
-					<button
-						aria-label="Mark as complete"
-						on:click={async () => {
-							await client.delete({ id: task.id });
-							data.tasks = data.tasks.filter((t) => t !== task);
-						}}><Icon icon="ph:trash-light" /></button
-					>
-				</label>
-			</li>
-		{/each}
-	</ul>
+	<TaskList
+		bind:tasks={data.tasks}
+		onClickCheckbox={async (task, checked) => {
+			await client.update({
+				id: task.id,
+				name: task.name,
+				status: checked ? TaskStatus.DONE : TaskStatus.TODO
+			});
+		}}
+		onClickDelete={async (task) => {
+			await client.delete({ id: task.id });
+			data.tasks = data.tasks.filter((t) => t !== task);
+		}}
+	/>
 </div>
