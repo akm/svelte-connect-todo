@@ -1,4 +1,4 @@
-# Local development stage - stages/localdv
+# Local development stage - stages/localdev
 
 ## How to run
 
