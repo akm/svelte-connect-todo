@@ -6,6 +6,13 @@
 make -C stages/localdev up
 ```
 
+
+Run dbmigration when it's first time setup.
+
+```
+make -C stages/localdev dbmigration-up
+```
+
 and Open http://localhost:8000/ in browser.
 
 ## How to shutdown
