@@ -4,7 +4,7 @@ import 'tailwindcss/tailwind.css';
 import TaskList from '$lib/components/collections/TaskList.svelte';
 
 const meta = {
-	title: 'Example/TaskList',
+	title: 'collections/TaskList',
 	component: TaskList,
 	// This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
 	tags: ['autodocs'],
