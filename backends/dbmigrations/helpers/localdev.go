@@ -19,7 +19,7 @@ var DemoData = goosecond.NewCondition(func() bool {
 		return os.Getenv("LOCAL_E2E_TEST") == "true"
 	}
 	switch os.Getenv("APP_STAGE_TYPE") {
-	case "dev", "local":
+	case "dev", "localdev":
 		return true
 	default:
 		return false
