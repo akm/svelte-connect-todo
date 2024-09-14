@@ -3,4 +3,4 @@ include $(PATH_TO_ROOT)/.shapeapp.mk
 
 APP_STAGE_TYPE=local
 
-include $(PATH_TO_SHAPEAPPMK)/default/stages/local.mk
+include $(PATH_TO_SHAPEAPPMK)/default/stages/localdev.mk
