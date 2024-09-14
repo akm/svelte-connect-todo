@@ -1,13 +1,13 @@
 # See https://help.github.com/en/actions/automating-your-workflow-with-github-actions
 
-name: stages local CI
+name: stages localdev CI
 
 on:
   push:
     branches:
       - "**"
     paths:
-      - ".github/workflows/stages-local.yml"
+      - ".github/workflows/stages-localdev.yml"
       - ".gitignore"
       - ".gitmodules"
       - ".config.mk"
