@@ -7,6 +7,7 @@
 	<input
 		type="text"
 		autocomplete="off"
+		style="background: red;"
 		on:keydown={async (e) => {
 			if (e.key === 'Enter') {
 				onEnter;
