@@ -43,6 +43,7 @@
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
 		"@typescript-eslint/parser": "^7.0.0",
 		"autoprefixer": "^10.4.19",
+		"chromatic": "^11.10.2",
 		"daisyui": "^4.10.1",
 		"esbuild": "^0.21.5",
 		"eslint": "^8.56.0",
