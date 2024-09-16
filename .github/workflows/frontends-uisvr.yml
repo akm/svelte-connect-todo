@@ -58,3 +58,5 @@ jobs:
       - name: npm-run-chromatic
         run: npm run chromatic:ci
         working-directory: ./frontends/uisvr
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
