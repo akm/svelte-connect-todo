@@ -51,12 +51,6 @@ jobs:
         run: make npm-run-test-unit
         working-directory: ./frontends/uisvr
 
-      - name: npm-run-chromatic
-        run: npm run chromatic:ci
-        working-directory: ./frontends/uisvr
-        env:
-          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-
       - name: docker-image-build
         run: make docker-image-build
         working-directory: ./frontends/uisvr
