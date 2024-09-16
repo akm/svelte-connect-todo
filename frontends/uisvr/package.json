@@ -18,7 +18,8 @@
 		"test:watch": "vitest watch",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"chromatic": "chromatic"
+		"chromatic": "chromatic",
+		"chromatic:ci": "chromatic --exit-zero-on-changes"
 	},
 	"devDependencies": {
 		"@bufbuild/buf": "^1.30.1",
