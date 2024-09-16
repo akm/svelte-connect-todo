@@ -54,3 +54,7 @@ jobs:
       - name: npm-run-test-unit
         run: make npm-run-test-unit
         working-directory: ./frontends/uisvr
+
+      - name: npm-run-chromatic
+        run: npm run chromatic:ci
+        working-directory: ./frontends/uisvr
