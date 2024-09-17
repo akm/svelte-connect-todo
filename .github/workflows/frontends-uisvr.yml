@@ -47,10 +47,10 @@ jobs:
         run: make lint
         working-directory: ./frontends/uisvr
 
-      - name: docker-image-build
-        run: make docker-image-build
-        working-directory: ./frontends/uisvr
-
       - name: npm-run-test-unit
         run: make npm-run-test-unit
+        working-directory: ./frontends/uisvr
+
+      - name: docker-image-build
+        run: make docker-image-build
         working-directory: ./frontends/uisvr
