@@ -11,6 +11,7 @@ type (
 
 	Handler        = orig.Handler
 	HandlerOptions = orig.HandlerOptions
+	Record         = orig.Record
 
 	origLogger = orig.Logger
 )
