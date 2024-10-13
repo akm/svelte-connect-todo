@@ -2,12 +2,12 @@ package auth
 
 import (
 	"applib/log/slog"
-	"applib/log/slog/slogwrap"
 	"context"
 	"net/http"
 
 	"connectrpc.com/authn"
 	"firebase.google.com/go/v4/auth"
+	"github.com/akm/slogwrap"
 )
 
 func Authenticate(logger slog.Logger) func(ctx context.Context, req authn.Request) (any, error) {

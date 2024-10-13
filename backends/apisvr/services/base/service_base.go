@@ -2,14 +2,13 @@ package base
 
 import (
 	"applib/log/slog"
-	"applib/log/slog/slogwrap"
 	"context"
 	"database/sql"
 	"errors"
 	"fmt"
 
 	"connectrpc.com/connect"
-
+	"github.com/akm/slogwrap"
 	"github.com/bufbuild/protovalidate-go"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/protobuf/reflect/protoreflect"
