@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"connectrpc.com/authn"
+	"firebase.google.com/go/v4/auth"
 )
 
 func Authenticate(logger slog.Logger) func(ctx context.Context, req authn.Request) (any, error) {
@@ -37,6 +38,24 @@ func Authenticate(logger slog.Logger) func(ctx context.Context, req authn.Reques
 
 		logger.Debug("verified token", "token", token)
 
+		// この結果は auth.SetInfo されて ctx に保存される
 		return token, nil
 	}
+}
+
+func init() {
+	slog.RegisterHandlerFunc(
+		slog.NewFuncHandlerWrapper(
+			func(orig slog.HandleFunc) slog.HandleFunc {
+				return func(ctx context.Context, rec slog.Record) error {
+					// Authenticate の戻り値の関数の戻り値の token を取得
+					token, ok := authn.GetInfo(ctx).(*auth.Token)
+					if ok {
+						rec.Add("auth.UID", token.UID)
+					}
+					return orig(ctx, rec)
+				}
+			},
+		),
+	)
 }

@@ -29,6 +29,9 @@ func main() {
 		os.Exit(1)
 		return
 	}
+	if err := slog.SetDefault(logger); err != nil {
+		panic(err)
+	}
 
 	pool, err := connectDB(logger)
 	if err != nil {
@@ -41,7 +44,7 @@ func main() {
 	// Instantiate the YOUR services and Mount them here.
 	authmw := authn.NewMiddleware(auth.Authenticate(logger))
 
-	taskService := taskservices.NewTaskService(logger, pool)
+	taskService := taskservices.NewTaskService(pool)
 	path, handler := taskv1connect.NewTaskServiceHandler(taskService)
 	serviceMux.Handle(path, authmw.Wrap(handler))
 
