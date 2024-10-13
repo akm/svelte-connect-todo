@@ -2,10 +2,10 @@ package slog
 
 import (
 	"io"
-	"log/slog"
-	orig "log/slog"
 	"os"
 	"strings"
+
+	"github.com/akm/slogwrap"
 )
 
 func New(w io.Writer) (Logger, error) {
@@ -18,7 +18,7 @@ func New(w io.Writer) (Logger, error) {
 		return nil, err
 	}
 
-	var newHandler func(w io.Writer, opts *orig.HandlerOptions) Handler
+	var newHandler func(w io.Writer, opts *HandlerOptions) Handler
 	switch strings.ToLower(os.Getenv("LOG_FORMAT")) {
 	case "text":
 		newHandler = NewTextHandler
@@ -29,8 +29,7 @@ func New(w io.Writer) (Logger, error) {
 	return NewLogger(w, level, newHandler), nil
 }
 
-func NewLogger(w io.Writer, level Level, newHandler func(w io.Writer, opts *orig.HandlerOptions) Handler) Logger {
-	opts := &slog.HandlerOptions{Level: level}
-	handler := handlerFuncs.Wrap(newHandler(w, opts))
-	return &loggerImpl{origLogger: slog.New(handler)}
+func NewLogger(w io.Writer, level Level, newHandler func(w io.Writer, opts *HandlerOptions) Handler) Logger {
+	opts := &HandlerOptions{Level: level}
+	return &loggerImpl{origLogger: slogwrap.New(newHandler(w, opts))}
 }
