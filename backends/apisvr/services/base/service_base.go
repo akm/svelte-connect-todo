@@ -104,17 +104,15 @@ func (s *ServiceBase) Action(ctx context.Context, method string, fn func(context
 }
 
 func init() {
-	slogwrap.RegisterHandleTransformFunc(
-		slogwrap.NewHandleTransformFunc(
-			func(orig slogwrap.HandleFunc) slogwrap.HandleFunc {
-				return func(ctx context.Context, rec slog.Record) error {
-					action, ok := ctx.Value(actionContextKey).(string)
-					if ok {
-						rec.Add("action", action)
-					}
-					return orig(ctx, rec)
+	slogwrap.Register(
+		func(orig slogwrap.HandleFunc) slogwrap.HandleFunc {
+			return func(ctx context.Context, rec slog.Record) error {
+				action, ok := ctx.Value(actionContextKey).(string)
+				if ok {
+					rec.Add("action", action)
 				}
-			},
-		),
+				return orig(ctx, rec)
+			}
+		},
 	)
 }

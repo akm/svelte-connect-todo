@@ -45,18 +45,16 @@ func Authenticate(logger slog.Logger) func(ctx context.Context, req authn.Reques
 }
 
 func init() {
-	slogwrap.RegisterHandleTransformFunc(
-		slogwrap.NewHandleTransformFunc(
-			func(orig slogwrap.HandleFunc) slogwrap.HandleFunc {
-				return func(ctx context.Context, rec slog.Record) error {
-					// Authenticate の戻り値の関数の戻り値の token を取得
-					token, ok := authn.GetInfo(ctx).(*auth.Token)
-					if ok {
-						rec.Add("auth.UID", token.UID)
-					}
-					return orig(ctx, rec)
+	slogwrap.Register(
+		func(orig slogwrap.HandleFunc) slogwrap.HandleFunc {
+			return func(ctx context.Context, rec slog.Record) error {
+				// Authenticate の戻り値の関数の戻り値の token を取得
+				token, ok := authn.GetInfo(ctx).(*auth.Token)
+				if ok {
+					rec.Add("auth.UID", token.UID)
 				}
-			},
-		),
+				return orig(ctx, rec)
+			}
+		},
 	)
 }
