@@ -33,6 +33,18 @@ var (
 
 	NewJSONHandler = func(w io.Writer, opts *HandlerOptions) Handler { return NewJSONHandlerOrig(w, opts) }
 	NewTextHandler = func(w io.Writer, opts *HandlerOptions) Handler { return NewTextHandlerOrig(w, opts) }
+
+	Debug = orig.Debug
+	Info  = orig.Info
+	Warn  = orig.Warn
+	Error = orig.Error
+
+	DebugContext = orig.DebugContext
+	InfoContext  = orig.InfoContext
+	WarnContext  = orig.WarnContext
+	ErrorContext = orig.ErrorContext
+	Log          = orig.Log
+	LogAttrs     = orig.LogAttrs
 )
 
 const (
