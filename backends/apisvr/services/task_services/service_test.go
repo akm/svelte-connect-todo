@@ -42,7 +42,7 @@ func TestTaskServiceList(t *testing.T) {
 
 	ctx := context.Background()
 
-	srv := NewTaskService(logger, pool)
+	srv := NewTaskService(pool)
 	resp, err := srv.List(ctx, &connect.Request[taskv1.TaskServiceListRequest]{
 		Msg: &taskv1.TaskServiceListRequest{},
 	})
@@ -60,7 +60,7 @@ func TestTaskServiceShow(t *testing.T) {
 	pool := testsql.Open(t, logger)
 	setupFixtures(t, pool)
 
-	srv := NewTaskService(logger, pool)
+	srv := NewTaskService(pool)
 
 	t.Run("valid id", func(t *testing.T) {
 		ctx := context.Background()
@@ -88,7 +88,7 @@ func TestTaskServiceCreate(t *testing.T) {
 	pool := testsql.Open(t, logger)
 	setupFixtures(t, pool)
 
-	srv := NewTaskService(logger, pool)
+	srv := NewTaskService(pool)
 
 	t.Run("valid task", func(t *testing.T) {
 		ctx := context.Background()
@@ -148,7 +148,7 @@ func TestTaskServiceUpdate(t *testing.T) {
 	pool := testsql.Open(t, logger)
 	setupFixtures(t, pool)
 
-	srv := NewTaskService(logger, pool)
+	srv := NewTaskService(pool)
 
 	t.Run("valid task", func(t *testing.T) {
 		ctx := context.Background()
@@ -227,7 +227,7 @@ func TestTaskServiceDelete(t *testing.T) {
 	pool := testsql.Open(t, logger)
 	setupFixtures(t, pool)
 
-	srv := NewTaskService(logger, pool)
+	srv := NewTaskService(pool)
 
 	t.Run("valid task", func(t *testing.T) {
 		ctx := context.Background()

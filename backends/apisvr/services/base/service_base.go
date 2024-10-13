@@ -1,31 +1,30 @@
 package base
 
 import (
+	"applib/log/slog"
 	"context"
 	"database/sql"
 	"errors"
 	"fmt"
 
-	"applib/log/slog"
-
 	"connectrpc.com/connect"
+
 	"github.com/bufbuild/protovalidate-go"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 type ServiceBase struct {
-	Name   string
-	Logger slog.Logger
-	Pool   *sql.DB
+	Name string
+	Pool *sql.DB
 }
 
-func NewServiceBase(name string, logger slog.Logger, pool *sql.DB) *ServiceBase {
-	return &ServiceBase{Name: name, Logger: logger, Pool: pool}
+func NewServiceBase(name string, pool *sql.DB) *ServiceBase {
+	return &ServiceBase{Name: name, Pool: pool}
 }
 
 func (s *ServiceBase) StartAction(ctx context.Context, method string) {
-	s.Logger.Info("StartAction", "service", s.Name, "method", method)
+	slog.InfoContext(ctx, "StartAction", "service", s.Name, "method", method)
 }
 
 func (s *ServiceBase) ValidateMsg(ctx context.Context, msg protoreflect.ProtoMessage) error {
@@ -83,7 +82,7 @@ func (s *ServiceBase) Transaction(ctx context.Context, f func(*sql.Tx) error) er
 	txErr := f(tx)
 	if txErr != nil {
 		if err := tx.Rollback(); err != nil {
-			s.Logger.Error("failed to rollback transaction", "cause", err)
+			slog.ErrorContext(ctx, "failed to rollback transaction", "cause", err)
 		}
 		return txErr
 	}
