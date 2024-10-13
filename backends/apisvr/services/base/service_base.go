@@ -2,6 +2,7 @@ package base
 
 import (
 	"applib/log/slog"
+	"applib/log/slog/slogwrap"
 	"context"
 	"database/sql"
 	"errors"
@@ -103,9 +104,9 @@ func (s *ServiceBase) Action(ctx context.Context, method string, fn func(context
 }
 
 func init() {
-	slog.RegisterHandlerFunc(
-		slog.NewFuncHandlerWrapper(
-			func(orig slog.HandleFunc) slog.HandleFunc {
+	slogwrap.RegisterHandleTransformFunc(
+		slogwrap.NewHandleTransformFunc(
+			func(orig slogwrap.HandleFunc) slogwrap.HandleFunc {
 				return func(ctx context.Context, rec slog.Record) error {
 					action, ok := ctx.Value(actionContextKey).(string)
 					if ok {

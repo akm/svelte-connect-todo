@@ -1,6 +1,7 @@
 package slog
 
 import (
+	"applib/log/slog/slogwrap"
 	"io"
 	"log/slog"
 	orig "log/slog"
@@ -31,6 +32,5 @@ func New(w io.Writer) (Logger, error) {
 
 func NewLogger(w io.Writer, level Level, newHandler func(w io.Writer, opts *orig.HandlerOptions) Handler) Logger {
 	opts := &slog.HandlerOptions{Level: level}
-	handler := handlerFuncs.Wrap(newHandler(w, opts))
-	return &loggerImpl{origLogger: slog.New(handler)}
+	return &loggerImpl{origLogger: slogwrap.New(newHandler(w, opts))}
 }

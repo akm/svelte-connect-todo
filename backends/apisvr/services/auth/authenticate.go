@@ -2,6 +2,7 @@ package auth
 
 import (
 	"applib/log/slog"
+	"applib/log/slog/slogwrap"
 	"context"
 	"net/http"
 
@@ -44,9 +45,9 @@ func Authenticate(logger slog.Logger) func(ctx context.Context, req authn.Reques
 }
 
 func init() {
-	slog.RegisterHandlerFunc(
-		slog.NewFuncHandlerWrapper(
-			func(orig slog.HandleFunc) slog.HandleFunc {
+	slogwrap.RegisterHandleTransformFunc(
+		slogwrap.NewHandleTransformFunc(
+			func(orig slogwrap.HandleFunc) slogwrap.HandleFunc {
 				return func(ctx context.Context, rec slog.Record) error {
 					// Authenticate の戻り値の関数の戻り値の token を取得
 					token, ok := authn.GetInfo(ctx).(*auth.Token)
