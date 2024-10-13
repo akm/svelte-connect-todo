@@ -23,10 +23,6 @@ func NewServiceBase(name string, pool *sql.DB) *ServiceBase {
 	return &ServiceBase{Name: name, Pool: pool}
 }
 
-func (s *ServiceBase) StartAction(ctx context.Context, method string) {
-	slog.InfoContext(ctx, "StartAction", "service", s.Name, "method", method)
-}
-
 func (s *ServiceBase) ValidateMsg(ctx context.Context, msg protoreflect.ProtoMessage) error {
 	validator, err := protovalidate.New()
 	if err != nil {
@@ -92,4 +88,32 @@ func (s *ServiceBase) Transaction(ctx context.Context, f func(*sql.Tx) error) er
 	}
 
 	return nil
+}
+
+type actionContextKeyType struct{}
+
+var actionContextKey = actionContextKeyType{}
+
+func (s *ServiceBase) Action(ctx context.Context, method string, fn func(context.Context) error) error {
+	action := fmt.Sprintf("%s.%s", s.Name, method)
+	ctx = context.WithValue(ctx, actionContextKey, action)
+	slog.InfoContext(ctx, "Start Action")
+	defer slog.InfoContext(ctx, "End Action")
+	return fn(ctx)
+}
+
+func init() {
+	slog.RegisterHandlerFunc(
+		slog.NewFuncHandlerWrapper(
+			func(orig slog.HandleFunc) slog.HandleFunc {
+				return func(ctx context.Context, rec slog.Record) error {
+					action, ok := ctx.Value(actionContextKey).(string)
+					if ok {
+						rec.Add("action", action)
+					}
+					return orig(ctx, rec)
+				}
+			},
+		),
+	)
 }

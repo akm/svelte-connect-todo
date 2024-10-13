@@ -31,9 +31,7 @@ type Task struct {
 }
 
 func (s *TaskService) List(ctx context.Context, req *connect.Request[v1.TaskServiceListRequest]) (resp *connect.Response[v1.TaskServiceListResponse], rerr error) {
-	rerr = func() error {
-		s.StartAction(ctx, "List")
-
+	rerr = s.Action(ctx, "List", func(ctx context.Context) error {
 		queries := models.New(s.Pool)
 		dbTasks, err := queries.ListTasks(ctx)
 		if err != nil {
@@ -66,14 +64,12 @@ func (s *TaskService) List(ctx context.Context, req *connect.Request[v1.TaskServ
 			},
 		}
 		return nil
-	}()
+	})
 	return
 }
 
 func (s *TaskService) Show(ctx context.Context, req *connect.Request[v1.ShowRequest]) (resp *connect.Response[v1.TaskResponse], rerr error) {
-	rerr = func() error {
-		s.StartAction(ctx, "Show")
-
+	rerr = s.Action(ctx, "Show", func(ctx context.Context) error {
 		queries := models.New(s.Pool)
 		task, err := queries.GetTask(ctx, req.Msg.Id)
 		if err != nil {
@@ -97,14 +93,12 @@ func (s *TaskService) Show(ctx context.Context, req *connect.Request[v1.ShowRequ
 		}
 		resp = &connect.Response[v1.TaskResponse]{Msg: result}
 		return nil
-	}()
+	})
 	return
 }
 
 func (s *TaskService) Create(ctx context.Context, req *connect.Request[v1.TaskServiceCreateRequest]) (resp *connect.Response[v1.TaskResponse], rerr error) {
-	rerr = func() error {
-		s.StartAction(ctx, "Create")
-
+	rerr = s.Action(ctx, "Create", func(ctx context.Context) error {
 		if err := s.ValidateMsg(ctx, req.Msg); err != nil {
 			return err
 		}
@@ -153,14 +147,12 @@ func (s *TaskService) Create(ctx context.Context, req *connect.Request[v1.TaskSe
 			resp = &connect.Response[v1.TaskResponse]{Msg: result}
 			return nil
 		}
-	}()
+	})
 	return
 }
 
 func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.TaskServiceUpdateRequest]) (resp *connect.Response[v1.TaskResponse], rerr error) {
-	rerr = func() error {
-		s.StartAction(ctx, "Update")
-
+	rerr = s.Action(ctx, "Update", func(ctx context.Context) error {
 		if err := s.ValidateMsg(ctx, req.Msg); err != nil {
 			return err
 		}
@@ -210,14 +202,12 @@ func (s *TaskService) Update(ctx context.Context, req *connect.Request[v1.TaskSe
 			}
 			return nil
 		})
-	}()
+	})
 	return
 }
 
 func (s *TaskService) Delete(ctx context.Context, req *connect.Request[v1.DeleteRequest]) (resp *connect.Response[v1.TaskResponse], rerr error) {
-	rerr = func() error {
-		s.StartAction(ctx, "Delete")
-
+	rerr = s.Action(ctx, "Delete", func(ctx context.Context) error {
 		queries := models.New(s.Pool)
 		task, err := queries.GetTask(ctx, req.Msg.Id)
 		if err != nil {
@@ -246,6 +236,6 @@ func (s *TaskService) Delete(ctx context.Context, req *connect.Request[v1.Delete
 
 		resp = &connect.Response[v1.TaskResponse]{Msg: result}
 		return nil
-	}()
+	})
 	return
 }
