@@ -1,11 +1,13 @@
 .PHONY: default
 default: build lint test
 
-PATH_TO_ROOT=..
+PATH_TO_ROOT:=..
 include $(PATH_TO_ROOT)/.shapeapp.mk
 include $(PATH_TO_SHAPEAPPMK)/components/atoms/make/eachdir.mk
+include $(PATH_TO_SHAPEAPPMK)/components/organs/frontends/setup.mk
 
-DIRS=applib dbmigrations biz apisvr apisvr/proto
+# UISVR is defined in $(PATH_TO_SHAPEAPPMK)/components/organs/frontends/setup.mk
+DIRS=$(UISVR)
 
 .PHONY: build
 build:
