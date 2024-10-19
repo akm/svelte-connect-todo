@@ -6,6 +6,6 @@ import (
 	"testing"
 )
 
-func New(t *testing.T) slog.Logger {
+func New(t *testing.T) *slog.Logger {
 	return slog.NewLogger(testio.NewWriter(t), slog.LevelDebug, slog.NewTextHandler)
 }

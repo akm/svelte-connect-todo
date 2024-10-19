@@ -13,7 +13,7 @@ type (
 	HandlerOptions = orig.HandlerOptions
 	Record         = orig.Record
 
-	origLogger = orig.Logger
+	Logger = orig.Logger
 )
 
 var (
@@ -27,6 +27,9 @@ var (
 	Duration = orig.Duration
 	Group    = orig.Group
 	Any      = orig.Any
+
+	Default    = orig.Default
+	SetDefault = orig.SetDefault
 
 	NewJSONHandlerOrig = orig.NewJSONHandler
 	NewTextHandlerOrig = orig.NewTextHandler

@@ -8,7 +8,7 @@ import (
 	"github.com/akm/slogwrap"
 )
 
-func New(w io.Writer) (Logger, error) {
+func New(w io.Writer) (*Logger, error) {
 	logLevelStr := os.Getenv("LOG_LEVEL")
 	if logLevelStr == "" {
 		logLevelStr = "INFO"
@@ -29,7 +29,7 @@ func New(w io.Writer) (Logger, error) {
 	return NewLogger(w, level, newHandler), nil
 }
 
-func NewLogger(w io.Writer, level Level, newHandler func(w io.Writer, opts *HandlerOptions) Handler) Logger {
+func NewLogger(w io.Writer, level Level, newHandler func(w io.Writer, opts *HandlerOptions) Handler) *Logger {
 	opts := &HandlerOptions{Level: level}
-	return &loggerImpl{origLogger: slogwrap.New(newHandler(w, opts))}
+	return slogwrap.New(newHandler(w, opts))
 }
