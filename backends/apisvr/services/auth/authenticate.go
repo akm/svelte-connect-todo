@@ -10,7 +10,7 @@ import (
 	"github.com/akm/slogwrap"
 )
 
-func Authenticate(logger slog.Logger) func(ctx context.Context, req authn.Request) (any, error) {
+func Authenticate(logger *slog.Logger) func(ctx context.Context, req authn.Request) (any, error) {
 	return func(ctx context.Context, req authn.Request) (any, error) {
 		fbClient, err := NewFirebaseClient(ctx)
 		if err != nil {

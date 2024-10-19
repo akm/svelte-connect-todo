@@ -17,7 +17,7 @@ var (
 	dsn  = os.Getenv("DB_DSN")
 )
 
-func Open(t *testing.T, logger slog.Logger) *sql.DB {
+func Open(t *testing.T, logger *slog.Logger) *sql.DB {
 	if pool != nil {
 		return pool
 	}

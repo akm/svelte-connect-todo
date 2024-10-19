@@ -13,7 +13,7 @@ import (
 	"applib/sqldb-logger/logadapter/slogadapter"
 )
 
-func connectDB(logger slog.Logger) (*sql.DB, error) {
+func connectDB(logger *slog.Logger) (*sql.DB, error) {
 	dbDSN := os.Getenv("DB_DSN")
 	if dbDSN == "" {
 		return nil, fmt.Errorf("DB_DSN is not set")

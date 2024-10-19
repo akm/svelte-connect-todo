@@ -29,9 +29,7 @@ func main() {
 		os.Exit(1)
 		return
 	}
-	if err := slog.SetDefault(logger); err != nil {
-		panic(err)
-	}
+	slog.SetDefault(logger)
 
 	pool, err := connectDB(logger)
 	if err != nil {
