@@ -17,7 +17,7 @@ var (
 	dsn  = os.Getenv("DB_DSN")
 )
 
-func Open(t *testing.T, logger *slog.Logger) *sql.DB {
+func Open(t *testing.T) *sql.DB {
 	if pool != nil {
 		return pool
 	}
@@ -28,7 +28,7 @@ func Open(t *testing.T, logger *slog.Logger) *sql.DB {
 		t.Fatalf("unable to open database: %v", err)
 	}
 
-	adapter := slogadapter.New(logger)
+	adapter := slogadapter.New(slog.Default())
 	pool = sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
 
 	return pool

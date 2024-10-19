@@ -36,8 +36,8 @@ func setupFixtures(t *testing.T, pool *sql.DB) {
 }
 
 func TestTaskServiceList(t *testing.T) {
-	logger := testslog.New(t)
-	pool := testsql.Open(t, logger)
+	testslog.Setup(t)
+	pool := testsql.Open(t)
 	setupFixtures(t, pool)
 
 	ctx := context.Background()
@@ -56,8 +56,8 @@ func TestTaskServiceList(t *testing.T) {
 }
 
 func TestTaskServiceShow(t *testing.T) {
-	logger := testslog.New(t)
-	pool := testsql.Open(t, logger)
+	testslog.Setup(t)
+	pool := testsql.Open(t)
 	setupFixtures(t, pool)
 
 	srv := NewTaskService(pool)
@@ -84,8 +84,8 @@ func TestTaskServiceShow(t *testing.T) {
 }
 
 func TestTaskServiceCreate(t *testing.T) {
-	logger := testslog.New(t)
-	pool := testsql.Open(t, logger)
+	testslog.Setup(t)
+	pool := testsql.Open(t)
 	setupFixtures(t, pool)
 
 	srv := NewTaskService(pool)
@@ -144,8 +144,8 @@ func TestTaskServiceCreate(t *testing.T) {
 }
 
 func TestTaskServiceUpdate(t *testing.T) {
-	logger := testslog.New(t)
-	pool := testsql.Open(t, logger)
+	testslog.Setup(t)
+	pool := testsql.Open(t)
 	setupFixtures(t, pool)
 
 	srv := NewTaskService(pool)
@@ -223,8 +223,8 @@ func TestTaskServiceUpdate(t *testing.T) {
 }
 
 func TestTaskServiceDelete(t *testing.T) {
-	logger := testslog.New(t)
-	pool := testsql.Open(t, logger)
+	testslog.Setup(t)
+	pool := testsql.Open(t)
 	setupFixtures(t, pool)
 
 	srv := NewTaskService(pool)
