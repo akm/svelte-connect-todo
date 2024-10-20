@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"connectrpc.com/authn"
+	"github.com/akm/go-requestid"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
@@ -64,6 +65,7 @@ func main() {
 
 	rootMuxHandler := withCORS(rootMux)
 	rootMuxHandler = withRequestDumping(rootMuxHandler, logger)
+	rootMuxHandler = requestid.Wrap(rootMuxHandler)
 
 	srv := &http.Server{
 		Addr:              serverHostAndPort,
@@ -90,4 +92,8 @@ func main() {
 	if err := srv.Shutdown(ctx); err != nil {
 		logger.Error("HTTP shutdown", "cause", err)
 	}
+}
+
+func init() {
+	requestid.RegisterSlogHandle("requestid")
 }
