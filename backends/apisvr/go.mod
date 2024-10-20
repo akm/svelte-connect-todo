@@ -33,6 +33,7 @@ require (
 	github.com/ClickHouse/ch-go v0.61.5 // indirect
 	github.com/ClickHouse/clickhouse-go/v2 v2.26.0 // indirect
 	github.com/MicahParks/keyfunc v1.9.0 // indirect
+	github.com/akm/go-requestid v0.0.2 // indirect
 	github.com/akm/slogwrap v0.0.2 // indirect
 	github.com/akm/sqldb-logger-slog v0.0.2 // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
