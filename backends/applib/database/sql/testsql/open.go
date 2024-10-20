@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	"applib/log/slog"
-	"applib/sqldb-logger/logadapter/slogadapter"
 
+	sqldbloggerslog "github.com/akm/sqldb-logger-slog"
 	_ "github.com/go-sql-driver/mysql"
 	sqldblogger "github.com/simukti/sqldb-logger"
 )
@@ -28,7 +28,7 @@ func Open(t *testing.T) *sql.DB {
 		t.Fatalf("unable to open database: %v", err)
 	}
 
-	adapter := slogadapter.New(slog.Default())
+	adapter := sqldbloggerslog.New(slog.Default())
 	pool = sqldblogger.OpenDriver(dsn, pool.Driver(), adapter)
 
 	return pool
