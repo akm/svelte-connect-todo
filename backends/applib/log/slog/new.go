@@ -1,6 +1,7 @@
 package slog
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"strings"
@@ -8,7 +9,9 @@ import (
 	"github.com/akm/slogwrap"
 )
 
-func New(w io.Writer) (Logger, error) {
+var ErrInvalidLogFormat = fmt.Errorf("invalid LOG_FORMAT. Use 'text' or 'json'")
+
+func New(w io.Writer) (*Logger, error) {
 	logLevelStr := os.Getenv("LOG_LEVEL")
 	if logLevelStr == "" {
 		logLevelStr = "INFO"
@@ -19,17 +22,23 @@ func New(w io.Writer) (Logger, error) {
 	}
 
 	var newHandler func(w io.Writer, opts *HandlerOptions) Handler
-	switch strings.ToLower(os.Getenv("LOG_FORMAT")) {
+	logFormat := strings.ToLower(os.Getenv("LOG_FORMAT"))
+	if logFormat == "" {
+		logFormat = "json"
+	}
+	switch logFormat {
 	case "text":
 		newHandler = NewTextHandler
-	default:
+	case "json":
 		newHandler = NewJSONHandler
+	default:
+		return nil, ErrInvalidLogFormat
 	}
 
 	return NewLogger(w, level, newHandler), nil
 }
 
-func NewLogger(w io.Writer, level Level, newHandler func(w io.Writer, opts *HandlerOptions) Handler) Logger {
+func NewLogger(w io.Writer, level Level, newHandler func(w io.Writer, opts *HandlerOptions) Handler) *Logger {
 	opts := &HandlerOptions{Level: level}
-	return &loggerImpl{origLogger: slogwrap.New(newHandler(w, opts))}
+	return slogwrap.New(newHandler(w, opts))
 }

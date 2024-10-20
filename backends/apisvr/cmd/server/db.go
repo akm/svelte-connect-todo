@@ -5,15 +5,14 @@ import (
 	"fmt"
 	"os"
 
+	sqldbloggerslog "github.com/akm/sqldb-logger-slog"
 	_ "github.com/go-sql-driver/mysql"
 	sqldblogger "github.com/simukti/sqldb-logger"
 
 	"applib/log/slog"
-
-	"applib/sqldb-logger/logadapter/slogadapter"
 )
 
-func connectDB(logger slog.Logger) (*sql.DB, error) {
+func connectDB(logger *slog.Logger) (*sql.DB, error) {
 	dbDSN := os.Getenv("DB_DSN")
 	if dbDSN == "" {
 		return nil, fmt.Errorf("DB_DSN is not set")
@@ -24,7 +23,7 @@ func connectDB(logger slog.Logger) (*sql.DB, error) {
 		return nil, err
 	}
 
-	loggerAdapter := slogadapter.New(logger)
+	loggerAdapter := sqldbloggerslog.New(logger)
 	pool = sqldblogger.OpenDriver(dbDSN, pool.Driver(), loggerAdapter)
 
 	return pool, nil

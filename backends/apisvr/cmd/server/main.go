@@ -29,9 +29,7 @@ func main() {
 		os.Exit(1)
 		return
 	}
-	if err := slog.SetDefault(logger); err != nil {
-		panic(err)
-	}
+	slog.SetDefault(logger)
 
 	pool, err := connectDB(logger)
 	if err != nil {
@@ -64,12 +62,12 @@ func main() {
 	rootMux.Handle("GET /images/{id}", http.HandlerFunc(images.GetImage))
 	rootMux.Handle("/", h2c.NewHandler(serviceMux, &http2.Server{}))
 
-	serviceMuxHandler := withCORS(rootMux)
-	serviceMuxHandler = withRequestDumping(serviceMuxHandler, logger)
+	rootMuxHandler := withCORS(rootMux)
+	rootMuxHandler = withRequestDumping(rootMuxHandler, logger)
 
 	srv := &http.Server{
 		Addr:              serverHostAndPort,
-		Handler:           serviceMuxHandler,
+		Handler:           rootMuxHandler,
 		ReadHeaderTimeout: time.Second,
 		ReadTimeout:       5 * time.Minute,
 		WriteTimeout:      5 * time.Minute,
