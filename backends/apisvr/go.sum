@@ -34,6 +34,8 @@ github.com/MicahParks/keyfunc v1.9.0 h1:lhKd5xrFHLNOWrDc4Tyb/Q1AJ4LCzQ48GVJyVIID
 github.com/MicahParks/keyfunc v1.9.0/go.mod h1:IdnCilugA0O/99dW+/MkvlyrsX8+L8+x95xuVNtM5jw=
 github.com/akm/go-requestid v0.0.2 h1:PccBVirzpXZ7VfleYHXiO+ttTQ2yyiVUKUQ4hd4EGSw=
 github.com/akm/go-requestid v0.0.2/go.mod h1:M+RTMo2zTHlnuETecmdWkPwv5JfKWi76iflzmIDG5gY=
+github.com/akm/go-requestid v0.1.0 h1:HIz87B/siFvuQIrn5He3fCP/8MvLow+p6+sSCaJL9ZI=
+github.com/akm/go-requestid v0.1.0/go.mod h1:iifTYHnPumvIwfcOWJOOxHeulpF4pIAtYhFzK4+pjqc=
 github.com/akm/slogw v0.1.0 h1:bpHX9Qh661PGtiOWjsR8NBpbbw/agab/g1wScL7M7FU=
 github.com/akm/slogw v0.1.0/go.mod h1:JgLpYS2pVMva5O8CYLqXMRrJ/sS/S5tlhPJLXYaZIZE=
 github.com/akm/slogwrap v0.0.2 h1:ZDzWoLFPM1PKQmsjwOnm7hJbyYI65yO7gWxfRz8dB0U=
