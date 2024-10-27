@@ -32,14 +32,10 @@ github.com/ClickHouse/clickhouse-go/v2 v2.26.0 h1:j4/y6NYaCcFkJwN/TU700ebW+nmsIy
 github.com/ClickHouse/clickhouse-go/v2 v2.26.0/go.mod h1:iDTViXk2Fgvf1jn2dbJd1ys+fBkdD1UMRnXlwmhijhQ=
 github.com/MicahParks/keyfunc v1.9.0 h1:lhKd5xrFHLNOWrDc4Tyb/Q1AJ4LCzQ48GVJyVIID3+o=
 github.com/MicahParks/keyfunc v1.9.0/go.mod h1:IdnCilugA0O/99dW+/MkvlyrsX8+L8+x95xuVNtM5jw=
-github.com/akm/go-requestid v0.0.2 h1:PccBVirzpXZ7VfleYHXiO+ttTQ2yyiVUKUQ4hd4EGSw=
-github.com/akm/go-requestid v0.0.2/go.mod h1:M+RTMo2zTHlnuETecmdWkPwv5JfKWi76iflzmIDG5gY=
 github.com/akm/go-requestid v0.1.0 h1:HIz87B/siFvuQIrn5He3fCP/8MvLow+p6+sSCaJL9ZI=
 github.com/akm/go-requestid v0.1.0/go.mod h1:iifTYHnPumvIwfcOWJOOxHeulpF4pIAtYhFzK4+pjqc=
 github.com/akm/slogw v0.1.0 h1:bpHX9Qh661PGtiOWjsR8NBpbbw/agab/g1wScL7M7FU=
 github.com/akm/slogw v0.1.0/go.mod h1:JgLpYS2pVMva5O8CYLqXMRrJ/sS/S5tlhPJLXYaZIZE=
-github.com/akm/slogwrap v0.0.2 h1:ZDzWoLFPM1PKQmsjwOnm7hJbyYI65yO7gWxfRz8dB0U=
-github.com/akm/slogwrap v0.0.2/go.mod h1:uEq9O7DSG0BuJdXzeJlh9ycS+CoivwCzorFggjYtCDc=
 github.com/akm/sqldb-logger-slog v0.0.2 h1:wIqY6enrH3toITBp97c0b438v9cvJ0ZvCcpzlo89n04=
 github.com/akm/sqldb-logger-slog v0.0.2/go.mod h1:xxQyEdR6/sebt+bybLN07oN57dZgoUK6lKSt/qGfZ2I=
 github.com/andybalholm/brotli v1.1.0 h1:eLKJA0d02Lf0mVpIDgYnqXcUn0GqVmEFny3VuID1U3M=
