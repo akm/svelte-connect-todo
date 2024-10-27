@@ -7,7 +7,7 @@ import (
 
 	"connectrpc.com/authn"
 	"firebase.google.com/go/v4/auth"
-	"github.com/akm/slogwrap"
+	"github.com/akm/slogw"
 )
 
 func Authenticate(logger *slog.Logger) func(ctx context.Context, req authn.Request) (any, error) {
@@ -45,8 +45,8 @@ func Authenticate(logger *slog.Logger) func(ctx context.Context, req authn.Reque
 }
 
 func init() {
-	slogwrap.Register(
-		func(orig slogwrap.HandleFunc) slogwrap.HandleFunc {
+	slogw.Register(
+		func(orig slogw.HandleFunc) slogw.HandleFunc {
 			return func(ctx context.Context, rec slog.Record) error {
 				// Authenticate の戻り値の関数の戻り値の token を取得
 				token, ok := authn.GetInfo(ctx).(*auth.Token)
