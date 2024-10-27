@@ -8,7 +8,7 @@ import (
 	"fmt"
 
 	"connectrpc.com/connect"
-	"github.com/akm/slogwrap"
+	"github.com/akm/slogw"
 	"github.com/bufbuild/protovalidate-go"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -103,8 +103,8 @@ func (s *ServiceBase) Action(ctx context.Context, method string, fn func(context
 }
 
 func init() {
-	slogwrap.Register(
-		func(orig slogwrap.HandleFunc) slogwrap.HandleFunc {
+	slogw.Register(
+		func(orig slogw.HandleFunc) slogw.HandleFunc {
 			return func(ctx context.Context, rec slog.Record) error {
 				action, ok := ctx.Value(actionContextKey).(string)
 				if ok {

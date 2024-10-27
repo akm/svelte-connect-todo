@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/akm/slogwrap"
+	"github.com/akm/slogw"
 )
 
 var ErrInvalidLogFormat = fmt.Errorf("invalid LOG_FORMAT. Use 'text' or 'json'")
@@ -40,5 +40,5 @@ func New(w io.Writer) (*Logger, error) {
 
 func NewLogger(w io.Writer, level Level, newHandler func(w io.Writer, opts *HandlerOptions) Handler) *Logger {
 	opts := &HandlerOptions{Level: level}
-	return slogwrap.New(newHandler(w, opts))
+	return slogw.New(newHandler(w, opts))
 }
