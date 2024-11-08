@@ -3,36 +3,43 @@ package taskservices
 import (
 	"context"
 	"database/sql"
+	"log"
 	"os"
 	"testing"
+	"time"
 
 	taskv1 "apisvr/gen/task/v1"
 
 	"applib/database/sql/testsql"
 	"applib/log/slog/testslog"
 
+	"biz/fixtures/tasks"
+
 	"connectrpc.com/connect"
-	"github.com/go-testfixtures/testfixtures/v3"
+	"github.com/akm/go-fixtures"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-func setupFixtures(t *testing.T, pool *sql.DB) {
-
-	fixtureDir := os.Getenv("TEST_PATH_TO_FIXTURES")
-	t.Logf("TEST_PATH_TO_FIXTURES: %s", fixtureDir)
-	fixtures, err := testfixtures.New(
-		testfixtures.Database(pool),        // You database connection
-		testfixtures.Dialect("mysql"),      // Available: "postgresql", "timescaledb", "mysql", "mariadb", "sqlite" and "sqlserver"
-		testfixtures.Directory(fixtureDir), // The directory containing the YAML files
-		testfixtures.SkipResetSequences(),  // Disable the execution of the SQL command that resets the sequences
+func setupFixtures(t *testing.T, db *sql.DB) *tasks.Fixtures {
+	gormLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{SlowThreshold: time.Second, LogLevel: logger.Info},
 	)
-	if err != nil {
-		t.Fatalf("unable to load fixtures: %v", err)
-	}
 
-	err = fixtures.Load()
-	assert.NoError(t, err)
+	fx := fixtures.NewDB(
+		mysql.New(mysql.Config{Conn: db}),
+		&gorm.Config{Logger: gormLogger},
+	)(t)
+	fx.DeleteFromTable(t, &tasks.Task{})
+
+	fxTasks := tasks.NewFixtures()
+	fx.Create(t, fxTasks.SurveyTheMarket(), fxTasks.PlanTheProject())
+	return fxTasks
 }
 
 func TestTaskServiceList(t *testing.T) {
@@ -58,17 +65,17 @@ func TestTaskServiceList(t *testing.T) {
 func TestTaskServiceShow(t *testing.T) {
 	testslog.Setup(t)
 	pool := testsql.Open(t)
-	setupFixtures(t, pool)
+	fxTasks := setupFixtures(t, pool)
 
 	srv := NewTaskService(pool)
 
 	t.Run("valid id", func(t *testing.T) {
 		ctx := context.Background()
 		resp, err := srv.Show(ctx, &connect.Request[taskv1.ShowRequest]{
-			Msg: &taskv1.ShowRequest{Id: 1},
+			Msg: &taskv1.ShowRequest{Id: fxTasks.SurveyTheMarket().ID},
 		})
-		assert.NoError(t, err)
-		assert.Equal(t, uint64(1), resp.Msg.Id)
+		require.NoError(t, err)
+		assert.Equal(t, fxTasks.SurveyTheMarket().ID, resp.Msg.Id)
 		assert.Equal(t, "Survey the market", resp.Msg.Name)
 		assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Status)
 	})
@@ -146,7 +153,7 @@ func TestTaskServiceCreate(t *testing.T) {
 func TestTaskServiceUpdate(t *testing.T) {
 	testslog.Setup(t)
 	pool := testsql.Open(t)
-	setupFixtures(t, pool)
+	fxTasks := setupFixtures(t, pool)
 
 	srv := NewTaskService(pool)
 
@@ -154,13 +161,13 @@ func TestTaskServiceUpdate(t *testing.T) {
 		ctx := context.Background()
 		resp, err := srv.Update(ctx, &connect.Request[taskv1.TaskServiceUpdateRequest]{
 			Msg: &taskv1.TaskServiceUpdateRequest{
-				Id:     2,
+				Id:     fxTasks.PlanTheProject().ID,
 				Name:   "Make the project schedule",
 				Status: taskv1.TaskStatus_DONE,
 			},
 		})
 		assert.NoError(t, err)
-		assert.Equal(t, uint64(2), resp.Msg.Id)
+		assert.Equal(t, fxTasks.PlanTheProject().ID, resp.Msg.Id)
 		assert.Equal(t, "Make the project schedule", resp.Msg.Name)
 		assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Status)
 	})
@@ -168,7 +175,7 @@ func TestTaskServiceUpdate(t *testing.T) {
 		ctx := context.Background()
 		resp, err := srv.Update(ctx, &connect.Request[taskv1.TaskServiceUpdateRequest]{
 			Msg: &taskv1.TaskServiceUpdateRequest{
-				Id:     2,
+				Id:     fxTasks.PlanTheProject().ID,
 				Name:   "",
 				Status: taskv1.TaskStatus_DONE,
 			},
@@ -195,7 +202,7 @@ func TestTaskServiceUpdate(t *testing.T) {
 		ctx := context.Background()
 		resp, err := srv.Update(ctx, &connect.Request[taskv1.TaskServiceUpdateRequest]{
 			Msg: &taskv1.TaskServiceUpdateRequest{
-				Id:     2,
+				Id:     fxTasks.PlanTheProject().ID,
 				Name:   "Make the project schedule",
 				Status: taskv1.TaskStatus_UNKNOWN_UNSPECIFIED,
 			},
@@ -225,17 +232,17 @@ func TestTaskServiceUpdate(t *testing.T) {
 func TestTaskServiceDelete(t *testing.T) {
 	testslog.Setup(t)
 	pool := testsql.Open(t)
-	setupFixtures(t, pool)
+	fxTasks := setupFixtures(t, pool)
 
 	srv := NewTaskService(pool)
 
 	t.Run("valid task", func(t *testing.T) {
 		ctx := context.Background()
 		resp, err := srv.Delete(ctx, &connect.Request[taskv1.DeleteRequest]{
-			Msg: &taskv1.DeleteRequest{Id: 1},
+			Msg: &taskv1.DeleteRequest{Id: fxTasks.SurveyTheMarket().ID},
 		})
 		assert.NoError(t, err)
-		assert.Equal(t, uint64(1), resp.Msg.Id)
+		assert.Equal(t, fxTasks.SurveyTheMarket().ID, resp.Msg.Id)
 		assert.Equal(t, "Survey the market", resp.Msg.Name)
 		assert.Equal(t, taskv1.TaskStatus_DONE, resp.Msg.Status)
 	})
