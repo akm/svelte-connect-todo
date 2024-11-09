@@ -1,5 +1,3 @@
-github.com/akm/go-fixtures v0.0.1 h1:8nhzztxQGw3YWD8r7kp5FEIXQBYV8B6tnkGODXzbTV4=
-github.com/akm/go-fixtures v0.0.1/go.mod h1:PcjnMlQf1TanET1RGK+3SotrSRV1zYjMzg6I188TA5w=
 github.com/akm/go-fixtures v0.0.2 h1:VzsOtIbJu2xM1Knw6kXg7Re0OoWAM4DIYlJLu0gvoi8=
 github.com/akm/go-fixtures v0.0.2/go.mod h1:PcjnMlQf1TanET1RGK+3SotrSRV1zYjMzg6I188TA5w=
 github.com/jinzhu/inflection v1.0.0 h1:K317FqzuhWc8YvSVlFMCCUb36O/S9MCKRDI7QkRKD/E=
