@@ -30,6 +30,8 @@ github.com/MicahParks/keyfunc v1.9.0 h1:lhKd5xrFHLNOWrDc4Tyb/Q1AJ4LCzQ48GVJyVIID
 github.com/MicahParks/keyfunc v1.9.0/go.mod h1:IdnCilugA0O/99dW+/MkvlyrsX8+L8+x95xuVNtM5jw=
 github.com/akm/go-fixtures v0.0.1 h1:8nhzztxQGw3YWD8r7kp5FEIXQBYV8B6tnkGODXzbTV4=
 github.com/akm/go-fixtures v0.0.1/go.mod h1:PcjnMlQf1TanET1RGK+3SotrSRV1zYjMzg6I188TA5w=
+github.com/akm/go-fixtures v0.0.2 h1:VzsOtIbJu2xM1Knw6kXg7Re0OoWAM4DIYlJLu0gvoi8=
+github.com/akm/go-fixtures v0.0.2/go.mod h1:PcjnMlQf1TanET1RGK+3SotrSRV1zYjMzg6I188TA5w=
 github.com/akm/go-requestid v0.1.0 h1:HIz87B/siFvuQIrn5He3fCP/8MvLow+p6+sSCaJL9ZI=
 github.com/akm/go-requestid v0.1.0/go.mod h1:iifTYHnPumvIwfcOWJOOxHeulpF4pIAtYhFzK4+pjqc=
 github.com/akm/slogw v0.1.0 h1:bpHX9Qh661PGtiOWjsR8NBpbbw/agab/g1wScL7M7FU=
