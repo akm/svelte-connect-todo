@@ -16,7 +16,7 @@ require (
 	github.com/akm/sqldb-logger-slog v0.0.2
 	github.com/bufbuild/protovalidate-go v0.6.3
 	github.com/go-sql-driver/mysql v1.8.1
-	github.com/rs/cors v1.10.1
+	github.com/rs/cors v1.11.0
 	github.com/simukti/sqldb-logger v0.0.0-20230108155151-646c1a075551
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/net v0.24.0
