@@ -45,16 +45,12 @@ func Authenticate(logger *slog.Logger) func(ctx context.Context, req authn.Reque
 }
 
 func init() {
-	slogw.Register(
-		func(orig slogw.HandleFunc) slogw.HandleFunc {
-			return func(ctx context.Context, rec slog.Record) error {
-				// Authenticate の戻り値の関数の戻り値の token を取得
-				token, ok := authn.GetInfo(ctx).(*auth.Token)
-				if ok {
-					rec.Add("auth.UID", token.UID)
-				}
-				return orig(ctx, rec)
-			}
-		},
-	)
+	slogw.Register(func(ctx context.Context, rec slog.Record) *slog.Record {
+		// Authenticate の戻り値の関数の戻り値の token を取得
+		token, ok := authn.GetInfo(ctx).(*auth.Token)
+		if ok {
+			rec.Add("auth.UID", token.UID)
+		}
+		return &rec
+	})
 }
