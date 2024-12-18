@@ -34,6 +34,8 @@ github.com/akm/go-requestid v0.1.1 h1:17RR7UQ6xul4pObAW3Yr6JU7wxy6Jve5JZppkmM0Rj
 github.com/akm/go-requestid v0.1.1/go.mod h1:0OveHxBlYhEIru+NgwKVdaq9OPtPkfiDyX4qWsSUBHo=
 github.com/akm/slogw v0.2.0 h1:PEJeYiibkH1etRxwQgUgShjdWG0xZD9mtV3/1dlzI90=
 github.com/akm/slogw v0.2.0/go.mod h1:fsifd7vvHAE2L5HFuhrNLl3vd8+MkR+n5Z31BTPPymo=
+github.com/akm/slogw v0.2.1 h1:tTO5QTOgv8Jup8JXdxTHvR2pYl7bg5urOIkD2FmPENs=
+github.com/akm/slogw v0.2.1/go.mod h1:fsifd7vvHAE2L5HFuhrNLl3vd8+MkR+n5Z31BTPPymo=
 github.com/akm/sqldb-logger-slog v0.0.2 h1:wIqY6enrH3toITBp97c0b438v9cvJ0ZvCcpzlo89n04=
 github.com/akm/sqldb-logger-slog v0.0.2/go.mod h1:xxQyEdR6/sebt+bybLN07oN57dZgoUK6lKSt/qGfZ2I=
 github.com/antlr4-go/antlr/v4 v4.13.0 h1:lxCg3LAv+EUK6t1i0y1V6/SLeUi0eKEKdhQAlS8TVTI=

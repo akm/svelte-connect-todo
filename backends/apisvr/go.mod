@@ -12,7 +12,7 @@ require (
 	firebase.google.com/go/v4 v4.14.0
 	github.com/akm/go-fixtures v0.0.2
 	github.com/akm/go-requestid v0.1.1
-	github.com/akm/slogw v0.2.0
+	github.com/akm/slogw v0.2.1
 	github.com/akm/sqldb-logger-slog v0.0.2
 	github.com/bufbuild/protovalidate-go v0.6.3
 	github.com/go-sql-driver/mysql v1.8.1
