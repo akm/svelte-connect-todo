@@ -11,7 +11,7 @@ require (
 	connectrpc.com/cors v0.1.0
 	firebase.google.com/go/v4 v4.14.0
 	github.com/akm/go-fixtures v0.0.2
-	github.com/akm/go-requestid v0.1.1
+	github.com/akm/go-requestid v0.1.2
 	github.com/akm/slogw v0.2.1
 	github.com/akm/sqldb-logger-slog v0.0.2
 	github.com/bufbuild/protovalidate-go v0.6.3

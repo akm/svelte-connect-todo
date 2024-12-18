@@ -32,6 +32,8 @@ github.com/akm/go-fixtures v0.0.2 h1:VzsOtIbJu2xM1Knw6kXg7Re0OoWAM4DIYlJLu0gvoi8
 github.com/akm/go-fixtures v0.0.2/go.mod h1:PcjnMlQf1TanET1RGK+3SotrSRV1zYjMzg6I188TA5w=
 github.com/akm/go-requestid v0.1.1 h1:17RR7UQ6xul4pObAW3Yr6JU7wxy6Jve5JZppkmM0RjE=
 github.com/akm/go-requestid v0.1.1/go.mod h1:0OveHxBlYhEIru+NgwKVdaq9OPtPkfiDyX4qWsSUBHo=
+github.com/akm/go-requestid v0.1.2 h1:MoPcEswlFmHHdsrk74a8ol2PocXK4Ya0CWboEGqxGAc=
+github.com/akm/go-requestid v0.1.2/go.mod h1:zIT9lyPWSwxvHowoopCVosl9jfGQC3xiyWE3KU6MuaI=
 github.com/akm/slogw v0.2.0 h1:PEJeYiibkH1etRxwQgUgShjdWG0xZD9mtV3/1dlzI90=
 github.com/akm/slogw v0.2.0/go.mod h1:fsifd7vvHAE2L5HFuhrNLl3vd8+MkR+n5Z31BTPPymo=
 github.com/akm/slogw v0.2.1 h1:tTO5QTOgv8Jup8JXdxTHvR2pYl7bg5urOIkD2FmPENs=
