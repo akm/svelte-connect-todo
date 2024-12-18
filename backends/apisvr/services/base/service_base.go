@@ -103,15 +103,11 @@ func (s *ServiceBase) Action(ctx context.Context, method string, fn func(context
 }
 
 func init() {
-	slogw.Register(
-		func(orig slogw.HandleFunc) slogw.HandleFunc {
-			return func(ctx context.Context, rec slog.Record) error {
-				action, ok := ctx.Value(actionContextKey).(string)
-				if ok {
-					rec.Add("action", action)
-				}
-				return orig(ctx, rec)
-			}
-		},
-	)
+	slogw.Register(func(ctx context.Context, rec slog.Record) slog.Record {
+		action, ok := ctx.Value(actionContextKey).(string)
+		if ok {
+			rec.Add("action", action)
+		}
+		return rec
+	})
 }

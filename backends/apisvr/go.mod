@@ -11,14 +11,14 @@ require (
 	connectrpc.com/cors v0.1.0
 	firebase.google.com/go/v4 v4.14.0
 	github.com/akm/go-fixtures v0.0.2
-	github.com/akm/go-requestid v0.1.0
-	github.com/akm/slogw v0.1.0
+	github.com/akm/go-requestid v0.1.2
+	github.com/akm/slogw v0.2.1
 	github.com/akm/sqldb-logger-slog v0.0.2
 	github.com/bufbuild/protovalidate-go v0.6.3
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/rs/cors v1.10.1
 	github.com/simukti/sqldb-logger v0.0.0-20230108155151-646c1a075551
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	golang.org/x/net v0.24.0
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240401170217-c3f982113cda
 	google.golang.org/protobuf v1.34.2
